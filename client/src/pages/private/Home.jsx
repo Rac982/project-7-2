@@ -1,14 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { logout } from '../../store/slices/authSlice';
 
 const Home = () => {
-  return (
-    <div>
-      <Link to="/">
-        <button>Logout</button>
-      </Link>
-    </div>
-  )
+    const dispath = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispath(logout());
+        navigate("/");
+    }
+
+    return (
+        <div>
+            <button onClick={handleLogout}>Logout</button>
+        </div>
+    )
 }
 
 export default Home

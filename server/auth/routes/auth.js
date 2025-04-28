@@ -7,6 +7,6 @@ const { login } = require("../controllers/auth");
  * @path /auth/login
  * @method POST
  */
-app.use("/", login);
+app.post("/", login);
 
 module.exports = app;
