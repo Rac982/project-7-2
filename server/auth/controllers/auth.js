@@ -16,11 +16,11 @@ const login = async (req, res) => {
         const user = await User.findOne({ email: data.email, role: data.role, is_active: true }, null, { lean: true });
 
         if (user == null) {
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({ message: "User not found 1 " });
         }
 
         if (!comparePassword(data.password, user.password)) {
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({ message: "User not found 2" });
         }
 
         const token = generateUserToken({ _id: user._id, role: user.role });

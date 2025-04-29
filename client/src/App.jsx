@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/private/Home";
 import { useSelector } from "react-redux";
+import Categories from "./pages/private/Categories";
+import Products from "./pages/private/Products";
 
 const ProtectRoute = ({ children }) => {
     const { token } = useSelector((state) => state.auth);
@@ -28,6 +30,8 @@ const App = () => {
                     </ProtectRoute>
                 }>
                     <Route path="" element={<Home />} />
+                    <Route path="categories" element={<Categories />} />
+                    <Route path="products/:category_id" element={<Products />} />
                 </Route>
             </Routes>
         </>

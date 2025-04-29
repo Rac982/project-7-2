@@ -11,6 +11,9 @@ const Navbar = () => {
                 <Link to="/private">Home</Link>
             </div>
             <div>
+                <Link to="/private/categories">Categories</Link>
+            </div>
+            <div>
                 Welcome {user.first_name} {user.last_name}
             </div>
         </nav>

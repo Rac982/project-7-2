@@ -11,4 +11,14 @@ app.use("/users", require("./routes/users"));
  */
 app.use("/me", require("./routes/me"));
 
+/**
+ * @path /api/categories
+ */
+app.use("/categories", require("./routes/categories"));
+
+/**
+ * @path /api/products
+ */
+app.use("/products", require("./routes/products"));
+
 module.exports = app;

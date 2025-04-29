@@ -16,7 +16,7 @@ const authUser = (role = []) => async (req, res, next) => {
 
         if (!decoded) return res.status(403).json({ message: "Not Authorized" });
 
-        if (!role.includes(decoded.role)) return res.status(403).json({ message: "Not Authorized" });;
+        if (role.length > 0 && !role.includes(decoded.role)) return res.status(403).json({ message: "Not Authorized" });;
 
         const user = await User.findOne({ _id: decoded._id, role: decoded.role, is_active: true }, "-password", { lean: true }).populate({ 
             path: "business_profile",

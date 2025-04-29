@@ -15,6 +15,8 @@ app.use(helmet());
 app.use(express.json({ limit: "3mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/assets", express.static("./assets"));
+
 app.use("/auth", require("./auth"));
 app.use("/api", require("./api"));
 
