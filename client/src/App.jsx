@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
 
+
 const ProtectRoute = ({ children }) => {
     const { token } = useSelector((state) => state.auth);
 
