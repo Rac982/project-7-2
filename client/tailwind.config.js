@@ -11,7 +11,6 @@ export default {
           secondary: "#070FA3",   // secondary
           text: "#332B2C",        // testo principale
           muted: "#818181",       // testo secondario
-          background: "#ffffff",  // sfondo
         },
         fontFamily: {
           sans: ["'Inter'", "sans-serif"],
@@ -27,13 +26,12 @@ export default {
             "3xl": "2.25rem",    // 36px
             "4xl": "3rem",      // 48px
           },
-        borderRadius: {
-          lg: "1.25rem",      // 20px
-        },
         boxShadow: {
-            "elevation-1": "0px 1px 3px rgba(0, 0, 0, 0.12)", // M3 light shadow
+            "elevation-1": boxShadow: {
+              "elevation-1": "0px 1px 2px rgba(0, 0, 0, 0.30), 0px 1px 3px rgba(0, 0, 0, 0.15)", // M3 light elevation 1
+            },            
         },
       },
     },
     plugins: [],
-  };  
+  };
