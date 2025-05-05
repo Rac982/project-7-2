@@ -21,4 +21,9 @@ app.use("/categories", require("./routes/categories"));
  */
 app.use("/products", require("./routes/products"));
 
+/**
+ * @path /api/search
+ */
+app.use("/search", require("./routes/search"));
+
 module.exports = app;
