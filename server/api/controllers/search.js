@@ -20,8 +20,8 @@ const searchCateogriesAndProducts = async (req, res) => {
 
         const { q } = data;
 
-        const categories = await Category.find({ user, name: { $regex: q, $options: 'igm' } }, null, { lean: true });
-        const products = await Product.find({ user, name: { $regex: q, $options: 'igm' } }, null, { lean: true })
+        const categories = await Category.find({ user, name: { $regex: q, $options: 'i' } }, null, { lean: true });
+        const products = await Product.find({ user, name: { $regex: q, $options: 'i' } }, null, { lean: true })
             .populate('category')
             .populate('labels');
 
