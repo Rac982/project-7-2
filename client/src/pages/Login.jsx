@@ -28,7 +28,7 @@ const Login = () => {
 
         dispath(loginAction(payload)); // { token, user }
 
-        navigate("/private");
+        navigate("/private/categories");
     }
 
     return (
