@@ -140,7 +140,7 @@ const Signup = () => {
                     <input
                         type="password"
                         name="confirm_password"
-                        placeholder="Conferma password"
+                        placeholder="Confirm password"
                         value={form.confirm_password}
                         onInput={handleInput}
                         className="border border-gray-300 px-3 py-2 rounded-md"
