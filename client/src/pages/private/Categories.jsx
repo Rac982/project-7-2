@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomImage from '../../components/shared/CustomImage'
 import { Link } from 'react-router-dom'
 import SearchInput from '../../components/shared/SearchInput'
+import { clearSearchResult } from '../../store/slices/searchSlice'
 
 const Categories = () => {
-    const { all: categories } = useSelector((state) => state.categories)
+    const dispatch = useDispatch();
+    const { all: categories } = useSelector((state) => state.categories);
+    const { products: filteredProducts } = useSelector((state) => state.search);
     const [query, setQuery] = useState("")
-    const [filteredProducts, setFilteredProducts] = useState(null)
 
-    const isSearching = query.trim().length > 0 && filteredProducts !== null
+    const isSearching = filteredProducts.length > 0;
 
     // Reset dei risultati quando la ricerca viene svuotata
     useEffect(() => {
         if (query.trim() === "") {
-            setFilteredProducts(null)
+            dispatch(clearSearchResult())
         }
     }, [query])
 
@@ -26,8 +28,6 @@ const Categories = () => {
                     <SearchInput
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        categories={categories}
-                        onResults={setFilteredProducts}
                     />
                 </div>
 

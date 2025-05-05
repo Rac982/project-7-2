@@ -1,37 +1,24 @@
 import React, { useState } from 'react'
 import Toast from '../../components/shared/Toast'
+import { useApi } from '../../hooks/useApi'
+import { config } from '../../config';
+import { useDispatch } from 'react-redux';
+import { setSearchResult } from '../../store/slices/searchSlice';
 
-const SearchInput = ({ value, onChange, categories, onResults }) => {
-  const [showToast, setShowToast] = useState(false)
+const SearchInput = ({ value, onChange, categories }) => {
+  const dispatch = useDispatch();
+  const [showToast, setShowToast] = useState(false);
+  const {get} = useApi();
 
-  const handleSearch = () => {
-    const query = value.trim().toLowerCase()
+  const handleSearch = async () => {
+    const query = value.trim().toLowerCase();
 
-    if (!query) {
-      onResults(null)
-      return
-    }
-
-    const matches = []
-
-    categories.forEach((category) => {
-      category.products?.forEach((product) => {
-        if (product.name.toLowerCase().includes(query)) {
-          matches.push({
-            ...product,
-            categoryName: category.name,
-            categoryId: category._id,
-          })
-        }
-      })
-    })
-
-    if (matches.length === 0) {
+    try {
+      const payload = await get(`/search?u=${config.BUSINESS_ID}&q=${query}`);
+      dispatch(setSearchResult(payload));
+    } catch (error) {
+      console.log(error)
       setShowToast(true)
-      setTimeout(() => setShowToast(false), 3000)
-      onResults(null)
-    } else {
-      onResults(matches)
     }
   }
 
@@ -40,7 +27,7 @@ const SearchInput = ({ value, onChange, categories, onResults }) => {
   return (
     <div className="relative w-full">
       <input
-        type="text"
+        type="search"
         value={value}
         onChange={onChange}
         onKeyDown={(e) => {
