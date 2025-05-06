@@ -15,10 +15,12 @@ const SearchInput = ({ value, onChange, categories }) => {
 
     try {
       const payload = await get(`/search?u=${config.BUSINESS_ID}&q=${query}`);
-      dispatch(setSearchResult(payload));
+      const _payload = { products: [], categories: [], ...payload };
+      dispatch(setSearchResult(_payload));
     } catch (error) {
-      console.log(error)
       setShowToast(true)
+
+      setTimeout(() => setShowToast(false), 4000)
     }
   }
 
