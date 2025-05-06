@@ -1,7 +1,20 @@
 import React from 'react';
 import CustomImage from './CustomImage';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentCategory } from '../../store/slices/categorySlice';
 
 const CategoryItem = ({ category }) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { all: categories } = useSelector((state) => state.categories);
+
+    const handleNavigate = (categoryId) => {
+        const activeCategory = categories.find((item) => item._id == categoryId);
+        dispatch(setCurrentCategory(activeCategory));
+        navigate(`/private/products/${categoryId}`);
+    };
+
     return (
         <div
             onClick={() => handleNavigate(category._id)}
