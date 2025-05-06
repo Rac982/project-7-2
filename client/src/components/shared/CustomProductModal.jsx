@@ -7,7 +7,6 @@ const CustomProductModal = () => {
     const dispatch = useDispatch();
     const { current: selectedProduct } = useSelector((state) => state.products);
 
-
     const handleCloseModal = () => {
         dispatch(setCurrentProduct(null));
     }
