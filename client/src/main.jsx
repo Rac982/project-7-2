@@ -7,12 +7,14 @@ import App from './App.jsx';
 import './index.css';
 import store from './store/index.js';
 import { ApiProvider } from './hooks/useApi.jsx';
+import CustomProductModal from './components/shared/CustomProductModal.jsx';
 
 createRoot(document.getElementById('root')).render(
     <ReduxProvider store={store}>
         <BrowserRouter>
             <ApiProvider>
                 <App />
+                <CustomProductModal />
             </ApiProvider>
         </BrowserRouter>
     </ReduxProvider>
