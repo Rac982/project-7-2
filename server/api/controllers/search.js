@@ -24,7 +24,9 @@ const searchCateogriesAndProducts = async (req, res) => {
             .populate('category')
             .populate('labels');
 
-        return res.status(200).json({ categories, products });
+        const status_code = categories.length == 0 || products.length == 0 ? 404 : 200; 
+
+        return res.status(status_code).json({ categories, products });
     } catch (err) {
         outError(res, err);
     }

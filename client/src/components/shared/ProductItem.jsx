@@ -5,7 +5,7 @@ import CustomImage from './CustomImage';
 const ProductItem = ({ onSelectProduct, product }) => {
     return (
         <>
-            <div key={product._id} className=" bg-white w-[375px] h-[107px]  rounded  cursor-pointer flex space-between justify-center pr-6 pl-4" onClick={onSelectProduct}>
+            <div key={product._id} className=" bg-white max-w-[375px] w-full rounded  cursor-pointer flex space-between justify-center" onClick={onSelectProduct}>
                 <CustomImage src={product.image} alt={product.name} className="w-[90px] h-[90px] rounded-2xl object-cover" />
                 <div className="pl-3 pr-5">
                     <h3 className="font-bold text-[16px]">{product.name}</h3>
@@ -18,7 +18,10 @@ const ProductItem = ({ onSelectProduct, product }) => {
                     </div>
                 </div>
             </div>
-            <div className='flex w-[295px] border-b border-b-gray-400 ml-[40px] mb-4'></div>
+            <div className="flex justify-center w-full">
+                <div className='flex w-[295px] border-b border-b-gray-300 my-4'></div>
+            </div>
+
         </>
     )
 }

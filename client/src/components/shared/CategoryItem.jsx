@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomImage from './CustomImage';
 
-const CategoryItem = () => {
+const CategoryItem = ({ category }) => {
     return (
         <div
             onClick={() => handleNavigate(category._id)}

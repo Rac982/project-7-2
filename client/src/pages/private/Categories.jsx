@@ -5,6 +5,8 @@ import SearchInput from '../../components/shared/SearchInput'
 import { clearSearchResult } from '../../store/slices/searchSlice'
 import { setCurrentCategory } from '../../store/slices/categorySlice'
 import CategoryItem from '../../components/shared/CategoryItem'
+import { setCurrentProduct } from '../../store/slices/productSlice'
+import ProductItem from '../../components/shared/ProductItem'
 
 const Categories = () => {
     const dispatch = useDispatch();
@@ -20,6 +22,10 @@ const Categories = () => {
         dispatch(setCurrentCategory(activeCategory));
         navigate(`/private/products/${categoryId}`);
     };
+
+    const selectCurrentProduct = (product) => {
+        dispatch(setCurrentProduct(product));
+    }
 
     // Reset dei risultati quando la ricerca viene svuotata
     useEffect(() => {
@@ -40,10 +46,10 @@ const Categories = () => {
                 </div>
 
                 {/* Risultati ricerca o categorie */}
-                <div className="px-5 py-4 space-y-3">
+                <div className="flex flex-col item-center px-5 py-4 space-y-3">
                     {isSearching ? (
                         filteredProducts?.map((product) => (
-                            <></>
+                            <ProductItem key={product._id} onSelectProduct={() => selectCurrentProduct(product)} product={product} />
                         ))
                     ) : (
                         categories.map((category) => (
