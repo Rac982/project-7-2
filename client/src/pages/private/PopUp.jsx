@@ -7,7 +7,7 @@ const PopUp = ({ src, alt, description, title, price, onClick }) => {
             <div className="bg-white w-[313px] h-[627px] border-b border-b-gray-400 flex flex-col justify-center relative rounded-2xl">
 
                 <div className=''>
-                    <img crossOrigin="anonymous" src={src} alt={alt} className='h-[217px] rounded-2xl object-cover' />
+                    <img crossOrigin="anonymous" src={src} alt={alt} className='h-[217px] min-w-full rounded-t-2xl object-cover' />
                     <button onClick={onClick} className='absolute top-0 right-2'>X</button>
                 </div>
                 <div className="h-[410px] pl-5 pr-5">
