@@ -12,6 +12,9 @@ export default {
         text: "#332B2C",        // testo principale
         muted: "#818181",       // testo secondario
       },
+      backgroundColor: {
+        blueLight: "#dadbf1",
+      },
       fontFamily: {
         sans: ["'Inter'", "sans-serif"],
       },
