@@ -7,6 +7,7 @@ import Home from "./pages/private/Home";
 import { useSelector } from "react-redux";
 import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
+import ConfirmPayment from "./pages/ConfirmPayment";
 
 
 const ProtectRoute = ({ children }) => {
@@ -33,6 +34,7 @@ const App = () => {
                     <Route path="" element={<Home />} />
                     <Route path="categories" element={<Categories />} />
                     <Route path="products/:category_id" element={<Products />} />
+                    <Route path="confirm-payment" element={<ConfirmPayment/>} />
                 </Route>
             </Routes>
         </>
