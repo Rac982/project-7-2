@@ -1,49 +1,125 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+// Hook Redux per lanciare azioni
+import { useDispatch } from 'react-redux';
+// Azione per aggiungere un prodotto al carrello
+import { addToCart } from '../../store/slices/cartSlice';
+// Hook React Router per navigare tra le pagine
+import { useNavigate } from 'react-router-dom';
 
-const PopUp = ({ src, alt, description, title, price, onClose }) => {
-    const [count, setCount] = useState(1)
+/**
+ * PopUp - Modale che mostra i dettagli di un piatto e consente di aggiungerlo al carrello
+ *
+ * @param {string} src - URL immagine del prodotto
+ * @param {string} alt - Testo alternativo dell'immagine
+ * @param {string} description - Descrizione del prodotto
+ * @param {string} title - Titolo/nome del piatto
+ * @param {number} price - Prezzo del prodotto
+ * @param {function} onClose - Funzione per chiudere il popup
+ * @param {object} product - Oggetto contenente i dati completi del prodotto
+ */
+const PopUp = ({ src, alt, description, title, price, onClose, product }) => {
+    const [count, setCount] = useState(1); // Stato per la quantità da aggiungere
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // Aggiunge il prodotto al carrello con la quantità selezionata
+    const handleAddToCart = () => {
+        dispatch(addToCart({ ...product, quantity: count })); // Aggiunge al carrello
+        onClose(); // Chiude il popup
+        navigate('/private/cart'); // Naviga alla pagina del carrello
+    };
+
     return (
         <>
+            {/* Container principale del popup */}
             <div className="bg-white w-[313px] h-[627px] border-b border-b-gray-400 flex flex-col justify-center relative rounded-2xl">
-                <div className=''>
-                    <img crossOrigin="anonymous" src={src} alt={alt} className='h-[217px] min-w-full rounded-t-2xl object-cover' />
-                    <button onClick={onClose} className='absolute cursor-pointer top-2 right-2 w-6 h-6 rounded-full bg-white flex justify-center items-center'>
-                        <svg className="w-2.5 h-2.5" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.9353 13.0002L25.5992 2.33628C26.1336 1.80186 26.1336 0.93543 25.5992 0.40106C25.0648 -0.133361 24.1983 -0.133361 23.664 0.40106L13 11.065L2.33603 0.40106C1.80161 -0.133361 0.935186 -0.133361 0.400816 0.40106C-0.133554 0.935481 -0.133605 1.80191 0.400816 2.33628L11.0648 13.0002L0.400816 23.6642C-0.133605 24.1986 -0.133605 25.065 0.400816 25.5994C0.935237 26.1338 1.80166 26.1338 2.33603 25.5994L13 14.9354L23.6639 25.5994C24.1983 26.1338 25.0648 26.1338 25.5991 25.5994C26.1335 25.065 26.1335 24.1985 25.5991 23.6642L14.9353 13.0002Z" fill="#332B2C"/>
+
+                {/* Sezione immagine */}
+                <div>
+                    <img
+                        crossOrigin="anonymous"
+                        src={src}
+                        alt={alt}
+                        className='h-[217px] min-w-full rounded-t-2xl object-cover'
+                    />
+
+                    {/* Bottone per chiudere il popup (in alto a destra) */}
+                    <button
+                        onClick={onClose}
+                        className='absolute cursor-pointer top-2 right-2 w-6 h-6 rounded-full bg-white flex justify-center items-center'
+                    >
+                        {/* Icona X */}
+                        <svg
+                            className="w-2.5 h-2.5"
+                            viewBox="0 0 26 26"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M14.9353 13.0002L25.5992 2.33628C26.1336 1.80186 26.1336 0.93543 25.5992 0.40106C25.0648 -0.133361 24.1983 -0.133361 23.664 0.40106L13 11.065L2.33603 0.40106C1.80161 -0.133361 0.935186 -0.133361 0.400816 0.40106C-0.133554 0.935481 -0.133605 1.80191 0.400816 2.33628L11.0648 13.0002L0.400816 23.6642C-0.133605 24.1986 -0.133605 25.065 0.400816 25.5994C0.935237 26.1338 1.80166 26.1338 2.33603 25.5994L13 14.9354L23.6639 25.5994C24.1983 26.1338 25.0648 26.1338 25.5991 25.5994C26.1335 25.065 26.1335 24.1985 25.5991 23.6642L14.9353 13.0002Z"
+                                fill="#332B2C"
+                            />
                         </svg>
                     </button>
                 </div>
+
+                {/* Contenuto testuale e interattivo del popup */}
                 <div className="h-[410px] pl-5 pr-5">
+
+                    {/* Titolo e descrizione */}
                     <div className="h-[172px]">
                         <h1 className="font-bold text-[16px] mb-6 mt-6">{title}</h1>
-                        <p className='text-[12px]'>{description}  <b className='text-[#818181]'>Read More</b></p>
+                        <p className='text-[12px]'>{description} <b className='text-[#818181]'>Read More</b></p>
                     </div>
+
+                    {/* Sezione filtro placeholder */}
                     <div className='mt-3 mb-3'>
-                        <p>Filters</p>
+                        <p>Filters</p> {/* Da sostituire con filtri reali se previsti */}
                     </div>
+
+                    {/* Note e prezzo */}
                     <div>
                         <p className='text-[12px] text-[#B3ADAD]'>Aggiungi nota +</p>
+
+                        {/* Prezzo */}
                         <div className="flex justify-between items-center">
                             <p className="flex justify-between items-center gap-2 text-[13px]">
                                 <span className='text-[12px]'>Prezzo :</span>{price}€
                             </p>
-                            <div className="flex gap-3 items-center w-[94px]">
-                                <img onClick={() => setCount(c => c - 1)} src="/images/MinusSign.png" alt="minus" className='w-[33px] h-[33px]' />
-                                <span>{count}</span>
-                                <img onClick={() => setCount(c => c + 1)} src="/images/PlusSign.png" alt="plus" className='w-[33px] h-[33px]' />
-                            </div>
+                        </div>
+
+                        {/* Selettore quantità */}
+                        <div className="flex gap-3 items-center w-[94px]">
+                            {/* Decrementa quantità (minimo 1) */}
+                            <img
+                                onClick={() => setCount(c => Math.max(1, c - 1))}
+                                src="/images/MinusSign.png"
+                                alt="minus"
+                                className='w-[33px] h-[33px] cursor-pointer'
+                            />
+                            <span>{count}</span>
+                            {/* Incrementa quantità */}
+                            <img
+                                onClick={() => setCount(c => c + 1)}
+                                src="/images/PlusSign.png"
+                                alt="plus"
+                                className='w-[33px] h-[33px] cursor-pointer'
+                            />
                         </div>
                     </div>
 
-                    <button className='w-full bg-[#3BC8E1] h-[39px] rounded-3xl text-white text-[16px] flex items-center justify-center gap-2 mt-10'>
-                        <img src=" /images/Pluswhite.svg" alt="plus" className='w-[20px] h-[20px]' />
+                    {/* Bottone per aggiungere al carrello */}
+                    <button
+                        onClick={handleAddToCart}
+                        className='w-full bg-[#3BC8E1] h-[39px] rounded-3xl text-white text-[16px] flex items-center justify-center gap-2 mt-10'
+                    >
+                        <img src="/images/Pluswhite.svg" alt="plus" className='w-[20px] h-[20px]' />
                         Aggiungi all'ordine
                     </button>
                 </div>
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default PopUp
+export default PopUp;

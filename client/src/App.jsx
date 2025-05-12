@@ -4,18 +4,18 @@ import Public from "./layout/Public";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/private/Home";
-import { useSelector } from "react-redux";
 import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
-
+import Cart from "./pages/private/Cart"; // carrello
+import { useSelector } from "react-redux";
 
 const ProtectRoute = ({ children }) => {
     const { token } = useSelector((state) => state.auth);
 
-    if (!token) return <Navigate to="/" />
+    if (!token) return <Navigate to="/" />;
 
     return children;
-}
+};
 
 const App = () => {
     return (
@@ -33,10 +33,11 @@ const App = () => {
                     <Route path="" element={<Home />} />
                     <Route path="categories" element={<Categories />} />
                     <Route path="products/:category_id" element={<Products />} />
+                    <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
                 </Route>
             </Routes>
         </>
-    )
-}
+    );
+};
 
 export default App;
