@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 
 const Payments = () => {
     const [selectedTip, setSelectedTip] = useState("Top")
+
+    const location = useLocation()
+
 
     return (
         <>
             <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
                 <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
-                    <img className="cursor-pointer" src="/images/Component1.svg" alt="arrow" onClick={() => navigate("/private/categories")} />
+                    <img className="cursor-pointer" src="/images/Component1.svg" alt="arrow" onClick={() => navigate(location.key == "default" ? "/private" : -1)} />
                     <h1 className="w-full font-semibold text-md">Paga in app</h1>
                 </div>
                 <div
@@ -16,7 +20,7 @@ const Payments = () => {
                         boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)"
                     }}
                 >
-                    <div className='mt-6 mx-5 flex felx-row justify-between bg-[#dadbf1] rounded-3xl px-7.5 py-3.75'>
+                    <div className='mt-6 mx-5 flex felx-row justify-between bg-blue-light rounded-3xl px-7.5 py-3.75'>
                         <div className='flex flex-col gap-1'>
                             <h4 className="text-base text-text font-semibold text-text leading-tight">
                                 Importo totale
@@ -45,10 +49,10 @@ const Payments = () => {
                         </p>
                         <div className="flex flex-row justify-between items-center gap-3 w-full">
                             {[
-                                { label: "Ok", amount: "1€" },
-                                { label: "Buono", amount: "2€" },
-                                { label: "Ottimo", amount: "3€" },
-                                { label: "Top", amount: "5€" },
+                                { label: "Ok", amount: 1 },
+                                { label: "Buono", amount: 2 },
+                                { label: "Ottimo", amount: 3 },
+                                { label: "Top", amount: 5 },
                             ].map(({ label, amount }) => {
                                 const isSelected = selectedTip === label;
                                 return (
@@ -59,7 +63,7 @@ const Payments = () => {
                                             }`}
                                     >
                                         <span className="text-center font-extrabold text-xs text-gray-400">{label}</span>
-                                        <span className={`text-lg font-bold ${isSelected ? "text-primary" : "text-text"}`}>{amount}</span>
+                                        <span className={`text-lg font-bold ${isSelected ? "text-primary" : "text-text"}`}>{amount} €</span>
                                     </button>
                                 );
                             })}
