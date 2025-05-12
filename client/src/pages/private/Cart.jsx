@@ -64,7 +64,7 @@ const Cart = () => {
     return (
         <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
             {/* HEADER */}
-            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5 rounded-2xl shadow-sm">
+            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
                 <img
                     className="cursor-pointer"
                     src="/images/Component1.svg"
@@ -75,7 +75,10 @@ const Cart = () => {
             </div>
 
             {/* CONTENUTO CARRELLO */}
-            <div className="flex flex-col items-center w-[375px] px-4 pb-24">
+            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
+                    style={{
+                        boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)"
+                    }}>
                 {items.length === 0 ? (
                     <div className="flex flex-col items-center justify-center bg-white w-full mt-20 text-center p-6 rounded-2xl shadow-sm">
                         <img src="/images/empty-cart.jpg" alt="carrello vuoto" className="w-40 h-40 mb-4" />
@@ -109,7 +112,7 @@ const Cart = () => {
                                 onClick={handleSubmitOrder}
                                 disabled={isSubmitting}
                                 className={`w-full h-[42px] rounded-full text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
-                  ${isSubmitting ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
+                                 ${isSubmitting ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
                             >
                                 <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
                                 Invia ordine
