@@ -3,12 +3,14 @@ import authSlice from "./slices/authSlice";
 import categorySlice from "./slices/categorySlice";
 import productSlice from "./slices/productSlice";
 import searchSlice from "./slices/searchSlice";
+import labelSlice from "./slices/labelSlice";
 
 export default configureStore({
-    reducer: {
-        auth: authSlice,
-        categories: categorySlice,
-        products: productSlice,
-        search: searchSlice,
-    }
+  reducer: {
+    auth: authSlice,
+    categories: categorySlice,
+    products: productSlice,
+    search: searchSlice,
+    labels: labelSlice,
+  },
 });

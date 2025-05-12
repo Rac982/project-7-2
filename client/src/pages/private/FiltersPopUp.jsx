@@ -1,70 +1,103 @@
-import React, { useState } from 'react'
-import CustomImage from '../../components/shared/CustomImage'
+import { useEffect, useState } from "react";
+import CustomImage from "../../components/shared/CustomImage";
+import { useDispatch, useSelector } from "react-redux";
+
+import { updateCurrentsLabel } from "../../store/slices/labelSlice";
 
 const FiltersPopUp = ({ onClick }) => {
-    const [currentFilter, setCurrentFilter] = useState(null)
+  const dispatch = useDispatch();
+  const { all: filtersArray, currents: currentsArray } = useSelector(
+    (state) => state.labels
+  );
 
+  const greenFiltersArray = ["Vegano", "Vegetariano"];
 
-    const filtersArray = [
-        { name: "Sesamo", img: "/images/filter_images/Sesame.png" },
-        { name: "Frutta a guscio", img: "/images/filter_images/Nut.png" },
-        { name: "Glutine", img: "/images/filter_images/Glutenfree.png" },
-        { name: "Uova", img: "/images/filter_images/Egg.png" },
-        { name: "Soia", img: "/images/filter_images/Soy.png" },
-        { name: "Lattosio", img: "/images/filter_images/Milk.png" },
-        { name: "Arachidi", img: "/images/filter_images/Cashew.png" },
-        { name: "Crostacei", img: "/images/filter_images/Shrimp.png" }]
+  const getActiveStatus = (label) => {
+    return currentsArray.find((item) => item._id == label._id);
+  };
 
-    const greenFiltersArray = [
-        { name: "Vegano", img: "/images/filter_images/Vegan.png" },
-        { name: "Vegetariano", img: "/images/filter_images/Vegetarian.png" },
+  const handleSetFilter = (label) => {
+    dispatch(updateCurrentsLabel(label));
+  };
 
-    ]
-    return (
+  return (
+    <div className="w-[313px] h-[482px] p-4 shadow rounded-2xl relative bg-white">
+      <div>
+        <button
+          onClick={onClick}
+          className="absolute cursor-pointer top-2 right-2 w-8 h-8 bg-white flex justify-center items-center"
+        >
+          <svg
+            className="w-6 h-6 p-1 border-1 rounded-full "
+            viewBox="0 0 26 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.9353 13.0002L25.5992 2.33628C26.1336 1.80186 26.1336 0.93543 25.5992 0.40106C25.0648 -0.133361 24.1983 -0.133361 23.664 0.40106L13 11.065L2.33603 0.40106C1.80161 -0.133361 0.935186 -0.133361 0.400816 0.40106C-0.133554 0.935481 -0.133605 1.80191 0.400816 2.33628L11.0648 13.0002L0.400816 23.6642C-0.133605 24.1986 -0.133605 25.065 0.400816 25.5994C0.935237 26.1338 1.80166 26.1338 2.33603 25.5994L13 14.9354L23.6639 25.5994C24.1983 26.1338 25.0648 26.1338 25.5991 25.5994C26.1335 25.065 26.1335 24.1985 25.5991 23.6642L14.9353 13.0002Z"
+              fill="#332B2C"
+            />
+          </svg>
+        </button>
+        <h2 className="py-6 font-bold">Allergeni da evitare</h2>
+        <div className="flex flex-wrap gap-3 ">
+          {filtersArray
+            .filter((item) => !greenFiltersArray.includes(item.name))
+            .map((filter, index) => (
+              <div
+                key={index}
+                className="bg-[#070FA326] flex py-2 px-3 rounded-full gap-2 text-[14px] "
+                style={{
+                  background: getActiveStatus(filter) ? "#070FA3" : "",
+                }}
+                onClick={() => {
+                  handleSetFilter(filter);
+                }}
+              >
+                <CustomImage
+                  src={getActiveStatus(filter) ? filter.img_2 : filter.img_1}
+                  className="w-[20px] h-[20px]"
+                />
+                <span style={{ color: getActiveStatus(filter) ? "white" : "" }}>
+                  {filter.name}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
 
-        <div className="w-[313px] h-[482px] p-4 shadow rounded-2xl relative bg-white">
-            <div>
-                <button onClick={onClick} className='absolute cursor-pointer top-2 right-2 w-8 h-8 bg-white flex justify-center items-center'>
-                    <svg className="w-6 h-6 p-1 border-1 rounded-full " viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.9353 13.0002L25.5992 2.33628C26.1336 1.80186 26.1336 0.93543 25.5992 0.40106C25.0648 -0.133361 24.1983 -0.133361 23.664 0.40106L13 11.065L2.33603 0.40106C1.80161 -0.133361 0.935186 -0.133361 0.400816 0.40106C-0.133554 0.935481 -0.133605 1.80191 0.400816 2.33628L11.0648 13.0002L0.400816 23.6642C-0.133605 24.1986 -0.133605 25.065 0.400816 25.5994C0.935237 26.1338 1.80166 26.1338 2.33603 25.5994L13 14.9354L23.6639 25.5994C24.1983 26.1338 25.0648 26.1338 25.5991 25.5994C26.1335 25.065 26.1335 24.1985 25.5991 23.6642L14.9353 13.0002Z" fill="#332B2C" />
-                    </svg>
-                </button>
-                <h2 className="py-6 font-bold">Allergeni da evitare</h2>
-                <div className="flex flex-wrap gap-3 ">
+      <div>
+        <h2 className="py-6 font-bold">Piatti vegan e veggie</h2>
+        <div className="flex flex-wrap gap-3 ">
+          {filtersArray
+            .filter((item) => greenFiltersArray.includes(item.name))
+            .map((filter, index) => (
+              <div
+                key={index}
+                className="bg-[#070FA326] flex py-2 px-3 rounded-full gap-2 text-[14px]"
+                style={{
+                  background: getActiveStatus(filter) ? "#070FA3" : "",
+                }}
+                onClick={() => handleSetFilter(filter)}
+              >
+                <CustomImage
+                  src={getActiveStatus(filter) ? filter.img_2 : filter.img_1}
+                  className="w-[20px] h-[20px]"
+                />
+                <span style={{ color: getActiveStatus(filter) ? "white" : "" }}>
+                  {filter.name}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+      <div>
+        <button className="w-full bg-[#3BC8E1] h-[39px] rounded-3xl text-white text-[16px] flex items-center justify-center gap-2 mt-10">
+          Applica filtri
+        </button>
+      </div>
+    </div>
+  );
+};
 
-                    {filtersArray.map((filter, index) =>
-                    (<div key={index} className="bg-[#070FA326] flex py-2 px-3 rounded-full gap-2 text-[14px] " style={{ "background": currentFilter == filter.name ? "#070FA3" : "" }} onClick={() => { setCurrentFilter(filter.name) }
-                    }>
-                        <CustomImage src={filter.img} className="w-[20px] h-[20px]" />
-                        {filter.name}
-                    </div>)
-                    )}
-                </div>
-
-            </div>
-
-            <div>
-                <h2 className="py-6 font-bold">Piatti vegan e veggie</h2>
-                <div className="flex flex-wrap gap-3 ">
-
-                    {greenFiltersArray.map((filter, index) =>
-                    (<div key={index} className="bg-[#070FA326] flex py-2 px-3 rounded-full gap-2 text-[14px]" style={{ "background": currentFilter == filter.name ? "#070FA3" : "" }} onClick={() => setCurrentFilter(filter.name)}>
-                        <CustomImage src={filter.img} className="w-[20px] h-[20px]" />
-                        {filter.name}
-                    </div>)
-                    )}
-                </div>
-            </div>
-            <div>
-                <button className='w-full bg-[#3BC8E1] h-[39px] rounded-3xl text-white text-[16px] flex items-center justify-center gap-2 mt-10'>
-                    Applica filtri
-                </button>
-            </div>
-
-
-
-        </div >
-    )
-}
-
-export default FiltersPopUp
+export default FiltersPopUp;

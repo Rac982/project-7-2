@@ -1,33 +1,36 @@
-import React, { useEffect } from 'react'
-import Navbar from '../components/private/Navbar'
-import { Outlet } from 'react-router-dom'
-import { useApi } from '../hooks/useApi'
-import { config } from '../config'
-import { useDispatch } from 'react-redux'
-import { setCategories } from '../store/slices/categorySlice'
+import React, { useEffect } from "react";
+import Navbar from "../components/private/Navbar";
+import { Outlet } from "react-router-dom";
+import { useApi } from "../hooks/useApi";
+import { config } from "../config";
+import { useDispatch } from "react-redux";
+import { setCategories } from "../store/slices/categorySlice";
 
 const Private = () => {
-    const { get } = useApi();
-    const dispatch = useDispatch();
+  const { get } = useApi();
+  const dispatch = useDispatch();
 
-    const fetchAllCategories = async () => {
-        const categories = await get(`/categories/${config.BUSINESS_ID}`);
+  const fetchAllCategories = async () => {
+    const categories = await get(`/categories/${config.BUSINESS_ID}`);
 
-        dispatch(setCategories(categories));
-    }
+    dispatch(setCategories(categories));
+  };
 
-    useEffect(() => {
-        fetchAllCategories();
-    }, []);
+  useEffect(() => {
+    fetchAllCategories();
+  }, []);
 
-    return (
-        <>
-            <Navbar />
-            <main>
-                <Outlet />
-            </main>
-        </>
-    )
-}
+  return (
+    <>
+      <Navbar />
+      <main
+        className="overflow-auto pt-2"
+        style={{ height: "calc(100vh - 66px)" }}
+      >
+        <Outlet />
+      </main>
+    </>
+  );
+};
 
-export default Private
+export default Private;
