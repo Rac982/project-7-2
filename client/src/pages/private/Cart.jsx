@@ -61,44 +61,6 @@ const Cart = () => {
         }, 2000);
     };
 
-    /**
-     * se volessimo mandare i dati al database prima di svuotare il carrello per creare
-     * uno storico dell'utente:
-     * 
-    const handleSubmitOrder = async () => {
-        try {
-            await fetch("/api/orders", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}` // se usi JWT
-                },
-                body: JSON.stringify({
-                    items: cart.items,
-                    totalPrice: cart.totalPrice,
-                    totalQuantity: cart.totalQuantity
-                })
-            });
-
-            // Dopo il salvataggio, svuota il carrello
-            dispatch(clearCart());
-        } catch (error) {
-            console.error("Errore nell'invio dell'ordine:", error);
-        }
-    };*/
-    /**
-     * schema DB per lo storico utente
-     * const orderSchema = new mongoose.Schema({
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        items: [{ _id, name, price, quantity, image }],
-         totalPrice: Number,
-        totalQuantity: Number,
-        date: { type: Date, default: Date.now }
-        });
-     */
-    /**
-     * Possiamo anche mandare i dati che ci servono al componente Payments.jsx
-     */
     return (
         <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
             {/* HEADER */}
