@@ -7,7 +7,7 @@ import {
   setProducts,
 } from "../../store/slices/productSlice";
 import ProductItem from "../../components/shared/ProductItem";
-import FiltersPopUp from "./FiltersPopUp";
+import FiltersPopUp from "../../components/shared/FiltersPopUp";
 import CategoryTitle from "../../components/shared/CategoryTitle";
 
 const Products = () => {
@@ -16,7 +16,6 @@ const Products = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  // setting up a boolean to control modal for filters
   const [filtersSelection, setFilterSelection] = useState(false);
 
   const { all: products } = useSelector((state) => state.products);
@@ -50,8 +49,10 @@ const Products = () => {
           </div>
         )}
         <div
-          className="flex flex-col gap-2  rounded-2xl p-2 bg-white w-[375px]"
-          style={{ boxShadow: "0px -15px 10px -14px rgba(0,0,0,0.1)" }}
+          className="flex flex-col gap-2 rounded-4xl p-2 bg-white w-[375px] px-6 py-7"
+          style={{
+            boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)",
+          }}
         >
           {!loading &&
             products.map((product) => (
