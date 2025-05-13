@@ -6,19 +6,23 @@ const initialState = Memory.get("cart") || {
   items: [],             // Lista dei prodotti nel carrello
   totalPrice: 0,         // Prezzo totale del carrello
   totalQuantity: 0,      // Quantità totale di prodotti
+  isOpen: true,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    updateCartStatus: (state, { payload }) => {
+      state.isOpen = payload;
+    },
+
     /**
      * Aggiunge un prodotto al carrello.
      * Se il prodotto è già presente, ne incrementa la quantità.
      * Aggiorna anche il totale e salva su localStorage.
      */
     addToCart: (state, { payload }) => {
-
       // Verifica se il prodotto è già presente nel carrello
       const existingItem = state.items.find(item => item._id === payload._id);
 
@@ -129,6 +133,7 @@ const cartSlice = createSlice({
 
 // Esportazione delle singole azioni per usarle nei componenti React
 export const {
+  updateCartStatus,
   addToCart,
   decreaseFromCart,
   removeFromCart,

@@ -16,12 +16,7 @@ const CustomProductModal = () => {
       {selectedProduct && (
         <div className="absolute flex justify-center items-center top-0 left-0 h-full w-screen bg-[#00000061]">
           <PopUp
-            src={selectedProduct.image}
-            alt={selectedProduct.name}
-            description={selectedProduct.description}
-            title={selectedProduct.name}
             product={selectedProduct}
-            price={selectedProduct.price}
             onClose={handleCloseModal}
           />
         </div>

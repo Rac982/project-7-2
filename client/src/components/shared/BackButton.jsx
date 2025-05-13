@@ -4,8 +4,6 @@ const BackButton = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location);
-
   return (
     <img
       className="cursor-pointer"

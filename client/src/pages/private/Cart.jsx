@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-    clearCart
-} from '../../store/slices/cartSlice';
-import Toast from '../../components/shared/Toast';
+import { clearCart, updateCartStatus } from '../../store/slices/cartSlice';
 import CartItem from '../../components/shared/CartItem';
+import { useToast } from '../../hooks/useToast';
 
 /**
  * Pagina del carrello che mostra l'elenco dei prodotti selezionati dall'utente.
@@ -19,9 +17,8 @@ import CartItem from '../../components/shared/CartItem';
 const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { items } = useSelector((state) => state.cart); // Lista articoli nel carrello
-    const [showToast, setShowToast] = useState(false); // Mostra conferma "ordine inviato"
-    const [isSubmitting, setIsSubmitting] = useState(false); // Disabilita bottone durante l'invio
+    const { toast } = useToast();
+    const { items, isOpen } = useSelector((state) => state.cart); // Lista articoli nel carrello
 
     /**
      * Calcolo del subtotale: somma di (prezzo * quantità) per ogni articolo.
@@ -51,14 +48,8 @@ const Cart = () => {
      * - Dopo 2 secondi, naviga alla pagina /categories.
      */
     const handleSubmitOrder = () => {
-        setIsSubmitting(true);
-        setShowToast(true);
-        dispatch(clearCart());
-        setTimeout(() => {
-            setShowToast(false);
-            setIsSubmitting(false);
-            navigate('/private/categories');
-        }, 2000);
+        dispatch(updateCartStatus(false))
+        toast.success("Il tuo ordine è stato inviato!");
     };
 
     return (
@@ -110,9 +101,9 @@ const Cart = () => {
                         <div className="mt-5 w-full flex flex-col gap-3">
                             <button
                                 onClick={handleSubmitOrder}
-                                disabled={isSubmitting}
+                                disabled={items.length == 0}
                                 className={`w-full h-[42px] rounded-full text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
-                                 ${isSubmitting ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
+                                 ${items.length == 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
                             >
                                 <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
                                 Invia ordine
@@ -135,14 +126,6 @@ const Cart = () => {
                     </div>
                 )}
             </div>
-
-            {/* TOAST */}
-            <Toast
-                show={showToast}
-                message="Il tuo ordine è stato inviato!"
-                type="success"
-                icon="fas fa-check-circle"
-            />
         </div>
     );
 };

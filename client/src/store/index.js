@@ -4,7 +4,8 @@ import categorySlice from "./slices/categorySlice";
 import productSlice from "./slices/productSlice";
 import searchSlice from "./slices/searchSlice";
 import labelSlice from "./slices/labelSlice";
-import cartSlice from "./slices/cartSlice"; // IMPORT cartSlice
+import cartSlice from "./slices/cartSlice";
+import settingsSlice from "./slices/settingsSlice";
 
 export default configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export default configureStore({
     products: productSlice,
     search: searchSlice,
     labels: labelSlice,
-    cart: cartSlice, // AGGIUNTO ALLO STORE
+    cart: cartSlice,
+    settings: settingsSlice,
   },
 });

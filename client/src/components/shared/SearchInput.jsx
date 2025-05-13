@@ -4,10 +4,11 @@ import { useApi } from '../../hooks/useApi'
 import { config } from '../../config';
 import { useDispatch } from 'react-redux';
 import { setSearchResult } from '../../store/slices/searchSlice';
+import { useToast } from '../../hooks/useToast';
 
 const SearchInput = ({ value, onChange, categories }) => {
   const dispatch = useDispatch();
-  const [showToast, setShowToast] = useState(false);
+  const { toast } = useToast();
   const {get} = useApi();
 
   const handleSearch = async () => {
@@ -18,9 +19,8 @@ const SearchInput = ({ value, onChange, categories }) => {
       const _payload = { products: [], categories: [], ...payload };
       dispatch(setSearchResult(_payload));
     } catch (error) {
-      setShowToast(true)
-
-      setTimeout(() => setShowToast(false), 4000)
+      console.log(error);
+      toast.error("Nessun prodotto corrisponde alla ricerca.");
     }
   }
 
@@ -50,13 +50,6 @@ const SearchInput = ({ value, onChange, categories }) => {
       >
         <i className="fas fa-search"></i>
       </button>
-
-      <Toast
-        show={showToast}
-        message="Nessun prodotto corrisponde alla ricerca."
-        icon="fas fa-times-circle"
-        type="error"
-      />
     </div>
   )
 }

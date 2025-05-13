@@ -20,8 +20,7 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-4">
           <div>
-            {/* //todo: switch links */}
-            <Link to="/private/categories">
+            <Link to="/private/cart">
               <CustomImage src="/images/Vector.png" alt="cart" />
             </Link>
           </div>
