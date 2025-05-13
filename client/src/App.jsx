@@ -11,38 +11,53 @@ import ConfirmPayment from "./pages/ConfirmPayment";
 
 import Cart from "./pages/private/Cart"; // carrello
 import { useSelector } from "react-redux";
+import PublicBusiness from "./layout/PublicBusiness";
+import PrivateBusiness from "./layout/PrivateBusiness";
+import Reviews from "./pages/dashboard/Reviews";
+import LoginBusiness from "./pages/dashboard/LoginBusiness";
 
 const ProtectRoute = ({ children }) => {
-    const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
 
-    if (!token) return <Navigate to="/" />;
+  if (!token) return <Navigate to="/" />;
 
-    return children;
+  return children;
 };
 
 const App = () => {
-    return (
-        <>
-            <Routes>
-                <Route path="/" element={<Public />}>
-                    <Route path="" element={<Login />} />
-                    <Route path="signup" element={<Signup />} />
-                </Route>
-                <Route path="/private" element={
-                    <ProtectRoute>
-                        <Private />
-                    </ProtectRoute>
-                }>
-                    <Route path="" element={<Home />} />
-                    <Route path="categories" element={<Categories />} />
-                    <Route path="products/:category_id" element={<Products />} />
-                    <Route path="payments" element={<Payments />} />
-                    <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
-                    <Route path="confirm-payment" element={<ConfirmPayment/>} />
-                </Route>
-            </Routes>
-        </>
-    );
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Public />}>
+          <Route path="" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+        </Route>
+        <Route
+          path="/private"
+          element={
+            <ProtectRoute>
+              <Private />
+            </ProtectRoute>
+          }
+        >
+          <Route path="" element={<Home />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="products/:category_id" element={<Products />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
+          <Route path="confirm-payment" element={<ConfirmPayment />} />
+        </Route>
+        {/* login per business */}
+        <Route path="/business" element={<PublicBusiness />}>
+          <Route path="" element={<LoginBusiness />} />
+        </Route>
+        {/* Business loggato */}
+        <Route path="/dashboard" element={<PrivateBusiness />}>
+          <Route path="reviews" element={<Reviews />} />
+        </Route>
+      </Routes>
+    </>
+  );
 };
 
 export default App;
