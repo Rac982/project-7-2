@@ -11,6 +11,7 @@ export default {
         secondary: "#070FA3",   // secondary
         text: "#332B2C",        // testo principale
         muted: "#818181",       // testo secondario
+        blueLight: "#dadbf1",
       },
       fontFamily: {
         sans: ["'Inter'", "sans-serif"],
