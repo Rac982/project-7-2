@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { updateQuantity, removeFromCart } from '../../store/slices/cartSlice';
 import { setCurrentProduct } from '../../store/slices/productSlice';
+import CustomImage from './CustomImage';
 
 /**
  * Componente che rappresenta un singolo prodotto nel carrello.
@@ -57,8 +58,7 @@ const CartItem = ({ item }) => {
 
     return (
         <div key={item._id} className="bg-white mb-4 p-3 rounded-2xl shadow-sm flex gap-4">
-            <img
-                crossOrigin="anonymous"
+            <CustomImage 
                 onClick={() => selectCurrentProduct(item)}
                 src={item.image}
                 alt={item.name}

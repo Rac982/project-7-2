@@ -20,6 +20,7 @@ const CustomProductModal = () => {
             alt={selectedProduct.name}
             description={selectedProduct.description}
             title={selectedProduct.name}
+            product={selectedProduct}
             price={selectedProduct.price}
             onClose={handleCloseModal}
           />
