@@ -7,6 +7,7 @@ import Home from "./pages/private/Home";
 import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
 import Payments from "./pages/private/Payments";
+import ConfirmPayment from "./pages/ConfirmPayment";
 
 import Cart from "./pages/private/Cart"; // carrello
 import { useSelector } from "react-redux";
@@ -37,6 +38,7 @@ const App = () => {
                     <Route path="products/:category_id" element={<Products />} />
                     <Route path="payments" element={<Payments />} />
                     <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
+                    <Route path="confirm-payment" element={<ConfirmPayment/>} />
                 </Route>
             </Routes>
         </>
