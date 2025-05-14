@@ -3,7 +3,7 @@ import CustomImage from "../shared/CustomImage";
 
 const NavbarBusinessLogged = ({ children }) => {
   return (
-    <div className="w-[100vw] h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
+    <div className="w-[100vw] h-[100vh] bg-[#89989b1a] flex justify-center items-center">
       <div
         className="w-[1440px] bg-white h-full flex"
         style={{
