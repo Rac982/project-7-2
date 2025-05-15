@@ -5,7 +5,7 @@ const PrivateBusiness = () => {
   return (
     <>
       <NavbarBusinessLogged>
-        <main>
+        <main className="overflow-auto">
           <Outlet />
         </main>
       </NavbarBusinessLogged>
