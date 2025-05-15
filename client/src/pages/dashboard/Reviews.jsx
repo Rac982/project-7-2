@@ -3,7 +3,6 @@ import ReviewCard from "../../components/shared/ReviewCard";
 import Stars from "../../components/shared/Stars";
 
 const Reviews = () => {
-<<<<<<< HEAD
   const userReviews = [
     {
       id: 1,
@@ -81,9 +80,6 @@ const Reviews = () => {
       </div>
     </div>
   );
-=======
-  return <div></div>;
->>>>>>> eb1e383859b5b87e18a29ec7fc943d79a63f1e22
 };
 
 export default Reviews;
