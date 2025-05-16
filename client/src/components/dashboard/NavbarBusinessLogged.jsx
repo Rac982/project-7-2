@@ -5,7 +5,7 @@ import LayoutNavbar from "./LayoutNavbar";
 const NavbarBusinessLogged = ({ children }) => {
   const navigate = useNavigate();
   return (
-    <div className="max-w-[100vw] max-h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
+    <div className="max-w-[100vw] min-h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
       <div
         className="w-[1440px] bg-white h-full flex"
         style={{
