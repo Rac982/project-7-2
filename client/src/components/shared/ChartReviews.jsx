@@ -20,18 +20,18 @@ ChartJS.register(
 
 const ChartReviews = ({ userReviews }) => {
   const labels = [
-    "january",
-    "february",
+    "jan",
+    "feb",
     "march",
     "april",
     "may",
     "june",
     "july",
-    "august",
-    "september",
-    "october",
-    "november",
-    "december",
+    "aug",
+    "sept",
+    "oct",
+    "nov",
+    "dec",
   ];
 
   const data = {
@@ -56,6 +56,7 @@ const ChartReviews = ({ userReviews }) => {
         text: "Recensioni",
       },
     },
+    maintainAspectRatio: false,
   };
 
   return <Bar data={data} options={options} />;
