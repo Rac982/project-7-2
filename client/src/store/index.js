@@ -6,6 +6,8 @@ import searchSlice from "./slices/searchSlice";
 import labelSlice from "./slices/labelSlice";
 import cartSlice from "./slices/cartSlice";
 import settingsSlice from "./slices/settingsSlice";
+import filtersReducer from './slices/chartLabelSlice';
+import bestSellersReducer from './slices/bestSellersSlice';
 
 export default configureStore({
   reducer: {
@@ -16,5 +18,7 @@ export default configureStore({
     labels: labelSlice,
     cart: cartSlice,
     settings: settingsSlice,
+    filters: filtersReducer,
+    bestSellers: bestSellersReducer,
   },
 });

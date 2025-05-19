@@ -32,5 +32,13 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.fill-available': {
+          width: '-webkit-fill-available',
+        },
+      });
+    }),
+  ],
 };
