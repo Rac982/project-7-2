@@ -56,7 +56,6 @@ const ChartReviews = ({ userReviews }) => {
         text: "Recensioni",
       },
     },
-    maintainAspectRatio: false,
   };
 
   return <Bar data={data} options={options} />;
