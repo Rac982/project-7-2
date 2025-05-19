@@ -18,7 +18,7 @@ const Tables = () => {
   };
 
   return (
-    <div className="bg-white max-w-[972px] mx-auto px-4">
+    <div className="bg-white max-w-[972px] w-full mx-auto px-4">
       {/* Bottoni */}
       <div className="mb-4 flex justify-start">
         <button
@@ -42,7 +42,7 @@ const Tables = () => {
       </div>
 
       {/* Intestazione tabella */}
-      <div className="grid grid-cols-5 font-semibold text-gray-700 min-w-[972px] rounded-tl-2xl rounded-tr-2xl px-4 py-2 bg-[#F9F9F9]">
+      <div className="grid grid-cols-5 font-semibold text-gray-700 max-w-[972px] w-full rounded-tl-2xl rounded-tr-2xl px-4 py-2 bg-[#F9F9F9]">
         <div className="justify-self-center">Tavolo</div>
         <div className="justify-self-center">Orario</div>
         <div className="justify-self-center">Totale</div>
