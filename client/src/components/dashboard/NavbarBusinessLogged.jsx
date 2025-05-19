@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CustomImage from "../shared/CustomImage";
 
 const NavbarBusinessLogged = ({ children }) => {
+  const navigate = useNavigate();
   return (
     <div className="w-[100vw] h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
       <div
@@ -10,22 +11,22 @@ const NavbarBusinessLogged = ({ children }) => {
           boxShadow: "0 0 10px 1px rgba(0, 0, 0, 0.3)",
         }}
       >
-        <div className="flex flex-col gap-10 px-4 py-15  items-center w-1/5 h-full border-r-1 border-[#0000001A]">
+        <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-1/5 h-full border-r-1 border-[#0000001A]">
           <div>
             <CustomImage
               src="/images/business_images/logo-restaurant.png"
               className="h-[150px] w-[109.35px]"
             />
           </div>
-          <div className="flex flex-col gap-5">
-            <div className="flex gap-2 items-center">
+          <div className="flex flex-col gap-5 text-wrap ">
+            <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
               <CustomImage
                 src="/images/business_images/Dashboard.png"
                 className="h-[20.15px] w-[20.15px]"
               />
               <span>Dashboard</span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
               <CustomImage
                 src="/images/business_images/Tavoli.png"
                 className="h-[20.15px] w-[20.15px]"
@@ -33,7 +34,7 @@ const NavbarBusinessLogged = ({ children }) => {
 
               <span>Tavoli</span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl ">
               <CustomImage
                 src="/images/business_images/Reviews.png"
                 className="h-[20.15px] w-[20.15px]"
@@ -41,7 +42,7 @@ const NavbarBusinessLogged = ({ children }) => {
 
               <span>Recensioni</span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
               <CustomImage
                 src="/images/business_images/Menu.png"
                 className="h-[20.15px] w-[20.15px]"
@@ -49,13 +50,13 @@ const NavbarBusinessLogged = ({ children }) => {
 
               <span>Gestione Menu</span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
               <CustomImage
                 src="/images/business_images/Logout.png"
                 className="h-[20.15px] w-[20.15px]"
               />
 
-              <span>Logout</span>
+              <span onClick={() => navigate("/business")}>Logout</span>
             </div>
           </div>
         </div>
