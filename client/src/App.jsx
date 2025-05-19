@@ -54,7 +54,7 @@ const App = () => {
         </Route>
         {/* Business loggato */}
         <Route path="/dashboard" element={<PrivateBusiness />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
       </Routes>
