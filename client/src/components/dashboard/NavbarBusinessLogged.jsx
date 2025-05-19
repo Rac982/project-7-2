@@ -5,15 +5,18 @@ import LayoutNavbar from "./LayoutNavbar";
 const NavbarBusinessLogged = ({ children }) => {
   const navigate = useNavigate();
   return (
-    <div className="max-w-[100vw] min-h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
+    <div className="max-w-[100vw] min-h-[100vh] bg-[#3BC8E11A] flex justify-center items-start ">
       <div
-        className="w-[1440px] bg-white h-full flex"
+        className="max-w-[1440px] w-full bg-white h-screen flex"
         style={{
           boxShadow: "0 0 10px 1px rgba(0, 0, 0, 0.3)",
         }}
       >
         <SideBar />
-        <LayoutNavbar children={children} />
+        <div className="w-full h-full overflow-auto no-scrollbar">
+          <LayoutNavbar children={children} />
+          <div className="h-[3000px] "></div>
+        </div>
       </div>
     </div>
   );
