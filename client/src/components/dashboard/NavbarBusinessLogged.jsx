@@ -1,16 +1,22 @@
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import CustomImage from "../shared/CustomImage";
+=======
+import SideBar from "./SideBar";
+import LayoutNavbar from "./LayoutNavbar";
+>>>>>>> 28de0f695b4cca6c42ae0cf34d505c5ec86f54ae
 
 const NavbarBusinessLogged = ({ children }) => {
   const navigate = useNavigate();
   return (
-    <div className="w-[100vw] h-[100vh] bg-[#3BC8E11A] flex justify-center items-center">
+    <div className="max-w-[100vw] min-h-[100vh] bg-[#3BC8E11A] flex justify-center items-start ">
       <div
-        className="w-[1440px] bg-white h-full flex"
+        className="max-w-[1440px] w-full bg-white h-screen flex"
         style={{
           boxShadow: "0 0 10px 1px rgba(0, 0, 0, 0.3)",
         }}
       >
+<<<<<<< HEAD
         <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-1/5 h-full border-r-1 border-[#0000001A]">
           <div>
             <CustomImage
@@ -73,6 +79,12 @@ const NavbarBusinessLogged = ({ children }) => {
             </div>
           </nav>
           <div className="w-full h-full flex justify-center">{children}</div>
+=======
+        <SideBar />
+        <div className="w-full h-full overflow-auto no-scrollbar">
+          <LayoutNavbar />
+          <div className="w-full h-full">{children}</div>
+>>>>>>> 28de0f695b4cca6c42ae0cf34d505c5ec86f54ae
         </div>
       </div>
     </div>

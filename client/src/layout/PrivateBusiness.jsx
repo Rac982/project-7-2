@@ -5,8 +5,10 @@ const PrivateBusiness = () => {
   return (
     <>
       <NavbarBusinessLogged>
-        <main>
-          <Outlet />
+        <main className="overflow-auto h-auto">
+          <div className="max-w-[1440px] w-full flex justify-center items-center">
+            <Outlet />
+          </div>
         </main>
       </NavbarBusinessLogged>
     </>
