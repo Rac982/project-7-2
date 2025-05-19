@@ -13,18 +13,18 @@ const LoginBusiness = () => {
 
   return (
     <div
-      className="bg-white w-[1440px] h-[884px] rounded-[20px] flex flex-row justify-center items-center shadow-lg mx-auto my-auto mt-10"
+      className="bg-white max-w-[1440px] w-full h-[80vh] rounded-[20px] flex flex-row justify-between items-center shadow-lg mx-auto my-auto mt-10"
       style={{
         boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)",
       }}
     >
       {/* Left Card */}
-      <div className="w-[578px] h-[850px] rounded-2xl overflow-hidden shadow-lg flex flex-col bg-transparent relative -translate-x-30 left-[-100px]">
+      <div className="min-w-[578px] h-full rounded-2xl overflow-hidden flex flex-col bg-transparent relative p-8 ">
         {/* Immagine card */}
         <img
           src={logoqr}
           alt="QR Code"
-          className="w-[578px] object-cover rounded-2xl h-[769px]"
+          className="w-[578px]  object-cover rounded-2xl h-full"
         />
 
         {/* Primo testo nell'immagine */}
@@ -38,7 +38,7 @@ const LoginBusiness = () => {
         </div>
 
         {/* Contenitore grigio della card */}
-        <div className="absolute bottom-0 left-0 right-0 bg-[#bfb7b3] flex flex-col px-12 py-4 rounded-b-2xl">
+        <div className="max-w-[514px] absolute bottom-8 left-8 bg-[#bfb7b3] flex flex-col px-12 py-4 rounded-b-2xl">
           <h3 className="text-white text-[26px] mb-1 font-inter font-semibold leading-[24px] align-middle">
             Non hai ancora un account?
           </h3>
@@ -54,13 +54,13 @@ const LoginBusiness = () => {
       </div>
 
       {/* Card destra */}
-      <div className="w-[324px] bg-white rounded-3xl p-16 flex flex-col items-center relative left-30">
+      <div className=" w-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
         {/* Logo parte destra */}
         <div className="w-[324px] h-[324px] flex justify-center items-center mb-6">
           <img src={logotable} alt="Logo Table Link" className="inline-block" />
         </div>
 
-        <div className="w-[273px] flex flex-col items-center">
+        <div className="max-w-[273px] w-full flex flex-col items-center">
           {/* Benvenuto */}
           <div className="w-full mb-6 text-center">
             <h2 className="text-xl font-semibold mb-1">Benvenuto!</h2>

@@ -15,6 +15,7 @@ import PublicBusiness from "./layout/PublicBusiness";
 import PrivateBusiness from "./layout/PrivateBusiness";
 import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 const ProtectRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -53,6 +54,7 @@ const App = () => {
         </Route>
         {/* Business loggato */}
         <Route path="/dashboard" element={<PrivateBusiness />}>
+          <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
       </Routes>
