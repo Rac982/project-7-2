@@ -1,6 +1,6 @@
 import CustomImage from "../shared/CustomImage";
 
-const LayoutNavbar = ({ children }) => {
+const LayoutNavbar = () => {
   return (
     <div className="flex flex-col w-full items-center">
       <nav className="flex w-full items-center justify-between py-10 px-20 max-w-[972px] ">
@@ -14,7 +14,6 @@ const LayoutNavbar = ({ children }) => {
           />
         </div>
       </nav>
-      <div className="w-full h-full flex justify-center">{children}</div>
     </div>
   );
 };

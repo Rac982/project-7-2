@@ -14,8 +14,8 @@ const NavbarBusinessLogged = ({ children }) => {
       >
         <SideBar />
         <div className="w-full h-full overflow-auto no-scrollbar">
-          <LayoutNavbar children={children} />
-          <div className="h-[3000px] "></div>
+          <LayoutNavbar />
+          <div className="w-full h-full">{children}</div>
         </div>
       </div>
     </div>
