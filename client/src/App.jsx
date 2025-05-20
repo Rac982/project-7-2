@@ -51,7 +51,7 @@ const App = () => {
         </Route>
         {/* login per business */}
         <Route path="/business" element={<PublicBusiness />}>
-          <Route path="" element={<LoginBusiness />} />
+          <Route path="login" element={<LoginBusiness />} />
         </Route>
         {/* Business loggato */}
         <Route path="/dashboard" element={<PrivateBusiness />}>
@@ -65,3 +65,5 @@ const App = () => {
 };
 
 export default App;
+
+
