@@ -18,10 +18,10 @@ import LoginBusiness from "./pages/dashboard/LoginBusiness";
 import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
 
-const ProtectRoute = ({ children }) => {
-  const { token } = useSelector((state) => state.auth);
+const ProtectRoute = ({ children, role = "user" }) => {
+  const { token, user } = useSelector((state) => state.auth);
 
-  if (!token) return <Navigate to="/" />;
+  if (!token || role !== user.role ) return <Navigate to={role == "user" ? "/" : "/business/login"} />;
 
   return children;
 };
@@ -54,7 +54,14 @@ const App = () => {
           <Route path="login" element={<LoginBusiness />} />
         </Route>
         {/* Business loggato */}
-        <Route path="/dashboard" element={<PrivateBusiness />}>
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectRoute role="business">
+              <PrivateBusiness />
+            </ProtectRoute>
+          }
+        >
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
            <Route path="tables" element={<Tables />} />  

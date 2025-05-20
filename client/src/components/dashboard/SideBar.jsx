@@ -1,8 +1,15 @@
+import { useDispatch } from "react-redux";
 import CustomImage from "../shared/CustomImage";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { logout } from "../../store/slices/authSlice";
 
 const SideBar = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   return (
     <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-1/5 h-full border-r-1 border-[#0000001A]">
       <div>
@@ -49,7 +56,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span onClick={() => navigate("/business")}>Logout</span>
+          <span onClick={handleLogout}>Logout</span>
         </div>
       </div>
     </div>
