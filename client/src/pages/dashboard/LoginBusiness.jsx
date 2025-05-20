@@ -8,7 +8,7 @@ const LoginBusiness = () => {
 
   const handleLoginClick = (e) => {
     e.preventDefault(); // Previene il refresh della pagina al submit
-    navigate("/business-dashboard", { replace: true });
+    navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -24,7 +24,7 @@ const LoginBusiness = () => {
         <img
           src={logoqr}
           alt="QR Code"
-          className="w-[578px]  object-cover rounded-2xl h-full"
+          className="w-[578px] object-cover rounded-2xl h-full"
         />
 
         {/* Primo testo nell'immagine */}
@@ -54,9 +54,9 @@ const LoginBusiness = () => {
       </div>
 
       {/* Card destra */}
-      <div className=" w-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
+      <div className=" w-full max-h-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
         {/* Logo parte destra */}
-        <div className="w-[324px] h-[324px] flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center mb-6 w-[324px] h-[270px]">
           <img src={logotable} alt="Logo Table Link" className="inline-block" />
         </div>
 

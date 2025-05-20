@@ -1,5 +1,5 @@
 import CustomImage from "../shared/CustomImage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const SideBar = () => {
             src="/images/business_images/Dashboard.png"
             className="h-[20.15px] w-[20.15px]"
           />
-          <span>Dashboard</span>
+          <Link to="/dashboard">Dashboard</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
@@ -25,7 +25,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Tavoli</span>
+          <Link to="/dashboard/tables">Tavoli</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl ">
           <CustomImage
@@ -33,7 +33,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Recensioni</span>
+          <Link to="/dashboard/reviews">Recensioni</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
@@ -41,7 +41,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Gestione Menu</span>
+          <Link to="/dashboard/menu">Gestione Menu</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
