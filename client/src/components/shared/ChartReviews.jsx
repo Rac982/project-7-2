@@ -43,13 +43,13 @@ export const labels = [
   "dec",
 ];
 
-const ChartReviews = ({ userReviews }) => {
+const ChartReviews = () => {
   const data = {
     labels,
     datasets: [
       {
         label: "Reviews",
-        data: userReviews.map((review) => review.rating),
+        data: [2, 5, 4, 2, 5, 4],
         backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
     ],

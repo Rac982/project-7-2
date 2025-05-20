@@ -12,6 +12,7 @@ import bestSellersReducer from './slices/bestSellersSlice';
 
 // il reducer del dashboard
 import tableReducer from "./slices/dashboard/tableSlice";
+import reviewsSlice from "./slices/dashboard/reviewsSlice";
 
 export default configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export default configureStore({
     tables: tableReducer,
     filters: filtersReducer,
     bestSellers: bestSellersReducer,
+    reviews: reviewsSlice,
   },
 });
 

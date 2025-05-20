@@ -28,6 +28,7 @@ const models = {
     User: require("./models/User"),
     Address: require("./models/Address"),
     Category: require("./models/Category"),
+    Review: require("./models/Review"),
     Label: require("./models/Label"),
     Product: require("./models/Product"),
     BusinessProfile: require("./models/BusinessProfile"),
