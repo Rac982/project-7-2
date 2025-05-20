@@ -15,6 +15,7 @@ import PublicBusiness from "./layout/PublicBusiness";
 import PrivateBusiness from "./layout/PrivateBusiness";
 import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
+import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
 
 const ProtectRoute = ({ children }) => {
@@ -50,12 +51,13 @@ const App = () => {
         </Route>
         {/* login per business */}
         <Route path="/business" element={<PublicBusiness />}>
-          <Route path="" element={<LoginBusiness />} />
+          <Route path="login" element={<LoginBusiness />} />
         </Route>
         {/* Business loggato */}
         <Route path="/dashboard" element={<PrivateBusiness />}>
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
+           <Route path="tables" element={<Tables />} />  
         </Route>
       </Routes>
     </>
@@ -63,3 +65,5 @@ const App = () => {
 };
 
 export default App;
+
+
