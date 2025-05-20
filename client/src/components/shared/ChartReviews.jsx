@@ -18,22 +18,32 @@ ChartJS.register(
   Legend
 );
 
-const ChartReviews = ({ userReviews }) => {
-  const labels = [
-    "jan",
-    "feb",
-    "march",
-    "april",
-    "may",
-    "june",
-    "july",
-    "aug",
-    "sept",
-    "oct",
-    "nov",
-    "dec",
-  ];
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: false,
+    title: {
+      display: false,
+      text: "Recensioni",
+    },
+  },
+};
+export const labels = [
+  "jan",
+  "feb",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "aug",
+  "sept",
+  "oct",
+  "nov",
+  "dec",
+];
 
+const ChartReviews = ({ userReviews }) => {
   const data = {
     labels,
     datasets: [
@@ -44,20 +54,6 @@ const ChartReviews = ({ userReviews }) => {
       },
     ],
   };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: false,
-        text: "Recensioni",
-      },
-    },
-  };
-
   return <Bar data={data} options={options} />;
 };
 
