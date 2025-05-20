@@ -42,7 +42,7 @@ const Tables = () => {
       </div>
 
       {/* Intestazione tabella */}
-      <div className="grid grid-cols-5 font-semibold text-gray-700 max-w-[972px] w-full rounded-tl-2xl rounded-tr-2xl px-4 py-2 bg-[#F9F9F9]">
+      <div className="grid grid-cols-5 font-semibold text-gray-700 max-w-[972px] w-full rounded-tl-2xl rounded-tr-2xl px-4 py-3 bg-[#EBEBEB]">
         <div className="justify-self-center">Tavolo</div>
         <div className="justify-self-center">Orario</div>
         <div className="justify-self-center">Totale</div>

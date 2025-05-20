@@ -16,7 +16,7 @@ const TableItem = ({ table, expanded, toggleExpand }) => {
     <div key={table.id}>
       {/* Riga principale */}
       <div
-        className={`grid grid-cols-5 align-item items-center py-2 max-w-[972px] w-full cursor-pointer ${table.status === "Pagato" ? "bg-[#EBF9EE]" : "bg-[#F9F9F9]"}`}
+        className={`grid grid-cols-5 align-item items-center mt-2 py-2 max-w-[972px] w-full cursor-pointer ${table.status === "Pagato" ? "bg-[#EBF9EE]" : "bg-[#F9F9F9]"}`}
         onClick={() => toggleExpand(table.id)}
       >
         <div className="justify-self-center">{table.id}</div>
@@ -46,7 +46,7 @@ const TableItem = ({ table, expanded, toggleExpand }) => {
        table.items.length > 0
        Controlla se il tavolo ha almeno un elemento ordinato (items non è vuoto).*/}
       {expanded === table.id && table.items.length > 0 && (
-        <div className="max-w-[972px] w-full px-8 py-2 text-sm text-gray-700 bg-gray-50">
+        <div className="max-w-[972px] w-full px-12 py-6.25 text-sm text-gray-700 bg-[#FFFFFF]">
           <ul className="mb-2">
             {table.items.map((item, idx) => (
               <li key={idx} className="flex justify-between">
