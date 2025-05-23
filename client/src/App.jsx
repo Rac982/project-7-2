@@ -17,6 +17,7 @@ import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
 import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
+import MenuBusiness from "./pages/dashboard/MenuBusiness";
 
 const ProtectRoute = ({ children, role = "user" }) => {
   const { token, user } = useSelector((state) => state.auth);
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
            <Route path="tables" element={<Tables />} />  
+           <Route path="menu" element={<MenuBusiness />} />  
         </Route>
       </Routes>
     </>

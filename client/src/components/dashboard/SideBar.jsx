@@ -11,7 +11,7 @@ const SideBar = () => {
   }
 
   return (
-    <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-1/5 h-full border-r-1 border-[#0000001A]">
+    <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-[320px] h-full border-r-1 border-[#0000001A]">
       <div>
         <CustomImage
           src="/images/business_images/logo-restaurant.png"

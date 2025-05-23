@@ -38,8 +38,8 @@ const SearchInput = ({ value, onChange, categories }) => {
             handleSearch()
           }
         }}
-        placeholder="Cerca i tuoi piatti preferiti"
-        className="w-full pl-4 pr-11 py-3 rounded-full border border-gray-300 text-xs placeholder:text-muted text-text"
+        placeholder="Cerca tra i piatti disponibili"
+        className="w-full bg-white pl-4 pr-11 py-3 rounded-full border border-gray-300 text-xs placeholder:text-muted text-text"
       />
 
       <button
