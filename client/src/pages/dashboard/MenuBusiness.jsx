@@ -8,7 +8,7 @@ import SearchInput from "../../components/shared/SearchInput";
 import { clearSearchResult } from "../../store/slices/searchSlice";
 import { setSortBy, selectSortBy } from "../../store/slices/sortSlice";
 import { setCategory } from "../../store/slices/categoryFilterSlice";
-import { setCurrentProduct, setProducts } from "../../store/slices/productSlice";
+import { setCurrentProduct, setProducts, sortBusinessMenuProducts } from "../../store/slices/productSlice";
 
 import { useApi } from "../../hooks/useApi";
 
@@ -35,7 +35,7 @@ function MenuBusiness() {
 
     // 2. Eventi UI
     const handleChange = (e) => {
-        dispatch(setSortBy(e.target.value));
+        dispatch(sortBusinessMenuProducts(e.target.value));
     };
 
     const handleChangeCategoryFilter = (e) => {
@@ -231,10 +231,10 @@ function MenuBusiness() {
                         onChange={handleChange}
                         className="text-xs border border-gray-300 rounded-lg px-4 py-2"
                     >
-                        <option value="name-asc">Nome A-Z</option>
-                        <option value="name-desc">Nome Z-A</option>
-                        <option value="price-asc">Prezzo crescente</option>
-                        <option value="price-desc">Prezzo decrescente</option>
+                        <option value="NAME_ASC">Nome A-Z</option>
+                        <option value="NAME_DESC">Nome Z-A</option>
+                        <option value="PRICE_ASC">Prezzo crescente</option>
+                        <option value="PRICE_DESC">Prezzo decrescente</option>
                     </select>
                 </div>
             </div>
