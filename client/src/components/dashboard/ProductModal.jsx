@@ -18,6 +18,8 @@ const ProductModal = ({
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        if (!isOpen) return;
+
         if (modalType === "edit" && initialData) {
             setName(initialData.name || "");
             setPrice(initialData.price || "");
@@ -26,14 +28,19 @@ const ProductModal = ({
             );
             setDescription(initialData.description || "");
             setImage(initialData.image || "");
-        } else {
+        }
+
+        if (modalType === "create") {
             setName("");
             setPrice("");
             setCategory("");
             setDescription("");
             setImage("");
+            if (fileInputRef.current) {
+                fileInputRef.current.value = null;
+            }
         }
-    }, [initialData, modalType]);
+    }, [isOpen, initialData, modalType]);
 
 
     const handleImageChange = (e) => {
@@ -92,7 +99,7 @@ const ProductModal = ({
                             className="px-4 py-3 text-text placeholder:text-muted text-sm w-full shadow-elevation-1 p-2 rounded-md"
                         />
                         <div className="relative">
-                            <span className="absolute inset-y-0 right-4 flex items-center pl-3 text-muted pointer-events-none">
+                            <span className="absolute inset-y-0 right-9 flex items-center pl-3 text-muted pointer-events-none">
                                 €
                             </span>
                             <input
