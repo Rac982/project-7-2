@@ -206,7 +206,8 @@ function MenuBusiness() {
                 />
 
                 <div className="w-full sm:w-1/3">
-                    <SearchInput value={query} onChange={(e) => setQuery(e.target.value)} />
+                    <SearchInput value={query} onChange={(e) => setQuery(e.target.value)}
+                        businessId={user._id}/>
                 </div>
 
                 <div>

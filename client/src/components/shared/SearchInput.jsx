@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setSearchResult } from '../../store/slices/searchSlice';
 import { useToast } from '../../hooks/useToast';
 
-const SearchInput = ({ value, onChange, categories }) => {
+const SearchInput = ({ value, onChange, categories, businessId = config.BUSINESS_ID }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const {get} = useApi();
@@ -15,7 +15,7 @@ const SearchInput = ({ value, onChange, categories }) => {
     const query = value.trim().toLowerCase();
 
     try {
-      const payload = await get(`/search?u=${config.BUSINESS_ID}&q=${query}`);
+      const payload = await get(`/search?u=${businessId}&q=${query}`);
       const _payload = { products: [], categories: [], ...payload };
       dispatch(setSearchResult(_payload));
     } catch (error) {
