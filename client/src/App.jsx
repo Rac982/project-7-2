@@ -8,6 +8,8 @@ import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
 import Payments from "./pages/private/Payments";
 import ConfirmPayment from "./pages/ConfirmPayment";
+import OrderList from "./pages/private/OrderList";
+
 
 import Cart from "./pages/private/Cart"; // carrello
 import { useSelector } from "react-redux";
@@ -16,6 +18,9 @@ import PrivateBusiness from "./layout/PrivateBusiness";
 import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
 import Dashboard from "./pages/dashboard/Dashboard";
+import CartEmpty from "./pages/private/CartEmpty";
+import PersonalProfile from "./pages/private/PersonalProfile"
+
 
 const ProtectRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -46,16 +51,23 @@ const App = () => {
           <Route path="products/:category_id" element={<Products />} />
           <Route path="payments" element={<Payments />} />
           <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
-          <Route path="confirm-payment" element={<ConfirmPayment />} />
+          <Route path="confirm-payment" element={<ConfirmPayment />} /> 
+          <Route path="cartempty" element={<CartEmpty />} />
+          <Route path="personalprofile" element={<PersonalProfile />} />
+          <Route path="orderlist" element={<OrderList />} />
+
         </Route>
         {/* login per business */}
         <Route path="/business" element={<PublicBusiness />}>
           <Route path="login" element={<LoginBusiness />} />
+         
         </Route>
         {/* Business loggato */}
         <Route path="/dashboard" element={<PrivateBusiness />}>
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
+         
+          
         </Route>
       </Routes>
     </>
