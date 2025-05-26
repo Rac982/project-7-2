@@ -1,11 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import InfoBox from '../../components/shared/InfoBox';
-
+import { useToast } from '../../hooks/useToast';
+import { useNavigate } from "react-router-dom";
+import { clearOrder } from '../../store/slices/orderSlice';
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../../store/slices/cartSlice';
+import { useSelector } from 'react-redux';
+/**
+ * Componente `Payments`:
+ * 
+ * - Permette all’utente di completare il pagamento in-app.
+ * - Calcola il totale effettivo dell’ordine a partire dallo stato Redux (`order`).
+ * - Invia il pagamento, svuota carrello e ordine, mostra un toast e reindirizza alle Reviews.
+ * - Gestisce la selezione della mancia (tip).
+ */
 const Payments = () => {
-    const [selectedTip, setSelectedTip] = useState("Top")
+    /**
+     * Stato locale per gestire la mancia selezionata dall'utente.
+     * Può essere "Ok", "Buono", "Ottimo" o "Top".
+     * @type {[string, Function]}
+     */
+    const [selectedTip, setSelectedTip] = useState("Top");
 
-    const location = useLocation()
+    /**
+     * Hook React Router per ottenere informazioni sulla posizione corrente.
+     */
+    const location = useLocation();
+
+    /**
+     * Hook React Router per navigare tra le pagine.
+     */
+    const navigate = useNavigate();
+
+    /**
+     * Hook Redux per inviare azioni allo store globale.
+     */
+    const dispatch = useDispatch();
+
+    /**
+     * Custom hook per mostrare notifiche toast.
+     */
+    const { toast } = useToast();
+
+    /**
+     * Funzione per completare il pagamento:
+     * - Mostra un toast di successo.
+     * - Svuota lo stato di `order` e `cart`.
+     * - Dopo 4 secondi, reindirizza alla pagina di conferma pagamento.
+     */
+    const handleCompletePayment = () => {
+        toast.success("Pagamento inviato!");
+        dispatch(clearOrder());
+        dispatch(clearCart());
+        setTimeout(() => {
+            navigate("/private/confirm-payment");
+        }, 4000);
+    };
+
+    /**
+     * Stato Redux contenente l’ordine attuale dell’utente.
+     * Contiene `items` (array di piatti ordinati) e `status` globale.
+     */
+    const order = useSelector((state) => state.order);
+
+    /**
+     * Stato locale per bloccare il totale una volta caricato il componente.
+     * Serve a evitare che il totale si azzeri subito dopo il pagamento, 
+     * mantenendo visibile il valore durante l’animazione o la transizione.
+     * 
+     * @type {[number, Function]}
+     */
+    const [fixedTotal, setFixedTotal] = useState(0);
+
+    /**
+     * Effetto eseguito una sola volta al montaggio del componente.
+     * Calcola il totale dell’ordine (subtotal + servizio) e lo salva in `fixedTotal`.
+     * In questo modo, anche se il carrello viene svuotato dopo il pagamento,
+     * l’importo visualizzato non cambia visivamente finché la pagina non viene lasciata.
+     * useEffect([]) garantisce che il totale venga calcolato una sola volta al primo rendering.
+     * fixedTotal evita il lampeggio o il reset del prezzo quando order viene svuotato.
+     */
+    useEffect(() => {
+        const subtotal = order.items.reduce((sum, item) => {
+            const price = parseFloat(item.price) || 0;
+            const qty = item.quantity || 0;
+            return sum + price * qty;
+        }, 0);
+        const tasse = subtotal * 0.1;
+        const servizio = 2;
+        setFixedTotal(subtotal + tasse + servizio);
+    }, []);
 
     const svgIcon = (
         <svg className="fill-primary" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 26 26" fill="none">
@@ -37,7 +122,7 @@ const Payments = () => {
                     <div className='mx-5'>
                         <InfoBox
                             title="Importo totale"
-                            value="35,80"
+                            value={fixedTotal.toFixed(2)}
                             unit=" €"
                             icon={svgIcon}
                         />
@@ -80,7 +165,8 @@ const Payments = () => {
                         </p>
                     </div>
                     <div className="mt-4 mx-5 flex flex-col items-center gap-5">
-                        <button className="flex flex-col items-center bg-white rounded-3xl w-full max-w-[17.125rem] shadow-elevation-1">
+                        <button className="flex flex-col items-center cursor-pointer bg-white rounded-3xl w-full max-w-[17.125rem] shadow-elevation-1"
+                            onClick={handleCompletePayment}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="71" height="70" viewBox="0 0 71 70" fill="none">
                                 <g clipPath="url(#clip0_566_730)">
                                     <path d="M33.1257 34.9939V43.0915H30.5559V23.0953H37.3685C39.0951 23.0953 40.5673 23.6709 41.7719 24.8219C43.0033 25.9729 43.619 27.3783 43.619 29.0379C43.619 30.7377 43.0033 32.143 41.7719 33.2807C40.5807 34.4183 39.1085 34.9805 37.3685 34.9805H33.1257V34.9939ZM33.1257 25.558V32.5312H37.4221C38.4392 32.5312 39.2959 32.1832 39.965 31.5006C40.6477 30.818 40.9956 29.9882 40.9956 29.0513C40.9956 28.1278 40.6477 27.3113 39.965 26.6288C39.2958 25.9193 38.4526 25.5714 37.4221 25.5714H33.1257V25.558Z" fill="#383E41" />
@@ -99,7 +185,8 @@ const Payments = () => {
                             </svg>
                         </button>
                         <div className='flex flex-row justify-between items-center gap-3 w-full max-w-[17.125rem]'>
-                            <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1">
+                            <button className="flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+                                onClick={handleCompletePayment}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                                     <g clipPath="url(#clip0_566_1320)">
                                         <path d="M9.94977 17.1301C10.5384 16.3937 10.9379 15.4052 10.8326 14.3949C9.97086 14.4378 8.9193 14.9635 8.31051 15.7003C7.76383 16.3313 7.28004 17.3613 7.40621 18.3292C8.3734 18.4131 9.3399 17.8457 9.94977 17.1301Z" fill="black" />
@@ -115,7 +202,8 @@ const Payments = () => {
                                     </defs>
                                 </svg>
                             </button>
-                            <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1">
+                            <button className="flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+                                onClick={handleCompletePayment}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                                     <g clipPath="url(#clip0_566_977)">
                                         <path fillRule="evenodd" clipRule="evenodd" d="M50.5001 26.6591C50.5001 23.1035 48.7779 20.298 45.4862 20.298C42.1807 20.298 40.1807 23.1035 40.1807 26.6313C40.1807 30.8119 42.5418 32.923 45.9306 32.923C47.5834 32.923 48.8335 32.548 49.7778 32.0202V29.2423C48.8334 29.7146 47.7501 30.0063 46.3751 30.0063C45.0278 30.0063 43.8334 29.534 43.6806 27.8951H50.4723C50.4724 27.7146 50.5001 26.9923 50.5001 26.6591ZM43.639 25.3396C43.639 23.7701 44.5974 23.1173 45.4724 23.1173C46.3196 23.1173 47.2224 23.7701 47.2224 25.3396H43.639Z" fill="#635BFF" />
@@ -133,7 +221,8 @@ const Payments = () => {
                                     </defs>
                                 </svg>
                             </button>
-                            <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1">
+                            <button className="flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+                                onClick={handleCompletePayment}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                                     <g clipPath="url(#clip0_566_655)">
                                         <path d="M19.4847 17.2096L12.9396 32.8274H8.66777L5.44922 20.3648C5.25107 19.5963 5.08174 19.3166 4.4876 18.9902C3.51436 18.464 1.91348 17.9705 0.5 17.6631L0.598926 17.2097H7.47187C8.34844 17.2097 9.13652 17.7944 9.33467 18.8023L11.0365 27.8416L15.24 17.2097L19.4847 17.2096ZM36.2177 27.726C36.2366 23.6063 30.5172 23.3821 30.5583 21.539C30.5694 20.9764 31.1026 20.3811 32.2704 20.2308C32.8503 20.1537 34.4461 20.0971 36.2548 20.9275L36.9637 17.6172C35.9905 17.2639 34.7396 16.9257 33.185 16.9257C29.1919 16.9257 26.3809 19.0496 26.3571 22.0885C26.331 24.3358 28.3627 25.5899 29.8952 26.3384C31.4688 27.1042 31.995 27.5931 31.9895 28.28C31.9792 29.3282 30.7339 29.7863 29.5724 29.8069C27.5406 29.8385 26.3622 29.2579 25.4211 28.8196L24.6896 32.2437C25.6323 32.6765 27.3776 33.0523 29.1839 33.0745C33.4279 33.0743 36.2043 30.973 36.2177 27.726ZM46.7625 32.8275H50.5L47.2388 17.2097H43.7885C43.0132 17.2097 42.3596 17.6619 42.0684 18.3546L36.0096 32.8275H40.2503L41.0921 30.4951H46.2759L46.7625 32.8275ZM42.2543 27.294L44.3818 21.4298L45.6058 27.294H42.2543ZM25.2583 17.2096L21.9155 32.8274H17.8746L21.2182 17.2096H25.2583Z" fill="#1A2ADF" />

@@ -57,7 +57,7 @@ const CartItem = ({ item }) => {
     }
 
     return (
-        <div key={item._id} className="bg-white mb-4 p-3 rounded-2xl shadow-sm flex gap-4">
+        <div key={item._id} className="bg-white cursor-pointer mb-4 p-3 rounded-2xl shadow-sm flex gap-4">
             <CustomImage 
                 onClick={() => selectCurrentProduct(item)}
                 src={item.image}
@@ -66,7 +66,7 @@ const CartItem = ({ item }) => {
             />
             <div className="flex flex-col justify-between flex-1">
                 <div>
-                    <h3 className="font-semibold text-base text-[#111827]" onClick={() => selectCurrentProduct(item)}>{item.name}</h3>
+                    <h3 className="cursor-pointer font-semibold text-base text-[#111827]" onClick={() => selectCurrentProduct(item)}>{item.name}</h3>
                     <p className="text-sm text-gray-500">Quantità: {item.quantity}</p>
                 </div>
                 <div className="flex items-center gap-2 mt-2">

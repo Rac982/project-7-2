@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCart, updateCartStatus } from '../../store/slices/cartSlice';
 import CartItem from '../../components/shared/CartItem';
 import { useToast } from '../../hooks/useToast';
+import { setOrder } from '../../store/slices/orderSlice';
 
 /**
  * Pagina del carrello che mostra l'elenco dei prodotti selezionati dall'utente.
@@ -18,7 +18,8 @@ const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { toast } = useToast();
-    const { items, isOpen } = useSelector((state) => state.cart); // Lista articoli nel carrello
+    const cart = useSelector((state) => state.cart);
+    const items = cart.items;
 
     /**
      * Calcolo del subtotale: somma di (prezzo * quantità) per ogni articolo.
@@ -47,9 +48,14 @@ const Cart = () => {
      * - Pulisce il carrello.
      * - Dopo 2 secondi, naviga alla pagina /categories.
      */
+
     const handleSubmitOrder = () => {
-        dispatch(updateCartStatus(false))
+        dispatch(setOrder(cart.items)); // Copia ordine
+        dispatch(updateCartStatus(false));
         toast.success("Il tuo ordine è stato inviato!");
+        setTimeout(() => {
+            navigate("/private/order-cart");
+        }, 3000);
     };
 
     return (
@@ -67,16 +73,16 @@ const Cart = () => {
 
             {/* CONTENUTO CARRELLO */}
             <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
-                    style={{
-                        boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)"
-                    }}>
+                style={{
+                    boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)"
+                }}>
                 {items.length === 0 ? (
                     <div className="flex flex-col items-center justify-center bg-white w-full mt-20 text-center p-6 rounded-2xl shadow-sm">
                         <img src="/images/empty-cart.jpg" alt="carrello vuoto" className="w-40 h-40 mb-4" />
                         <p className="text-gray-500 text-base font-medium">Il tuo carrello è vuoto</p>
                         <button
                             onClick={() => navigate('/private/categories')}
-                            className="mt-6 bg-[#3BC8E1] text-white px-5 py-2 rounded-full text-sm font-medium"
+                            className="cursor-pointer mt-6 bg-[#3BC8E1] text-white px-5 py-2 rounded-full text-sm font-medium"
                         >
                             Torna al menu
                         </button>
@@ -102,7 +108,7 @@ const Cart = () => {
                             <button
                                 onClick={handleSubmitOrder}
                                 disabled={items.length == 0}
-                                className={`w-full h-[42px] rounded-full text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
+                                className={`w-full h-[42px] rounded-full cursor-pointer text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
                                  ${items.length == 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
                             >
                                 <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
@@ -111,14 +117,14 @@ const Cart = () => {
 
                             <button
                                 onClick={() => navigate('/private/categories')}
-                                className="w-full border border-[#3BC8E1] h-[42px] rounded-full text-[#3BC8E1] text-[15px] font-semibold flex items-center justify-center gap-2"
+                                className="w-full cursor-pointer border border-[#3BC8E1] h-[42px] rounded-full text-[#3BC8E1] text-[15px] font-semibold flex items-center justify-center gap-2"
                             >
                                 Torna al menu
                             </button>
 
                             <button
                                 onClick={() => dispatch(clearCart())}
-                                className="w-full border border-red-300 h-[42px] rounded-full text-red-500 text-[15px] font-semibold flex items-center justify-center gap-2"
+                                className="w-full cursor-pointer border border-red-300 h-[42px] rounded-full text-red-500 text-[15px] font-semibold flex items-center justify-center gap-2"
                             >
                                 Svuota carrello
                             </button>

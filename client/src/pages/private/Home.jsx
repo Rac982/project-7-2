@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../../store/slices/authSlice';
 
 const Home = () => {
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        dispath(logout());
+        dispatch(logout());
         navigate("/");
     }
 

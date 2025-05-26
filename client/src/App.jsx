@@ -17,6 +17,8 @@ import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
 import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
+import OrderCart from "./pages/private/OrderCart";
+
 
 const ProtectRoute = ({ children, role = "user" }) => {
   const { token, user } = useSelector((state) => state.auth);
@@ -48,6 +50,7 @@ const App = () => {
           <Route path="payments" element={<Payments />} />
           <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
           <Route path="confirm-payment" element={<ConfirmPayment />} />
+          <Route path="order-cart" element={<OrderCart />} />
         </Route>
         {/* login per business */}
         <Route path="/business" element={<PublicBusiness />}>
