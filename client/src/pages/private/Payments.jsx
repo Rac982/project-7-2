@@ -3,7 +3,10 @@ import { useLocation } from "react-router-dom";
 import InfoBox from '../../components/shared/InfoBox';
 
 const Payments = () => {
-    const [selectedTip, setSelectedTip] = useState("Top")
+    const [selectedTip, setSelectedTip] = useState(null)
+    const baseAmount = 35.80;
+    const tipAmount = selectedTip?.amount || 0;
+    const totalAmount = (baseAmount + tipAmount).toFixed(2);
 
     const location = useLocation()
 
@@ -37,7 +40,7 @@ const Payments = () => {
                     <div className='mx-5'>
                         <InfoBox
                             title="Importo totale"
-                            value="35,80"
+                            value={totalAmount}
                             unit=" €"
                             icon={svgIcon}
                         />
@@ -56,11 +59,11 @@ const Payments = () => {
                                 { label: "Ottimo", amount: 3 },
                                 { label: "Top", amount: 5 },
                             ].map(({ label, amount }) => {
-                                const isSelected = selectedTip === label;
+                                const isSelected = selectedTip?.label === label;
                                 return (
                                     <button
                                         key={label}
-                                        onClick={() => setSelectedTip(label)}
+                                        onClick={() => setSelectedTip(isSelected ? null : { label, amount })}
                                         className={`flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl border-2 shadow-elevation-1 text-sm transition ${isSelected ? "border-primary" : "border-transparent"
                                             }`}
                                     >
