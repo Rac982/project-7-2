@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import { useSelector } from "react-redux";
 import CustomImage from "../shared/CustomImage";
-=======
->>>>>>> origin/feature/business-menu
 import Menu from "../shared/Menu";
 /**
  * Componente Navbar principale dell'app lato utente.
