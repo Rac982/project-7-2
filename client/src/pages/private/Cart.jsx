@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { clearCart, updateCartStatus } from "../../store/slices/cartSlice";
-import CartItem from "../../components/shared/CartItem";
-import { useToast } from "../../hooks/useToast";
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { clearCart, updateCartStatus } from '../../store/slices/cartSlice';
+import CartItem from '../../components/shared/CartItem';
+import { useToast } from '../../hooks/useToast';
+import { setOrder } from '../../store/slices/orderSlice';
+import CartEmpty from './CartEmpty';
 
 /**
  * Pagina del carrello che mostra l'elenco dei prodotti selezionati dall'utente.
@@ -15,10 +16,11 @@ import { useToast } from "../../hooks/useToast";
  * Utilizza Redux per gestire lo stato del carrello.
  */
 const Cart = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { toast } = useToast();
-  const { items, isOpen } = useSelector((state) => state.cart); // Lista articoli nel carrello
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { toast } = useToast();
+    const cart = useSelector((state) => state.cart);
+    const items = cart.items;
 
   /**
    * Calcolo del subtotale: somma di (prezzo * quantità) per ogni articolo.
@@ -41,120 +43,83 @@ const Cart = () => {
   const servizio = 2; // Servizio fisso
   const totale = subtotal + tasse + servizio; // Totale finale
 
-  /**
-   * Gestione invio ordine:
-   * - Mostra il toast.
-   * - Pulisce il carrello.
-   * - Dopo 2 secondi, naviga alla pagina /categories.
-   */
-  const handleSubmitOrder = () => {
-    dispatch(updateCartStatus(false));
-    toast.success("Il tuo ordine è stato inviato!");
-    navigate("/private/payments");
-  };
+    /**
+     * Gestione invio ordine:
+     * - Mostra il toast.
+     * - Pulisce il carrello.
+     * - Dopo 2 secondi, naviga alla pagina /categories.
+     */
 
-  return (
-    <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
-      {/* HEADER */}
-      <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
-        <img
-          className="cursor-pointer"
-          src="/images/Component1.svg"
-          alt="arrow"
-          onClick={() => navigate("/private/categories")}
-        />
-        <h1 className="w-full font-semibold text-md">Riepilogo ordine</h1>
-      </div>
+    const handleSubmitOrder = () => {
+        dispatch(setOrder(cart.items)); // Copia ordine
+        dispatch(updateCartStatus(false));
+        toast.success("Il tuo ordine è stato inviato!");
+        setTimeout(() => {
+            navigate("/private/order-cart");
+        }, 3000);
+    };
 
-      {/* CONTENUTO CARRELLO */}
-      <div
-        className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
-        style={{
-          boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)",
-        }}
-      >
-        {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center bg-white w-full mt-20 text-center p-6 rounded-2xl shadow-sm">
-            <img
-              src="/images/empty-cart.jpg"
-              alt="carrello vuoto"
-              className="w-40 h-40 mb-4"
-            />
-            <p className="text-gray-500 text-base font-medium">
-              Il tuo carrello è vuoto
-            </p>
-            <button
-              onClick={() => navigate("/private/categories")}
-              className="mt-6 bg-[#3BC8E1] text-white px-5 py-2 rounded-full text-sm font-medium"
-            >
-              Torna al menu
-            </button>
-          </div>
-        ) : (
-          <div className="w-full mt-4">
-            {items.map((item) => (
-              <CartItem item={item} key={item._id} />
-            ))}
-
-            {/* RIEPILOGO TOTALE */}
-            <div className="text-sm text-gray-600 px-1 mt-2">
-              <div className="flex justify-between mb-1">
-                <span>Subtotale:</span>
-                <span>{subtotal.toFixed(2)}€</span>
-              </div>
-              <div className="flex justify-between mb-1">
-                <span>Tasse (10%):</span>
-                <span>{tasse.toFixed(2)}€</span>
-              </div>
-              <div className="flex justify-between mb-1">
-                <span>Servizio:</span>
-                <span>{servizio.toFixed(2)}€</span>
-              </div>
-              <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
-                <span>Totale:</span>
-                <span>{totale.toFixed(2)}€</span>
-              </div>
-            </div>
-
-            {/* BOTTONI */}
-            <div className="mt-5 w-full flex flex-col gap-3">
-              <button
-                onClick={handleSubmitOrder}
-                disabled={items.length == 0}
-                className={`w-full h-[42px] rounded-full text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
-                                 ${
-                                   items.length == 0
-                                     ? "bg-[#A0DDE6] cursor-not-allowed"
-                                     : "bg-[#3BC8E1]"
-                                 }`}
-              >
+    return (
+        <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
+            {/* HEADER */}
+            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5 relative">
                 <img
                   src="/images/Pluswhite.svg"
                   alt="plus"
                   className="w-5 h-5"
                 />
-                Invia ordine
-              </button>
-
-              <button
-                onClick={() => navigate("/private/categories")}
-                className="w-full border border-[#3BC8E1] h-[42px] rounded-full text-[#3BC8E1] text-[15px] font-semibold flex items-center justify-center gap-2"
-              >
-                Torna al menu
-              </button>
-
-              <button
-                onClick={() => dispatch(clearCart())}
-                className="w-full border border-red-300 h-[42px] rounded-full text-red-500 text-[15px] font-semibold flex items-center justify-center gap-2"
-              >
-                Svuota carrello
-              </button>
+                <h1 className="w-full font-semibold text-md">Riepilogo ordine</h1>
+                <img
+                    src="/images/cv.jpg"
+                    alt="Svuota carrello"
+                    className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white object-contain"
+                    onClick={() => dispatch(clearCart())}
+                />
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+
+            {/* CONTENUTO */}
+            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
+                style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
+                {items.length === 0 ? (
+                    <CartEmpty />
+                ) : (
+                    <div className="w-full mt-4 relative pb-24">
+                        {/* ITEMS */}
+                        {items.map((item) => (
+                            <CartItem item={item} key={item._id} />
+                        ))}
+
+                        {/* RIEPILOGO TOTALE */}
+                        <div className="text-sm text-gray-600 px-1 mt-2">
+                            <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
+                            <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
+                            <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
+                            <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
+                                <span>Totale:</span><span>{totale.toFixed(2)}€</span>
+                            </div>
+                        </div>
+
+                        {/* FOOTER FISSO */}
+                        <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
+                            <button
+                                onClick={handleSubmitOrder}
+                                disabled={items.length === 0}
+                                className={`bg-[#3BC8E1] text-white text-[15px] mb-6 font-semibold flex items-center justify-center rounded-full shadow-md transition
+                                    ${items.length === 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : ''}`}
+                                style={{
+                                    width: '273px',
+                                    height: '39px'
+                                }}
+                            >
+                                <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
+                                <span className='pl-3'>Invia ordine</span>  
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default Cart;
