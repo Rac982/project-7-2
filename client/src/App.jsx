@@ -8,6 +8,8 @@ import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
 import Payments from "./pages/private/Payments";
 import ConfirmPayment from "./pages/private/ConfirmPayment";
+import OrderList from "./pages/private/OrderList";
+
 
 import Cart from "./pages/private/Cart"; // carrello
 import { useSelector } from "react-redux";
@@ -21,6 +23,8 @@ import OrderCart from "./pages/private/OrderCart";
 import CartEmpty from "./pages/private/CartEmpty";
 
 import MenuBusiness from "./pages/dashboard/MenuBusiness";
+import PersonalProfile from "./pages/private/PersonalProfile"
+
 
 const ProtectRoute = ({ children, role = "user" }) => {
   const { token, user } = useSelector((state) => state.auth);
@@ -51,14 +55,18 @@ const App = () => {
           <Route path="categories" element={<Categories />} />
           <Route path="products/:category_id" element={<Products />} />
           <Route path="payments" element={<Payments />} />
-          <Route path="cart" element={<Cart />} /> 
           <Route path="cartempty" element={<CartEmpty />} />
           <Route path="confirm-payment" element={<ConfirmPayment />} />
           <Route path="order-cart" element={<OrderCart />} />
+          <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
+          <Route path="personalprofile" element={<PersonalProfile />} />
+          <Route path="orderlist" element={<OrderList />} />
+
         </Route>
         {/* login per business */}
         <Route path="/business" element={<PublicBusiness />}>
           <Route path="login" element={<LoginBusiness />} />
+         
         </Route>
         {/* Business loggato */}
         <Route
