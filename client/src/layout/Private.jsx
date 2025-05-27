@@ -24,7 +24,7 @@ const Private = () => {
     <>
       <Navbar />
       <main
-        className="overflow-auto pt-2"
+        className="no-scrollbar overflow-auto pt-2"
         style={{ height: "calc(100vh - 66px)" }}
       >
         <Outlet />

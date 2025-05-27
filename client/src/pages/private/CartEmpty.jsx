@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function CartEmpty() {
+    const navigate = useNavigate();
     return (
         <div
             className="absolute bg-white flex flex-col"
@@ -56,7 +58,9 @@ export default function CartEmpty() {
 
                 {/* Bottone */}
                 <button
-                    className="w-[206px] h-[38px] bg-[#36C9E9] rounded-full text-white font-semibold text-base shadow-md active:scale-95 transition z-10"
+                    onClick={() => navigate('/private/categories')}
+                    style={{ width: '273px', height: '39px' }}
+                    className="w-[206px] h-[38px] bg-[#36C9E9] cursor-pointer rounded-full text-white font-semibold text-base shadow-md active:scale-95 transition z-10"
                 >
                     Torna al menu
                 </button>

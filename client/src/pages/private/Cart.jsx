@@ -4,6 +4,7 @@ import { clearCart, updateCartStatus } from '../../store/slices/cartSlice';
 import CartItem from '../../components/shared/CartItem';
 import { useToast } from '../../hooks/useToast';
 import { setOrder } from '../../store/slices/orderSlice';
+import CartEmpty from './CartEmpty';
 
 /**
  * Pagina del carrello che mostra l'elenco dei prodotti selezionati dall'utente.
@@ -72,55 +73,51 @@ const Cart = () => {
                 <img
                     src="/images/cv.jpg"
                     alt="Svuota carrello"
-                    className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white"
+                    className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white object-contain"
                     onClick={() => dispatch(clearCart())}
                 />
             </div>
 
-            {/* CONTENITORE PRINCIPALE */}
-            <div
-                className="flex flex-col gap-2 rounded-4xl p-2 bg-white w-[375px] px-6 py-7"
-                style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}
-            >
-                {/* BLOCCO SCROLLABILE */}
-                <div className="flex flex-col overflow-y-auto max-h-[calc(100vh-100px)] no-scrollbar pb-24">
-                    {items.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center mt-20 text-center p-6">
-                            <img src="/images/empty-cart.jpg" alt="vuoto" className="w-40 h-40 mb-4" />
-                            <p className="text-gray-500 text-base font-medium">Il tuo carrello è vuoto</p>
+            {/* CONTENUTO */}
+            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
+                style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
+                {items.length === 0 ? (
+                    <CartEmpty />
+                ) : (
+                    <div className="w-full mt-4 relative pb-24">
+                        {/* ITEMS */}
+                        {items.map((item) => (
+                            <CartItem item={item} key={item._id} />
+                        ))}
+
+                        {/* RIEPILOGO TOTALE */}
+                        <div className="text-sm text-gray-600 px-1 mt-2">
+                            <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
+                            <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
+                            <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
+                            <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
+                                <span>Totale:</span><span>{totale.toFixed(2)}€</span>
+                            </div>
                         </div>
-                    ) : (
-                        <>
-                            {items.map((item) => (
-                                <CartItem item={item} key={item._id} />
-                            ))}
 
-                            {/* RIEPILOGO TOTALE */}
-                            <div className="text-sm text-gray-600 px-1 mt-2">
-                                <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
-                                <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
-                                <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
-                                <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
-                                    <span>Totale:</span><span>{totale.toFixed(2)}€</span>
-                                </div>
-                            </div>
-
-                            {/* BOTTONE */}
-                            <div className="sticky bottom-0 bg-white pt-4 pb-6 flex justify-center z-10">
-                                <button
-                                    onClick={handleSubmitOrder}
-                                    disabled={items.length === 0}
-                                    style={{ width: '273px', height: '39px' }}
-                                    className={`rounded-full text-white text-[15px] cursor-pointer font-semibold flex items-center justify-center gap-2 transition
-                                        ${items.length === 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
-                                >
-                                    <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
-                                    Invia ordine
-                                </button>
-                            </div>
-                        </>
-                    )}
-                </div>
+                        {/* FOOTER FISSO */}
+                        <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
+                            <button
+                                onClick={handleSubmitOrder}
+                                disabled={items.length === 0}
+                                className={`bg-[#3BC8E1] text-white text-[15px] mb-6 font-semibold flex items-center justify-center rounded-full shadow-md transition
+                                    ${items.length === 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : ''}`}
+                                style={{
+                                    width: '273px',
+                                    height: '39px'
+                                }}
+                            >
+                                <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
+                                <span className='pl-3'>Invia ordine</span>  
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

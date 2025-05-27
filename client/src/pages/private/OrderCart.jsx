@@ -101,7 +101,7 @@ const OrderCart = () => {
                         <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
                             <button
                                 onClick={() => navigate('/private/categories')}
-                                className="bg-[#3BC8E1] text-white text-[15px] font-semibold flex items-center justify-center rounded-full shadow-md"
+                                className="bg-[#3BC8E1] text-white text-[15px] font-semibold flex items-center mb-6 justify-center rounded-full shadow-md"
                                 style={{
                                     width: '273px',
                                     height: '39px'
