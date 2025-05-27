@@ -1,35 +1,19 @@
 import { useState } from "react";
+import BackButton from "../../components/shared/BackButton";
+import { useNavigate } from "react-router-dom";
 
 export default function ConfirmPayment() {
   const [rating, setRating] = useState(0);
+
+  const navigate = useNavigate();
 
   return (
     <div className="bg-[#FFFFFF] min-h-screen flex flex-col items-center ">
       {/* Bottone paga in app */}
 
       <div className=" w-full max-w-md mt-4 px-4 flex relative left-5">
-        <button
-          className="flex items-center text- mb-2 focus:outline-none hover:text-cyan-400 transition"
-          style={{
-            width: 207,
-            height: 43,
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="43"
-            height="43"
-            viewBox="0 0 43 43"
-            fill="none"
-          >
-            <circle cx="21.5" cy="21.5" r="21.5" fill="#F3F3F3" />
-            <path
-              d="M17.5 22.5L24.2454 29.2432C24.5414 29.5385 25.021 29.5385 25.317 29.2432C25.613 28.948 25.613 28.4685 25.317 28.1733L19.1066 21.9651L25.3162 15.757C25.6122 15.4617 25.6122 14.9822 25.3162 14.6863C25.0202 14.391 24.5399 14.391 24.2439 14.6863L17.4985 21.4294C17.2071 21.7216 17.2071 22.2087 17.4985 22.5Z"
-              fill="#332B2C"
-            />
-          </svg>
-          <span className="ml-3 font-semibold text-lg">Paga in app</span>
-        </button>
+        <BackButton />
+        <span className="ml-3 font-semibold text-lg">Paga in app</span>
       </div>
 
       {/* Card */}

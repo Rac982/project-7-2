@@ -74,7 +74,7 @@ const Reviews = () => {
   }, [userReviews]);
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col p-10">
       <div className="flex gap-20 justify-between items-center py-2 text-center h-[300px] ">
         <div className="flex flex-col justify-center items-center w-1/4 h-full">
           <h1 className="font-bold text-8xl">{averageRating}</h1>

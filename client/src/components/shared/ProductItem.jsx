@@ -1,7 +1,12 @@
 import React from "react";
 import CustomImage from "./CustomImage";
+import { useSelector } from "react-redux";
 
 const ProductItem = ({ onSelectProduct, product }) => {
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const itemInCart = cartItems.find((item) => item._id === product._id);
+  console.log(itemInCart);
   return (
     <>
       <div
@@ -21,9 +26,11 @@ const ProductItem = ({ onSelectProduct, product }) => {
         <div className="flex flex-col  min-w-[35px] h-[80px] justify-between items-center">
           <p className="text-sm font-bold">{product.price} €</p>
           <div className="flex items-center justify-center gap-1">
-            <div className="bg-primary w-[15px] h-[15px] text-[13px] p-1 flex items-center justify-center text-white rounded-full">
-              2
-            </div>
+            {itemInCart && (
+              <div className="bg-primary w-[15px] h-[15px] text-[13px] p-1 flex items-center justify-center text-white rounded-full">
+                {itemInCart.quantity}
+              </div>
+            )}
             <img
               src=" /images/Plus.svg"
               alt="logo"

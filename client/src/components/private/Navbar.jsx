@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="flex justify-center w-full h-[66px] relative z-20">
       <div className="flex items-center justify-between min-w-[375px]  bg-primary px-5 relative">
         <div>
-          <Link to="/private">
+          <Link to="/private/categories">
             <CustomImage src="/images/logo-restaurant2.svg" alt="logo" />
           </Link>
         </div>
@@ -26,7 +26,19 @@ const Navbar = () => {
           </div>
           <div className="cursor-pointer flex justify-end items-center">
             <div onClick={toggleMenu}>
-              <CustomImage src="/images/Menu.png" alt="menu" />
+              {selectMenu ? (
+                <CustomImage
+                  src="/images/Delete.png"
+                  alt="menu"
+                  className="text-white"
+                />
+              ) : (
+                <CustomImage
+                  src="/images/Menu.png"
+                  alt="menu"
+                  className="h-[25px]"
+                />
+              )}
             </div>
             {selectMenu && <Menu />}
           </div>

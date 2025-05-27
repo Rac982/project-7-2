@@ -18,6 +18,9 @@ const Menu = () => {
             {user.last_name}
           </h1>
         </div>
+        <div className="flex justify-center w-full">
+          <div className="flex w-2/3 border-b border-b-gray-300 my-4"></div>
+        </div>
         <div className="flex flex-col p-6 gap-3">
           <div className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100">
             <CustomImage src="/images/menu_images/User.png" alt="" />

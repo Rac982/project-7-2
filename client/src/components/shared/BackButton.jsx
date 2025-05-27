@@ -9,7 +9,9 @@ const BackButton = () => {
       className="cursor-pointer"
       src="/images/Component1.svg"
       alt="arrow"
-      onClick={() => navigate(location.key == "default" ? "/private" : -1)}
+      onClick={() =>
+        navigate(location.key == "default" ? "/private/categories" : -1)
+      }
     />
   );
 };

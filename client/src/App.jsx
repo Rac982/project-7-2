@@ -7,7 +7,7 @@ import Home from "./pages/private/Home";
 import Categories from "./pages/private/Categories";
 import Products from "./pages/private/Products";
 import Payments from "./pages/private/Payments";
-import ConfirmPayment from "./pages/ConfirmPayment";
+import ConfirmPayment from "./pages/private/ConfirmPayment";
 
 import Cart from "./pages/private/Cart"; // carrello
 import { useSelector } from "react-redux";
@@ -21,7 +21,8 @@ import Dashboard from "./pages/dashboard/Dashboard";
 const ProtectRoute = ({ children, role = "user" }) => {
   const { token, user } = useSelector((state) => state.auth);
 
-  if (!token || role !== user.role ) return <Navigate to={role == "user" ? "/" : "/business/login"} />;
+  if (!token || role !== user.role)
+    return <Navigate to={role == "user" ? "/" : "/business/login"} />;
 
   return children;
 };
@@ -54,8 +55,8 @@ const App = () => {
           <Route path="login" element={<LoginBusiness />} />
         </Route>
         {/* Business loggato */}
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             <ProtectRoute role="business">
               <PrivateBusiness />
@@ -64,7 +65,7 @@ const App = () => {
         >
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
-           <Route path="tables" element={<Tables />} />  
+          <Route path="tables" element={<Tables />} />
         </Route>
       </Routes>
     </>
@@ -72,5 +73,3 @@ const App = () => {
 };
 
 export default App;
-
-
