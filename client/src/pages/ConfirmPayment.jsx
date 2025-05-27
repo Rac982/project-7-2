@@ -91,11 +91,11 @@ export default function ConfirmPayment() {
                 content,
                 table: tableNumber,
                 rating,
-            })
+            });
             handleCelebrate();
 
             toast.success("Il tuo feedback è stato inviato!");
-            navigate("/private/categories");
+            //navigate("/private/categories");
         } catch (error) {
             toast.error("Errore durante l'invio del feedback.");
             console.error(error);
@@ -214,7 +214,7 @@ export default function ConfirmPayment() {
                             <button
                                 onClick={handleSubmitOrder}
                                 type="button"
-                                disabled={!canSubmit || isCelebrating}
+                                
                                 className={`
     bg-cyan-500 text-white flex items-center justify-center gap-2 rounded-full px-6 py-1.5 font-semibold
     w-[273px] h-[39px] mt-2 transition

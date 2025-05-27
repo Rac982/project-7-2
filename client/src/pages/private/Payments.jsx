@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from "react-router-dom";
 import InfoBox from '../../components/shared/InfoBox';
 import { useToast } from '../../hooks/useToast';
@@ -47,17 +47,17 @@ const Payments = () => {
    * - Dopo 4 secondi, reindirizza alla pagina di conferma pagamento.
    */
   const handleCompletePayment = () => {
+    navigate("/private/confirm-payment");
     dispatch(clearOrder());
     dispatch(clearCart());
     toast.success("Pagamento inviato!");
-    navigate("/private/confirm-payment");
   };
 
   /**
    * Stato Redux contenente l’ordine attuale dell’utente.
    * Contiene `items` (array di piatti ordinati) e `status` globale.
    */
-  const order = useSelector((state) => state.order);
+  const cart = useSelector((state) => state.cart);
 
   /**
    * Stato locale per bloccare il totale una volta caricato il componente.
@@ -66,27 +66,8 @@ const Payments = () => {
    * 
    * @type {[number, Function]}
    */
-  const [fixedTotal, setFixedTotal] = useState(0);
-  const [totalAmount] = useState(fixedTotal + tipAmount);
-
-  /**
-   * Effetto eseguito una sola volta al montaggio del componente.
-   * Calcola il totale dell’ordine (subtotal + servizio) e lo salva in `fixedTotal`.
-   * In questo modo, anche se il carrello viene svuotato dopo il pagamento,
-   * l’importo visualizzato non cambia visivamente finché la pagina non viene lasciata.
-   * useEffect([]) garantisce che il totale venga calcolato una sola volta al primo rendering.
-   * fixedTotal evita il lampeggio o il reset del prezzo quando order viene svuotato.
-   */
-  useEffect(() => {
-    const subtotal = order.items.reduce((sum, item) => {
-      const price = parseFloat(item.price) || 0;
-      const qty = item.quantity || 0;
-      return sum + price * qty;
-    }, 0);
-    const tasse = subtotal * 0.1;
-    const servizio = 2;
-    setFixedTotal(subtotal + tasse + servizio);
-  }, []);
+  
+  const [totalAmount] = useState(cart.totalPrice + tipAmount);
 
   const svgIcon = (
     <svg
