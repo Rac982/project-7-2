@@ -1,20 +1,50 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import JSConfetti from "js-confetti";
+
+
 
 export default function ConfirmPayment() {
     const [rating, setRating] = useState(0);
+    const [feedback, setFeedback] = useState("");
+    const [isCelebrating, setIsCelebrating] = useState(false);
+    const [showThanks, setShowThanks] = useState(false);
+    const jsConfettiRef = useRef(null);
+
+    if (!jsConfettiRef.current) {
+        jsConfettiRef.current = new JSConfetti();
+    }
+
+    const canSubmit = rating > 0 || feedback.trim() !== "";
+
+    const handleSubmit = async () => {
+        setIsCelebrating(true);
+        if (rating >= 3) {
+            await jsConfettiRef.current.addConfetti({
+                confettiRadius: 12,
+                confettiNumber: 180,
+                colors: ["#ff595e", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"],
+            });
+        } else if (rating >= 1 && rating <= 2) {
+            await jsConfettiRef.current.addConfetti({
+                emojis: ["😢", "😭", "😿"],
+                emojiSize: 60,
+                confettiNumber: 100,
+            });
+        }
+        setIsCelebrating(false);
+        setShowThanks(true);
+        setTimeout(() => setShowThanks(false), 3000);
+        setFeedback("");
+        setRating(0);
+    };
 
     return (
-        <div className="bg-[#FFFFFF] min-h-screen flex flex-col items-center ">
-
+        <div className="bg-[#FFFFFF] min-h-screen flex flex-col items-center pb-24">
             {/* Bottone paga in app */}
-
-            <div className=" w-full max-w-md mt-4 px-4 flex relative left-5">
+            <div className="w-full max-w-md mt-4 px-4 flex relative left-5">
                 <button
-                    className="flex items-center text- mb-2 focus:outline-none hover:text-cyan-400 transition"
-                    style={{
-                        width: 207,
-                        height: 43,
-                    }}
+                    className="flex items-center mb-2 focus:outline-none hover:text-cyan-400 transition"
+                    style={{ width: 207, height: 43 }}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +63,6 @@ export default function ConfirmPayment() {
                 </button>
             </div>
 
-
             {/* Card */}
             <div className="w-[375px] h-[665px] bg-white rounded-2xl shadow-2xl p-6 flex flex-col items-center mt-10">
                 <h2 className="text-2xl font-extrabold mb-1 text-center">Grazie!</h2>
@@ -42,22 +71,8 @@ export default function ConfirmPayment() {
                 </p>
                 <div className="mb-6 flex justify-center">
                     <div className="w-32 h-32 rounded-full border-4 border-black flex items-center justify-center">
-                        <svg className="w-20 h-20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                                width="173"
-                                height="173"
-                                viewBox="0 0 173 173"
-                                fill="none"
-                            >
-                                <rect width="173" height="173" fill="url(#pattern0_102_2933)" />
-                                <defs>
-                                    <pattern id="pattern0_102_2933" patternContentUnits="objectBoundingBox" width="1" height="1">
-                                        <use xlinkHref="#image0_102_2933" transform="scale(0.0015625)" />
-                                    </pattern>
-                                </defs>
-                            </svg>
+                        {/* SVG di conferma */}
+                        <svg className="w-20 h-20" viewBox="0 0 48 48" fill="none">
                             <path
                                 d="M16 25l7 7 9-13"
                                 stroke="#00BCD4"
@@ -76,35 +91,34 @@ export default function ConfirmPayment() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="335" height="1" viewBox="0 0 335 1" fill="none">
                         <line y1="0.5" x2="335" y2="0.5" stroke="#F3F3F3" />
                     </svg>
-                    <div className="w-[335px] h-[18px]  flex justify-between text-gray-500 text-[15px] mb-1">
+                    <div className="w-[335px] h-[18px] flex justify-between text-gray-500 text-[15px] mb-1">
                         <span>Importo del conto</span>
                         <span>0,00 €</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="335" height="1" viewBox="0 0 335 1" fill="none">
                         <line y1="0.5" x2="335" y2="0.5" stroke="#F3F3F3" />
                     </svg>
-                    <div className="w-[335px] h-[18px]  flex justify-between text-gray-500 text-[15px] mb-1">
+                    <div className="w-[335px] h-[18px] flex justify-between text-gray-500 text-[15px] mb-1">
                         <span>Mancia</span>
                         <span>0,00 €</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="335" height="1" viewBox="0 0 335 1" fill="none">
                         <line y1="0.5" x2="335" y2="0.5" stroke="#F3F3F3" />
                     </svg>
-                    <div className="w-[335px] h-[18px]  flex justify-between font-bold text-[16px] mt-2">
+                    <div className="w-[335px] h-[18px] flex justify-between font-bold text-[16px] mt-2">
                         <span>Totale</span>
                         <span>0,00 €</span>
                     </div>
                 </div>
 
-                {/* Feedback */}
-                <div className="w-full bg-gray-100 rounded-xl p-4 flex flex-col items-center shadow-2xl border border-gray-200 mb-10 ">
+                {/* Box grigio SOLO fino alle stelle */}
+                <div className="w-full bg-gray-100 rounded-xl p-4 flex flex-col items-center shadow-md border border-gray-200 mb-4">
                     <span className="font-bold text-xl mb-1 text-gray-800">Lascia un feedback</span>
                     <span className="text-gray-400 text-sm mb-2">
                         È gratis e ci aiuta a migliorare!
                     </span>
-
-                    {/* feedback stelle */}
-                    <div className="flex justify-center items-center bg-white rounded-full shadow p-2 mb-6">
+                    {/* Stelle */}
+                    <div className="flex justify-center items-center bg-white rounded-full shadow p-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                             <button
                                 key={star}
@@ -132,33 +146,34 @@ export default function ConfirmPayment() {
                             </button>
                         ))}
                     </div>
-
                 </div>
 
-                {/* Finestra per scrivere la recensione */}
-                <div className="mx-auto mb-4" style={{ width: 335, height: 73, borderRadius: 8 }}>
+                {/* Textarea e bottone FUORI dal box grigio */}
+                <div className="mx-auto mb-4 w-[335px] h-[73px]">
                     <textarea
-                        className="w-full h-full p-3 border border-gray-300 resize-none 
-                        focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
+                        className="w-full h-full p-3 border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
                         placeholder="raccontaci di più sulla tua esperienza"
-                        style={{ borderRadius: 8 }}
+                        value={feedback}
+                        onChange={e => setFeedback(e.target.value)}
                     />
                 </div>
-
-                {/* Bottone invia feedback */}
                 <div className="flex justify-center">
                     <button
                         type="button"
-                        className="bg-cyan-500 text-white flex items-center justify-center opacity-50
-                         gap-2 rounded-full px-6 py-1.5 font-semibold hover:opacity-100 transition mt-7"
-                        style={{ width: 273, height: 39, borderRadius: 99, }} >Invia feedback </button>
+                        onClick={handleSubmit}
+                        disabled={!canSubmit || isCelebrating}
+                        className={`
+    bg-cyan-500 text-white flex items-center justify-center gap-2 rounded-full px-6 py-1.5 font-semibold
+    w-[273px] h-[39px] mt-2 transition
+    ${canSubmit && !isCelebrating ? "hover:scale-105 active:scale-95 shadow-lg" : "opacity-50 cursor-not-allowed"}
+    animate-bounce
+`}
+
+                    >
+                        {isCelebrating ? "🎉" : "Invia feedback"}
+                    </button>
                 </div>
-
             </div>
-
         </div>
-
-
     );
-
 }

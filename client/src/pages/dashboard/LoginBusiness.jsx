@@ -1,14 +1,40 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import logoqr from "../../../public/images/high-angle-qr-code-note.jpg";
 import logotable from "../../../public/images/Logo-TableLink .png";
+import { toast } from "react-toastify";
+import { useApi } from "../../hooks/useApi";
+import { useDispatch } from "react-redux";
+import { login as loginAction } from "../../store/slices/authSlice";
+import { useEffect, useState } from "react";
 
 const LoginBusiness = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { login } = useApi()
 
-  const handleLoginClick = (e) => {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInput = ({ target: { name, value } }) => {
+    setForm(f => ({ ...f, [name]: value }));
+  }
+
+  const handleLoginSubmit = async (e) => {
     e.preventDefault(); // Previene il refresh della pagina al submit
-    navigate("/business-dashboard", { replace: true });
+    console.log(form);
+    
+    try {
+      const data = await login({ ...form, role: "business" });
+
+      dispatch(loginAction(data));
+      navigate("/dashboard", { replace: true });
+    } catch(err) {
+      console.log(err);
+      toast.error("Utente non trovato")
+    }
+
   };
 
   return (
@@ -24,7 +50,7 @@ const LoginBusiness = () => {
         <img
           src={logoqr}
           alt="QR Code"
-          className="w-[578px]  object-cover rounded-2xl h-full"
+          className="w-[578px] object-cover rounded-2xl h-full"
         />
 
         {/* Primo testo nell'immagine */}
@@ -54,9 +80,9 @@ const LoginBusiness = () => {
       </div>
 
       {/* Card destra */}
-      <div className=" w-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
+      <div className=" w-full max-h-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
         {/* Logo parte destra */}
-        <div className="w-[324px] h-[324px] flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center mb-6 w-[324px] h-[270px]">
           <img src={logotable} alt="Logo Table Link" className="inline-block" />
         </div>
 
@@ -70,7 +96,7 @@ const LoginBusiness = () => {
           </div>
 
           {/* Form */}
-          <form className="w-full flex flex-col" onSubmit={handleLoginClick}>
+          <form className="w-full flex flex-col" onSubmit={handleLoginSubmit}>
             <div className="mb-4">
               <label className="sr-only" htmlFor="email">
                 Email
@@ -98,9 +124,12 @@ const LoginBusiness = () => {
                 <input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="Email"
                   className="border-2 border-gray-300 rounded-lg shadow-lg p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
                   required
+                  onInput={handleInput}
+                  value={form.email}
                 />
               </div>
             </div>
@@ -131,6 +160,9 @@ const LoginBusiness = () => {
                   placeholder="Password"
                   className="border-2 border-gray-300 rounded-lg shadow-lg p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
                   required
+                  name="password"
+                  onInput={handleInput}
+                  value={form.password}
                 />
               </div>
             </div>
@@ -145,7 +177,7 @@ const LoginBusiness = () => {
             {/* Pulsante Login */}
             <button
               type="submit"
-              className="bg-cyan-400 hover:bg-cyan-500 text-white font-semibold transition-all w-[273px] h-[39px] rounded-full py-2 px-4"
+              className="bg-cyan-400 hover:bg-cyan-500 text-white font-semibold transition-all w-[273px] h-[39px] rounded-full py-2 px-4 cursor-pointer"
             >
               Login
             </button>

@@ -1,8 +1,15 @@
+import { useDispatch } from "react-redux";
 import CustomImage from "../shared/CustomImage";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { logout } from "../../store/slices/authSlice";
 
 const SideBar = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   return (
     <div className="flex flex-col gap-10 px-4 py-15  items-center min-w-1/5 h-full border-r-1 border-[#0000001A]">
       <div>
@@ -17,7 +24,7 @@ const SideBar = () => {
             src="/images/business_images/Dashboard.png"
             className="h-[20.15px] w-[20.15px]"
           />
-          <span>Dashboard</span>
+          <Link to="/dashboard">Dashboard</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
@@ -25,7 +32,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Tavoli</span>
+          <Link to="/dashboard/tables">Tavoli</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl ">
           <CustomImage
@@ -33,7 +40,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Recensioni</span>
+          <Link to="/dashboard/reviews">Recensioni</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
@@ -41,7 +48,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span>Gestione Menu</span>
+          <Link to="/dashboard/menu">Gestione Menu</Link>
         </div>
         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
           <CustomImage
@@ -49,7 +56,7 @@ const SideBar = () => {
             className="h-[20.15px] w-[20.15px]"
           />
 
-          <span onClick={() => navigate("/business")}>Logout</span>
+          <span onClick={handleLogout}>Logout</span>
         </div>
       </div>
     </div>

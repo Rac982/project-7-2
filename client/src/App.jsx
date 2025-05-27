@@ -17,15 +17,16 @@ import PublicBusiness from "./layout/PublicBusiness";
 import PrivateBusiness from "./layout/PrivateBusiness";
 import Reviews from "./pages/dashboard/Reviews";
 import LoginBusiness from "./pages/dashboard/LoginBusiness";
+import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CartEmpty from "./pages/private/CartEmpty";
 import PersonalProfile from "./pages/private/PersonalProfile"
 
 
-const ProtectRoute = ({ children }) => {
-  const { token } = useSelector((state) => state.auth);
+const ProtectRoute = ({ children, role = "user" }) => {
+  const { token, user } = useSelector((state) => state.auth);
 
-  if (!token) return <Navigate to="/" />;
+  if (!token || role !== user.role ) return <Navigate to={role == "user" ? "/" : "/business/login"} />;
 
   return children;
 };
@@ -63,11 +64,17 @@ const App = () => {
          
         </Route>
         {/* Business loggato */}
-        <Route path="/dashboard" element={<PrivateBusiness />}>
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectRoute role="business">
+              <PrivateBusiness />
+            </ProtectRoute>
+          }
+        >
           <Route path="" element={<Dashboard />} />
           <Route path="reviews" element={<Reviews />} />
-         
-          
+           <Route path="tables" element={<Tables />} />  
         </Route>
       </Routes>
     </>
