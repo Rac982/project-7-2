@@ -48,7 +48,7 @@ export default function ConfirmPayment() {
     const { toast } = useToast();
     const [feedback, setFeedback] = useState("");
     const [isCelebrating, setIsCelebrating] = useState(false);
-    const [showThanks, setShowThanks] = useState(false);
+    const [_, setShowThanks] = useState(false);
     const jsConfettiRef = useRef(null);
 
     if (!jsConfettiRef.current) {
