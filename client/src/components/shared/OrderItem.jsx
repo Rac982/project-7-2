@@ -38,7 +38,6 @@ import PopUp from './PopUp';
 const OrderItem = ({ item }) => {
   const dispatch = useDispatch();
   const [localStatus, setLocalStatus] = useState(item.status);
-  const [showPopUp, setShowPopUp] = useState(false);
 
   useEffect(() => {
     if (item.status === 'preparing') {
@@ -49,10 +48,6 @@ const OrderItem = ({ item }) => {
       return () => clearTimeout(timer);
     }
   }, [item._id, item.status, dispatch]);
-
-  const openPopup = () => {
-    setShowPopUp(true);
-  };
 
   const statusLabel = localStatus === 'served' ? 'Servito' : 'In preparazione';
   const statusColor = localStatus === 'served' ? 'text-green-500' : 'text-[#3BC8E1]';
@@ -66,16 +61,15 @@ const OrderItem = ({ item }) => {
 
         {/* Immagine piatto */}
         <CustomImage
-          onClick={openPopup}
           src={item.image}
           alt={item.name}
-          className="cursor-pointer w-[88px] h-[88px] rounded-2xl object-cover"
+          className="w-[88px] h-[88px] rounded-2xl object-cover"
         />
 
         {/* Dettagli */}
         <div className="flex flex-col justify-between flex-1">
           <div>
-            <h3 className="font-semibold cursor-pointer text-base text-[#111827] pr-6 line-clamp-2" onClick={openPopup}>{item.name}</h3>
+            <h3 className="font-semibold text-base text-[#111827] pr-6 line-clamp-2">{item.name}</h3>
           </div>
           <div className="flex justify-between items-center mt-2">
             <p className="text-sm font-medium text-gray-700">
@@ -90,12 +84,6 @@ const OrderItem = ({ item }) => {
           </div>
         </div>
       </div>
-      {/*Mostra PopUp senza azioni */}
-      {showPopUp && (
-        <div className="absolute flex justify-center items-center top-0 left-0 h-full w-screen bg-[#00000061] z-50">
-          <PopUp product={item} onClose={() => setShowPopUp(false)} showActions={false} />
-        </div>
-      )}
     </>
   );
 };

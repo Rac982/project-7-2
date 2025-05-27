@@ -5,6 +5,7 @@ import CartItem from '../../components/shared/CartItem';
 import { useToast } from '../../hooks/useToast';
 import { setOrder } from '../../store/slices/orderSlice';
 import CartEmpty from './CartEmpty';
+import BackButton from '../../components/shared/BackButton';
 
 /**
  * Pagina del carrello che mostra l'elenco dei prodotti selezionati dall'utente.
@@ -16,11 +17,11 @@ import CartEmpty from './CartEmpty';
  * Utilizza Redux per gestire lo stato del carrello.
  */
 const Cart = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { toast } = useToast();
-    const cart = useSelector((state) => state.cart);
-    const items = cart.items;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const cart = useSelector((state) => state.cart);
+  const items = cart.items;
 
   /**
    * Calcolo del subtotale: somma di (prezzo * quantità) per ogni articolo.
@@ -43,83 +44,78 @@ const Cart = () => {
   const servizio = 2; // Servizio fisso
   const totale = subtotal + tasse + servizio; // Totale finale
 
-    /**
-     * Gestione invio ordine:
-     * - Mostra il toast.
-     * - Pulisce il carrello.
-     * - Dopo 2 secondi, naviga alla pagina /categories.
-     */
+  /**
+   * Gestione invio ordine:
+   * - Mostra il toast.
+   * - Pulisce il carrello.
+   * - Dopo 2 secondi, naviga alla pagina /categories.
+   */
 
-    const handleSubmitOrder = () => {
-        dispatch(setOrder(cart.items)); // Copia ordine
-        dispatch(updateCartStatus(false));
-        toast.success("Il tuo ordine è stato inviato!");
-        setTimeout(() => {
-            navigate("/private/order-cart");
-        }, 3000);
-    };
+  const handleSubmitOrder = () => {
+    dispatch(setOrder(cart.items)); // Copia ordine
+    dispatch(updateCartStatus(false));
+    toast.success("Il tuo ordine è stato inviato!");
+    navigate("/private/order-cart");
+  };
 
-    return (
-        <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
-            {/* HEADER */}
-            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5 relative">
-                <img
-                  src="/images/Pluswhite.svg"
-                  alt="plus"
-                  className="w-5 h-5"
-                />
-                <h1 className="w-full font-semibold text-md">Riepilogo ordine</h1>
-                <img
-                    src="/images/cv.jpg"
-                    alt="Svuota carrello"
-                    className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white object-contain"
-                    onClick={() => dispatch(clearCart())}
-                />
+  return (
+    <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
+      {/* HEADER */}
+      <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5 relative">
+        <BackButton />
+        <h1 className="w-full font-semibold text-md">Riepilogo ordine</h1>
+        <img
+          src="/images/cv.jpg"
+          alt="Svuota carrello"
+          className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white object-contain"
+          onClick={() => dispatch(clearCart())}
+        />
+      </div>
+
+      {/* CONTENUTO */}
+      <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
+        style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
+        {items.length === 0 ? (
+          <CartEmpty />
+        ) : (
+          <div className="w-full mt-4 relative pb-24">
+            {/* ITEMS */}
+            {items.map((item) => (
+              <CartItem item={item} key={item._id} />
+            ))}
+
+            {/* RIEPILOGO TOTALE */}
+            <div className="text-sm text-gray-600 px-1 pb-10 mt-2">
+              <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
+              <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
+              <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
+              <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
+                <span>Totale:</span><span>{totale.toFixed(2)}€</span>
+              </div>
             </div>
 
-            {/* CONTENUTO */}
-            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
-                style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
-                {items.length === 0 ? (
-                    <CartEmpty />
-                ) : (
-                    <div className="w-full mt-4 relative pb-24">
-                        {/* ITEMS */}
-                        {items.map((item) => (
-                            <CartItem item={item} key={item._id} />
-                        ))}
-
-                        {/* RIEPILOGO TOTALE */}
-                        <div className="text-sm text-gray-600 px-1 mt-2">
-                            <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
-                            <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
-                            <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
-                            <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
-                                <span>Totale:</span><span>{totale.toFixed(2)}€</span>
-                            </div>
-                        </div>
-
-                        {/* FOOTER FISSO */}
-                        <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
-                            <button
-                                onClick={handleSubmitOrder}
-                                disabled={items.length === 0}
-                                className={`bg-[#3BC8E1] text-white text-[15px] mb-6 font-semibold flex items-center justify-center rounded-full shadow-md transition
+            {/* FOOTER FISSO */}
+            <div className="fixed bottom-0 py-6 left-[50%] w-full bg-white pt-4 flex justify-center z-0"
+              style={{ transform: 'translateX(-50%)' }}>
+              <button
+                onClick={handleSubmitOrder}
+                disabled={items.length === 0}
+                className={`bg-[#3BC8E1] text-white text-[15px] mb-6 font-semibold flex items-center justify-center rounded-full shadow-md transition
                                     ${items.length === 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : ''}`}
-                                style={{
-                                    width: '273px',
-                                    height: '39px'
-                                }}
-                            >
-                                <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
-                                <span className='pl-3'>Invia ordine</span>  
-                            </button>
-                        </div>
-                    </div>
-                )}
+                style={{
+                  width: '273px',
+                  height: '39px'
+                }}
+              >
+                <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
+                <span className='pl-3'>Invia ordine</span>
+              </button>
             </div>
-        </div>
-    );
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Cart;

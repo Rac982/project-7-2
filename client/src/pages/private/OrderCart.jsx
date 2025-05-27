@@ -88,7 +88,7 @@ const OrderCart = () => {
                         </div>
 
                         {/* RIEPILOGO TOTALE */}
-                        <div className="text-sm text-gray-600 px-1 mt-2">
+                        <div className="text-sm pb-10 text-gray-600 px-1 mt-2">
                             <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
                             <div className="flex justify-between mb-1"><span>Tasse:</span><span>{tasse.toFixed(2)}€</span></div>
                             <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
@@ -98,7 +98,8 @@ const OrderCart = () => {
                         </div>
 
                         {/* FOOTER FISSO Bottone TORNA AL MENU */}
-                        <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
+                        <div className="fixed bottom-0 py-6 left-[50%] w-full bg-white pt-4 flex justify-center z-40"
+                            style={{ transform: 'translateX(-50%)' }}>
                             <button
                                 onClick={() => navigate('/private/categories')}
                                 className="bg-[#3BC8E1] text-white text-[15px] font-semibold flex items-center mb-6 justify-center rounded-full shadow-md"
