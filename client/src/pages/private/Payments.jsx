@@ -50,12 +50,10 @@ const Payments = () => {
      * - Dopo 4 secondi, reindirizza alla pagina di conferma pagamento.
      */
     const handleCompletePayment = () => {
-        toast.success("Pagamento inviato!");
         dispatch(clearOrder());
         dispatch(clearCart());
-        setTimeout(() => {
-            navigate("/private/confirm-payment");
-        }, 4000);
+        toast.success("Pagamento inviato!");
+        navigate("/private/confirm-payment");
     };
 
     /**

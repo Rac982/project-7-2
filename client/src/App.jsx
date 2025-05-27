@@ -18,6 +18,7 @@ import LoginBusiness from "./pages/dashboard/LoginBusiness";
 import Tables from "./pages/dashboard/Tables";
 import Dashboard from "./pages/dashboard/Dashboard";
 import OrderCart from "./pages/private/OrderCart";
+import CartEmpty from "./pages/private/CartEmpty";
 
 
 const ProtectRoute = ({ children, role = "user" }) => {
@@ -48,7 +49,8 @@ const App = () => {
           <Route path="categories" element={<Categories />} />
           <Route path="products/:category_id" element={<Products />} />
           <Route path="payments" element={<Payments />} />
-          <Route path="cart" element={<Cart />} /> {/* Rotta cart */}
+          <Route path="cart" element={<Cart />} /> 
+          <Route path="cartempty" element={<CartEmpty />} />
           <Route path="confirm-payment" element={<ConfirmPayment />} />
           <Route path="order-cart" element={<OrderCart />} />
         </Route>

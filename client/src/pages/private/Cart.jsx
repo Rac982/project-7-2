@@ -61,7 +61,7 @@ const Cart = () => {
     return (
         <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
             {/* HEADER */}
-            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
+            <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5 relative">
                 <img
                     className="cursor-pointer"
                     src="/images/Component1.svg"
@@ -69,68 +69,58 @@ const Cart = () => {
                     onClick={() => navigate("/private/categories")}
                 />
                 <h1 className="w-full font-semibold text-md">Riepilogo ordine</h1>
+                <img
+                    src="/images/cv.jpg"
+                    alt="Svuota carrello"
+                    className="w-8 h-8 absolute right-4 top-5 cursor-pointer bg-white"
+                    onClick={() => dispatch(clearCart())}
+                />
             </div>
 
-            {/* CONTENUTO CARRELLO */}
-            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
-                style={{
-                    boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)"
-                }}>
-                {items.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center bg-white w-full mt-20 text-center p-6 rounded-2xl shadow-sm">
-                        <img src="/images/empty-cart.jpg" alt="carrello vuoto" className="w-40 h-40 mb-4" />
-                        <p className="text-gray-500 text-base font-medium">Il tuo carrello è vuoto</p>
-                        <button
-                            onClick={() => navigate('/private/categories')}
-                            className="cursor-pointer mt-6 bg-[#3BC8E1] text-white px-5 py-2 rounded-full text-sm font-medium"
-                        >
-                            Torna al menu
-                        </button>
-                    </div>
-                ) : (
-                    <div className="w-full mt-4">
-                        {items.map((item) => (
-                            <CartItem item={item} key={item._id} />
-                        ))}
+            {/* CONTENITORE PRINCIPALE */}
+            <div
+                className="flex flex-col gap-2 rounded-4xl p-2 bg-white w-[375px] px-6 py-7"
+                style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}
+            >
+                {/* BLOCCO SCROLLABILE */}
+                <div className="flex flex-col overflow-y-auto max-h-[calc(100vh-100px)] no-scrollbar pb-24">
+                    {items.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center mt-20 text-center p-6">
+                            <img src="/images/empty-cart.jpg" alt="vuoto" className="w-40 h-40 mb-4" />
+                            <p className="text-gray-500 text-base font-medium">Il tuo carrello è vuoto</p>
+                        </div>
+                    ) : (
+                        <>
+                            {items.map((item) => (
+                                <CartItem item={item} key={item._id} />
+                            ))}
 
-                        {/* RIEPILOGO TOTALE */}
-                        <div className="text-sm text-gray-600 px-1 mt-2">
-                            <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
-                            <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
-                            <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
-                            <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
-                                <span>Totale:</span><span>{totale.toFixed(2)}€</span>
+                            {/* RIEPILOGO TOTALE */}
+                            <div className="text-sm text-gray-600 px-1 mt-2">
+                                <div className="flex justify-between mb-1"><span>Subtotale:</span><span>{subtotal.toFixed(2)}€</span></div>
+                                <div className="flex justify-between mb-1"><span>Tasse (10%):</span><span>{tasse.toFixed(2)}€</span></div>
+                                <div className="flex justify-between mb-1"><span>Servizio:</span><span>{servizio.toFixed(2)}€</span></div>
+                                <div className="flex justify-between font-semibold text-[#111827] text-base mt-2">
+                                    <span>Totale:</span><span>{totale.toFixed(2)}€</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* BOTTONI */}
-                        <div className="mt-5 w-full flex flex-col gap-3">
-                            <button
-                                onClick={handleSubmitOrder}
-                                disabled={items.length == 0}
-                                className={`w-full h-[42px] rounded-full cursor-pointer text-white text-[15px] font-semibold flex items-center justify-center gap-2 transition
-                                 ${items.length == 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
-                            >
-                                <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
-                                Invia ordine
-                            </button>
-
-                            <button
-                                onClick={() => navigate('/private/categories')}
-                                className="w-full cursor-pointer border border-[#3BC8E1] h-[42px] rounded-full text-[#3BC8E1] text-[15px] font-semibold flex items-center justify-center gap-2"
-                            >
-                                Torna al menu
-                            </button>
-
-                            <button
-                                onClick={() => dispatch(clearCart())}
-                                className="w-full cursor-pointer border border-red-300 h-[42px] rounded-full text-red-500 text-[15px] font-semibold flex items-center justify-center gap-2"
-                            >
-                                Svuota carrello
-                            </button>
-                        </div>
-                    </div>
-                )}
+                            {/* BOTTONE */}
+                            <div className="sticky bottom-0 bg-white pt-4 pb-6 flex justify-center z-10">
+                                <button
+                                    onClick={handleSubmitOrder}
+                                    disabled={items.length === 0}
+                                    style={{ width: '273px', height: '39px' }}
+                                    className={`rounded-full text-white text-[15px] cursor-pointer font-semibold flex items-center justify-center gap-2 transition
+                                        ${items.length === 0 ? 'bg-[#A0DDE6] cursor-not-allowed' : 'bg-[#3BC8E1]'}`}
+                                >
+                                    <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
+                                    Invia ordine
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

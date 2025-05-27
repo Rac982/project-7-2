@@ -53,7 +53,7 @@ const OrderCart = () => {
             </div>
 
             {/* CONTENUTO */}
-            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10" style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
+            <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10">
                 {items.length === 0 ? (
                     <div className="flex flex-col items-center justify-center bg-white w-full mt-20 text-center p-6 rounded-2xl shadow-sm">
                         <img src="/images/empty-cart.jpg" alt="ordine vuoto" className="w-40 h-40 mb-4" />
@@ -66,7 +66,7 @@ const OrderCart = () => {
                         </button>
                     </div>
                 ) : (
-                    <div className="w-full mt-4">
+                    <div className="w-full mt-4 relative pb-24">
                         {/* PAGA IN APP */}
                         <div className="flex mb-4 px-2">
                             <div className="flex justify-between mb-1 w-full bg-[#DADBF1] rounded-full px-4 py-4">
@@ -97,11 +97,15 @@ const OrderCart = () => {
                             </div>
                         </div>
 
-                        {/* TORNA AL MENU */}
-                        <div className="mt-5 w-full">
+                        {/* FOOTER FISSO Bottone TORNA AL MENU */}
+                        <div className="sticky bottom-0 bg-white pt-4 flex justify-center z-40">
                             <button
                                 onClick={() => navigate('/private/categories')}
-                                className="w-full border cursor-pointer bg-[#3BC8E1] h-[42px] rounded-full text-white text-[15px] font-semibold flex items-center justify-center gap-2"
+                                className="bg-[#3BC8E1] text-white text-[15px] font-semibold flex items-center justify-center rounded-full shadow-md"
+                                style={{
+                                    width: '273px',
+                                    height: '39px'
+                                }}
                             >
                                 Torna al menu
                             </button>
