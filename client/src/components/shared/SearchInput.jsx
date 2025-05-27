@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setSearchResult } from '../../store/slices/searchSlice';
 import { useToast } from '../../hooks/useToast';
 
-const SearchInput = ({ value, onChange, categories }) => {
+const SearchInput = ({ value, onChange, categories, businessId = config.BUSINESS_ID }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const {get} = useApi();
@@ -15,7 +15,7 @@ const SearchInput = ({ value, onChange, categories }) => {
     const query = value.trim().toLowerCase();
 
     try {
-      const payload = await get(`/search?u=${config.BUSINESS_ID}&q=${query}`);
+      const payload = await get(`/search?u=${businessId}&q=${query}`);
       const _payload = { products: [], categories: [], ...payload };
       dispatch(setSearchResult(_payload));
     } catch (error) {
@@ -38,8 +38,8 @@ const SearchInput = ({ value, onChange, categories }) => {
             handleSearch()
           }
         }}
-        placeholder="Cerca i tuoi piatti preferiti"
-        className="w-full pl-4 pr-11 py-3 rounded-full border border-gray-300 text-xs placeholder:text-muted text-text"
+        placeholder="Cerca tra i piatti disponibili"
+        className="w-full bg-white pl-4 pr-11 py-3 rounded-full border border-gray-300 text-xs placeholder:text-muted text-text"
       />
 
       <button

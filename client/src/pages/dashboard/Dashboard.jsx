@@ -1,18 +1,25 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LineChartTurnover from "../../components/dashboard/LineChartTurnover";
 import InfoBox from "../../components/shared/InfoBox";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategory } from "../../store/slices/chartLabelSlice";
+import { setCategory } from "../../store/slices/categoryFilterSlice";
 import BestSellersList from "../../components/dashboard/BestSellersList";
 import { DoughnutChartAppPayments } from "../../components/dashboard/DoughnutChartAppPayments";
 import { DoughnutChartPositiveRewievs } from "../../components/dashboard/DoughnutChartPositiveRewievs";
 import VerticalBarChartNewCustomers from "../../components/dashboard/VerticalBarChartNewCustomers";
 import BestSellersEver from "../../components/dashboard/BestSellersEver";
 
+import { useApi } from "../../hooks/useApi";
+
 function Dashboard() {
     const [filter, setFilter] = useState("anno");
+    const [paymentFilter, setPaymentFilter] = useState("Tutti");
     const category = useSelector((state) => state.filters.category);
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
+    const [categories, setCategories] = useState([]);
+    const { get } = useApi();
+
 
     const svgIcon1 = (
         <svg className="fill-primary" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 26 26" fill="none">
@@ -50,8 +57,22 @@ function Dashboard() {
 
     const dataset = dataByFilter[filter] || [];
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                if (!user?._id) return;
+                const data = await get(`/categories/${user._id}`);
+                setCategories(data);
+            } catch (err) {
+                console.error("Errore nel caricamento categorie dashboard:", err);
+            }
+        };
+        fetchCategories();
+    }, [user]);
+
+
     return (
-        <div className="max-w-[972px] mx-auto px-4">
+        <div className="max-w-[972px] w-full px-4">
 
             {/* InfoBoxes */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
@@ -71,13 +92,26 @@ function Dashboard() {
 
                 {/* Turnover Chart card */}
                 <div className="w-full lg:w-[58%] bg-white rounded-3xl shadow-elevation-1 p-6 sm:p-11">
-                    <div className="flex flex-row gap-4 justify-between">
-                        <div>
+                    <div className="flex flex-row gap-2 justify-between">
+                        <div className="">
                             <h4 className="text-md text-text font-bold leading-tight">Fatturato</h4>
                             <p className="mt-2 text-xs text-muted mb-2 sm:mb-0">Lorem ipsum dolor sit amet.</p>
                         </div>
                         <select
-                            className="text-xs border border-gray-300 rounded-lg px-4 py-2 mt-4 sm:mt-0"
+                            value={category}
+                            onChange={(e) => dispatch(setCategory(e.target.value))}
+                            className="text-xs ml-auto border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-auto"
+                        >
+                            <option value="Tutti">Tutte le categorie</option>
+                            {categories.map((cat) => (
+                                <option key={cat._id} value={cat.name}>
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select
+                            className="text-xs border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-auto"
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
                         >
@@ -87,19 +121,20 @@ function Dashboard() {
                         </select>
                     </div>
 
-                    {/* Category button */}
+                    {/* Payment type filter */}
                     <div className="mt-6 flex flex-row gap-3 sm:mt-11 sm:gap-2">
-                        {['Tutti', 'Cucina', 'Bevande'].map((cat) => (
+                        {["Tutti", "Pagati in app", "Pagati in cassa"].map((type) => (
                             <button
-                                key={cat}
-                                onClick={() => dispatch(setCategory(cat))}
-                                className={`py-1.5 px-3 min-w-[110px] rounded-full text-sm text-center ${category === cat ? 'bg-secondary text-white' : 'bg-blue-light text-text'
+                                key={type}
+                                onClick={() => setPaymentFilter(type)}
+                                className={`py-1.5 px-3 min-w-[110px] rounded-full text-sm text-center ${paymentFilter === type ? "bg-secondary text-white" : "bg-blue-light text-text"
                                     }`}
                             >
-                                {cat}
+                                {type}
                             </button>
                         ))}
                     </div>
+
 
                     <div className="mt-10">
                         <LineChartTurnover dataset={dataset} filter={filter} />
@@ -178,4 +213,4 @@ function Dashboard() {
 
 }
 
-export default Dashboard
+export default Dashboard;

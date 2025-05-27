@@ -7,9 +7,10 @@ import searchSlice from "./slices/searchSlice";
 import labelSlice from "./slices/labelSlice";
 import cartSlice from "./slices/cartSlice";
 import settingsSlice from "./slices/settingsSlice";
-import filtersReducer from './slices/chartLabelSlice';
+import filtersReducer from './slices/categoryFilterSlice';
 import bestSellersReducer from './slices/bestSellersSlice';
 import orderSlice from "./slices/orderSlice";
+import sortReducer from './slices/bestSellersSlice';
 
 // il reducer del dashboard
 import tableReducer from "./slices/dashboard/tableSlice";
@@ -25,6 +26,7 @@ export default configureStore({
     cart: cartSlice,
     order: orderSlice,
     settings: settingsSlice,
+    sort: sortReducer,
 
     // Business / dashboard
     tables: tableReducer,

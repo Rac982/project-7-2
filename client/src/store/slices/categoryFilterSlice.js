@@ -4,7 +4,7 @@ const initialState = {
   category: 'Tutti',
 };
 
-const chartLabelSlice = createSlice({
+const categoryFilterSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
@@ -14,5 +14,5 @@ const chartLabelSlice = createSlice({
   },
 });
 
-export const { setCategory } = chartLabelSlice.actions;
-export default chartLabelSlice.reducer;
+export const { setCategory } = categoryFilterSlice.actions;
+export default categoryFilterSlice.reducer;
