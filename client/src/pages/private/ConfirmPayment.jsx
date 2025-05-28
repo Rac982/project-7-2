@@ -44,7 +44,7 @@ export default function ConfirmPayment() {
     setRating(0);
   };
 
-  const [content] = useState(""); // textarea
+  const [content, setContent] = useState("");// textarea
   const restaurantOwnerId = "6809247099bda8ef6880c799"; // ID statico per test
   const tableNumber = Math.floor(Math.random() * 20) + 1; // numero tavolo random da 1 a 20 (test)
   const { post } = useApi();
@@ -147,8 +147,10 @@ export default function ConfirmPayment() {
               style={{ width: 335, height: 73, borderRadius: 8 }}
             >
               <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 className="w-full h-full p-3 border border-gray-300 resize-none 
-                        focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
+                focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
                 placeholder="raccontaci di più sulla tua esperienza"
                 style={{ borderRadius: 8 }}
                 name="content"
