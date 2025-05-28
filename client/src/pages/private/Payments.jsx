@@ -130,7 +130,7 @@ const Payments = () => {
                   <button
                     key={label}
                     onClick={() => setSelectedTip(isSelected ? null : { label, amount })}
-                    className={`flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl border-2 shadow-elevation-1 text-sm transition ${isSelected ? "border-primary" : "border-transparent"
+                    className={`flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl border-2 shadow-elevation-1 text-sm transition ${isSelected ? "border-primary" : "border-transparent"
                       }`}
                   >
                     <span className="text-center font-extrabold text-xs text-gray-400">{label}</span>
