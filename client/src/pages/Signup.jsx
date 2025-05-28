@@ -175,7 +175,7 @@ const Signup = () => {
                 {/* Footer */}
                 <div className="mt-4 text-xs">
                     Hai già un account?{" "}
-                    <a href="/login" className="text-blue-500 font-semibold">Accedi</a>
+                    <a href="/" className="text-blue-500 font-semibold">Accedi</a>
                 </div>
             </div>
         </div>

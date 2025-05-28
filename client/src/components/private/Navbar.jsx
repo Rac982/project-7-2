@@ -56,7 +56,6 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <div>
             <Link to="/private/cart">
-              <CustomImage src="/images/Vector.png" alt="cart" />
               {totalQuantity > 0 && (
                 <span className="absolute -top-1 mr-14 mt-3.5 -right-1 bg-[#FFFFFF] text-[#3BC8E1] text-[10px] w-4 h-4 rounded-full font-bold flex items-center justify-center leading-none">
                   {totalQuantity}
@@ -83,21 +82,17 @@ const Navbar = () => {
                   className="text-white"
                 />
               ) : (
-                <CustomImage
-                  src="/images/Menu.png"
-                  alt="menu"
-                  className="h-[25px]"
-                />
+                <svg className="text-white opacity-100 cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                  <g>
+                    <path d="M24.9844 11.9844H1.01562C0.454695 11.9844 0 12.4391 0 13C0 13.5609 0.454695 14.0156 1.01562 14.0156H24.9844C25.5453 14.0156 26 13.5609 26 13C26 12.4391 25.5453 11.9844 24.9844 11.9844Z" fill="currentColor" />
+                    <path d="M24.9844 3.85938H1.01562C0.454695 3.85938 0 4.31407 0 4.875C0 5.43593 0.454695 5.89062 1.01562 5.89062H24.9844C25.5453 5.89062 26 5.43593 26 4.875C26 4.31407 25.5453 3.85938 24.9844 3.85938Z" fill="currentColor" />
+                    <path d="M24.9844 20.1094H1.01562C0.454695 20.1094 0 20.5641 0 21.125C0 21.6859 0.454695 22.1406 1.01562 22.1406H24.9844C25.5453 22.1406 26 21.6859 26 21.125C26 20.5641 25.5453 20.1094 24.9844 20.1094Z" fill="currentColor" />
+                  </g>
+                </svg>
               )}
-              <svg className="text-white opacity-100 cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                <g>
-                  <path d="M24.9844 11.9844H1.01562C0.454695 11.9844 0 12.4391 0 13C0 13.5609 0.454695 14.0156 1.01562 14.0156H24.9844C25.5453 14.0156 26 13.5609 26 13C26 12.4391 25.5453 11.9844 24.9844 11.9844Z" fill="currentColor" />
-                  <path d="M24.9844 3.85938H1.01562C0.454695 3.85938 0 4.31407 0 4.875C0 5.43593 0.454695 5.89062 1.01562 5.89062H24.9844C25.5453 5.89062 26 5.43593 26 4.875C26 4.31407 25.5453 3.85938 24.9844 3.85938Z" fill="currentColor" />
-                  <path d="M24.9844 20.1094H1.01562C0.454695 20.1094 0 20.5641 0 21.125C0 21.6859 0.454695 22.1406 1.01562 22.1406H24.9844C25.5453 22.1406 26 21.6859 26 21.125C26 20.5641 25.5453 20.1094 24.9844 20.1094Z" fill="currentColor" />
-                </g>
-              </svg>
+
             </div>
-            {selectMenu && <Menu />}
+            {selectMenu && <Menu toggleMenu={toggleMenu}/>}
           </div>
         </div>
       </div>

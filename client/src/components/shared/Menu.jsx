@@ -2,9 +2,8 @@ import { useSelector } from "react-redux";
 import CustomImage from "./CustomImage";
 import { Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({toggleMenu}) => {
   const { user } = useSelector((state) => state.auth);
-
   return (
     <div className="fixed flex justify-center items-center top-0 left-0 h-full w-screen bg-[#00000061] -z-10">
       <div
@@ -17,15 +16,15 @@ const Menu = () => {
         </div>
         <hr className="border-t border-gray-200 pb-3" />
         <div className="flex flex-col py-6 gap-3">
-          <div className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100">
+          <Link onClick={toggleMenu} to='/private/personalprofile' className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100">
             <CustomImage src="/images/menu_images/User.png" alt="" />
             <span className="pl-2">Profilo personale</span>
-          </div>
-          <div className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100">
+          </Link>
+          <Link onClick={toggleMenu} to='/private/orderlist' className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100">
             <CustomImage src="/images/menu_images/Notes.png" alt="" />
             <span className="pl-2">I miei ordini</span>
-          </div>
-          <Link
+          </Link>
+          <Link 
             to="/"
             className="px-1 h-[50px] flex items-center gap-2 py-6 rounded-2xl hover:bg-gray-100"
           >

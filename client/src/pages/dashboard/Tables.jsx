@@ -22,7 +22,7 @@ const Tables = () => {
       {/* Bottoni */}
       <div className="mb-4 flex justify-start">
         <button
-          className={`py-2 px-8 rounded-full gap-2 text-[14px]  ${selectedTab === "Tutti"
+          className={`py-2 px-8 cursor-pointer rounded-full mr-2 text-[14px]  ${selectedTab === "Tutti"
             ? "bg-[#070FA3] text-white"
             : "bg-[#070FA326] text-gray-700"
             }`}
@@ -31,7 +31,7 @@ const Tables = () => {
           Tutti
         </button>
         <button
-          className={`py-2 px-8 rounded-full gap-2 text-[14px] mr-2.5 ${selectedTab === "Aperti"
+          className={`py-2 px-8 cursor-pointer rounded-full mr-2 text-[14px] mr-2.5 ${selectedTab === "Aperti"
             ? "bg-[#070FA3] text-white"
             : "bg-[#070FA326] text-gray-700"
             }`}

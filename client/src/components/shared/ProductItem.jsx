@@ -1,37 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import CustomImage from "./CustomImage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "../../hooks/useToast";
+import { addToCart } from "../../store/slices/cartSlice";
 
 const ProductItem = ({ onSelectProduct, product }) => {
   const cartItems = useSelector((state) => state.cart.items);
-
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const [count, setCount] = useState(1); // Stato per la quantità da aggiungere
   const itemInCart = cartItems.find((item) => item._id === product._id);
   console.log(itemInCart);
+
+  const handleAddToCart = () => {
+    setCount(c => c + 1);
+    dispatch(addToCart({ ...product, quantity: count })); // Aggiunge al carrello
+    toast.success("Il tuo piatto è stato aggiunto");
+  };
+
   return (
     <>
       <div
         key={product._id}
         className=" bg-white max-w-[375px] w-full rounded  cursor-pointer flex space-between justify-center  py-1"
-        onClick={onSelectProduct}
+
       >
         <CustomImage
+          onClick={onSelectProduct}
           src={product.image}
           alt={product.name}
           className="w-[90px] h-[90px] rounded-2xl object-cover"
         />
-        <div className="pl-3 pr-5">
+        <div className="pl-3 pr-5"
+          onClick={onSelectProduct}>
           <h3 className="font-bold text-[16px]">{product.name}</h3>
           <p className="text-[12px]">{product.description}</p>
         </div>
         <div className="flex flex-col  min-w-[35px] h-[80px] justify-between items-center">
-          <p className="text-sm font-bold">{product.price} €</p>
+          <p className="text-sm font-bold" onClick={onSelectProduct}>{product.price} €</p>
           <div className="flex items-center justify-center gap-1">
             {itemInCart && (
-              <div className="bg-primary w-[15px] h-[15px] text-[13px] p-1 flex items-center justify-center text-white rounded-full">
+              <div className="bg-primary w-[16px] h-[16px] text-[14px] p-1 flex items-center justify-center text-white rounded-full">
                 {itemInCart.quantity}
               </div>
             )}
             <img
+              onClick={handleAddToCart}
               src=" /images/Plus.svg"
               alt="logo"
               className="w-[26px] h-[26px]"
