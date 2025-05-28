@@ -1,9 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import CustomImage from "../shared/CustomImage";
 import Menu from "../shared/Menu";
+/**
+ * Componente Navbar principale dell'app lato utente.
+ *
+ * Funzionalità:
+ * - Mostra il logo del ristorante con link alla home (`/private`).
+ * - Mostra l'icona del carrello con un badge che indica la quantità totale degli articoli.
+ *   Il badge appare solo se il carrello contiene almeno un articolo.
+ * - Mostra il menu laterale cliccando sull'icona `Menu.png`.
+ * 
+ * Stato interno:
+ * - `selectMenu`: booleano per aprire/chiudere il menu laterale.
+ * 
+ * Redux:
+ * - Estrae dal `cartSlice` l'array `items` per calcolare la quantità totale (`totalQuantity`)
+ *   sommando le `item.quantity`.
+ */
 
 const Navbar = () => {
   const [selectMenu, setSelectMenu] = useState(false);
+  const items = useSelector((state) => state.cart.items);
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const toggleMenu = () => {
     setSelectMenu((p) => !p);
@@ -36,6 +56,12 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <div>
             <Link to="/private/cart">
+              <CustomImage src="/images/Vector.png" alt="cart" />
+              {totalQuantity > 0 && (
+                <span className="absolute -top-1 mr-14 mt-3.5 -right-1 bg-[#FFFFFF] text-[#3BC8E1] text-[10px] w-4 h-4 rounded-full font-bold flex items-center justify-center leading-none">
+                  {totalQuantity}
+                </span>
+              )}
               <svg className="text-white opacity-100 cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                 <g clipPath="url(#clip0_1153_1175)">
                   <path d="M25.8385 6.81996C25.6942 6.63506 25.4727 6.527 25.2382 6.527H6.25184C6.09229 5.88879 5.82244 4.80929 5.55574 3.743C5.00487 1.53922 3.03356 0 0.761833 0C0.341166 0 0.00012207 0.341044 0.00012207 0.761711C0.00012207 1.18238 0.341166 1.52342 0.761833 1.52342C2.33319 1.52342 3.69676 2.58804 4.07782 4.11253L6.82485 15.1011C7.03392 15.9373 7.52273 16.6422 8.17628 17.1277C6.86959 18.3697 7.16209 20.643 8.714 21.5263C7.33865 23.3252 8.67713 26.0209 10.9604 25.9997C13.0255 26.0276 14.4198 23.7339 13.4519 21.9203H17.4434C16.4758 23.7342 17.8696 26.0276 19.935 25.9997C23.6461 25.859 23.6454 20.5372 19.935 20.3969H10.1444C8.45095 20.3325 8.45222 17.9048 10.1444 17.841H20.5611C22.2241 17.841 23.6672 16.7143 24.0704 15.1011L25.9771 7.4734C26.034 7.24591 25.9829 7.0048 25.8385 6.81996ZM19.935 21.9204C20.6397 21.9204 21.213 22.4937 21.213 23.1984C21.1487 24.8915 18.721 24.891 18.657 23.1984C18.657 22.4937 19.2303 21.9204 19.935 21.9204ZM10.9603 21.9204C11.665 21.9204 12.2383 22.4937 12.2383 23.1984C12.1741 24.8915 9.74637 24.891 9.68234 23.1984C9.68234 22.4937 10.2557 21.9204 10.9603 21.9204ZM22.5925 14.7316C22.359 15.6654 21.5237 16.3176 20.5611 16.3176H10.3341C9.37151 16.3176 8.53621 15.6654 8.30278 14.7317L6.63265 8.05048H24.2626L22.5925 14.7316Z" fill="currentColor" />
@@ -50,6 +76,19 @@ const Navbar = () => {
           </div>
           <div className="cursor-pointer flex justify-end items-center">
             <div onClick={toggleMenu}>
+              {selectMenu ? (
+                <CustomImage
+                  src="/images/Delete.png"
+                  alt="menu"
+                  className="text-white"
+                />
+              ) : (
+                <CustomImage
+                  src="/images/Menu.png"
+                  alt="menu"
+                  className="h-[25px]"
+                />
+              )}
               <svg className="text-white opacity-100 cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                 <g>
                   <path d="M24.9844 11.9844H1.01562C0.454695 11.9844 0 12.4391 0 13C0 13.5609 0.454695 14.0156 1.01562 14.0156H24.9844C25.5453 14.0156 26 13.5609 26 13C26 12.4391 25.5453 11.9844 24.9844 11.9844Z" fill="currentColor" />

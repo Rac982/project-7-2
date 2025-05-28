@@ -9,6 +9,7 @@ import cartSlice from "./slices/cartSlice";
 import settingsSlice from "./slices/settingsSlice";
 import filtersReducer from './slices/categoryFilterSlice';
 import bestSellersReducer from './slices/bestSellersSlice';
+import orderSlice from "./slices/orderSlice";
 import sortReducer from './slices/bestSellersSlice';
 
 // il reducer del dashboard
@@ -23,6 +24,7 @@ export default configureStore({
     search: searchSlice,
     labels: labelSlice,
     cart: cartSlice,
+    order: orderSlice,
     settings: settingsSlice,
     sort: sortReducer,
 

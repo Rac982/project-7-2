@@ -2,7 +2,7 @@ import CustomImage from "./CustomImage";
 
 const Stars = ({ rating }) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center flex-wrap">
       <CustomImage
         src={
           rating >= 1

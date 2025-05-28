@@ -57,38 +57,60 @@ const CartItem = ({ item }) => {
     }
 
     return (
-        <div key={item._id} className="bg-white mb-4 p-3 rounded-2xl shadow-sm flex gap-4">
-            <CustomImage 
+        <div key={item._id} className="relative flex bg-white cursor-pointer mb-3 p-3 rounded-xl shadow-sm border border-gray-100">
+            {/* Immagine */}
+            <CustomImage
                 onClick={() => selectCurrentProduct(item)}
                 src={item.image}
                 alt={item.name}
-                className="w-[88px] h-[88px] rounded-2xl object-cover"
+                className="w-[88px] h-[88px] rounded-xl object-cover"
             />
-            <div className="flex flex-col justify-between flex-1">
+
+            {/* Contenuto a destra */}
+            <div className="flex flex-col justify-between flex-1 ml-3 relative">
+                {/* Titolo + descrizione */}
                 <div>
-                    <h3 className="font-semibold text-base text-[#111827]" onClick={() => selectCurrentProduct(item)}>{item.name}</h3>
-                    <p className="text-sm text-gray-500">Quantità: {item.quantity}</p>
+                    <h3
+                        onClick={() => selectCurrentProduct(item)}
+                        className="cursor-pointer font-semibold text-sm text-[#111827] line-clamp-2 pr-6"
+                    >
+                        {item.name}
+                    </h3>
+                    <p className="text-xs text-gray-400 line-clamp-1">Lorem ipsum dolor sit amet...</p>
                 </div>
-                <div className="flex items-center gap-2 mt-2">
-                    <button
-                        onClick={handleDecrease}
-                        className="w-7 h-7 rounded-full bg-[#FFEAEA] text-red-500 font-bold"
-                    >−</button>
-                    <span className="text-sm font-medium">{item.quantity}</span>
-                    <button
-                        onClick={handleIncrease}
-                        className="w-7 h-7 rounded-full bg-[#D1FAE5] text-green-600 font-bold"
-                    >+</button>
+
+                {/* Riga con prezzo + quantità */}
+                <div className="flex items-center justify-between mt-2">
+                    {/* Prezzo a sinistra */}
+                    <p className="text-sm font-medium text-[#111827]">
+                        {parseFloat(item.price).toFixed(2)} €
+                    </p>
+
+                    {/* Bottoni quantità */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleDecrease}
+                            className="w-6 h-6 cursor-pointer rounded-full bg-[#F3F3F3] text-black font-bold text-sm"
+                        >−</button>
+                        <span className="text-sm font-medium">{item.quantity}</span>
+                        <button
+                            onClick={handleIncrease}
+                            className="w-6 h-6 cursor-pointer rounded-full bg-[#F3F3F3] text-black font-bold text-sm"
+                        >+</button>
+                    </div>
                 </div>
-            </div>
-            <div className="flex flex-col items-end justify-between">
-                <p className="text-sm font-medium text-gray-700">
-                    {(parseFloat(item.price) * item.quantity).toFixed(2)}€
-                </p>
+
+                {/* Icona rimuovi in alto a destra */}
                 <button
                     onClick={handleRemove}
-                    className="text-xs text-red-600 mt-1"
-                >Rimuovi</button>
+                    className="absolute cursor-pointer top-[-6px] right-[-8px]"
+                >
+                    <img
+                        src="/images/croce-azzurra.jpg" 
+                        alt="Rimuovi"
+                        className="w-6 h-6"
+                    />
+                </button>
             </div>
         </div>
     );

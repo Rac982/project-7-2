@@ -16,7 +16,7 @@ import { useToast } from "../../hooks/useToast";
  * @param {function} onClose - Funzione per chiudere il popup
  * @param {object} product - Oggetto contenente i dati completi del prodotto
  */
-const PopUp = ({ onClose, product }) => {
+const PopUp = ({ onClose, product, showActions = true }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const [count, setCount] = useState(1); // Stato per la quantità da aggiungere
@@ -30,6 +30,7 @@ const PopUp = ({ onClose, product }) => {
 
   const { image, description, name: title, price } = product;
 
+  
   return (
     <>
       <div className="bg-white w-[313px] h-auto pb-8 border-b border-b-gray-400 flex flex-col justify-center relative rounded-2xl">
@@ -69,6 +70,8 @@ const PopUp = ({ onClose, product }) => {
           <div>
             <p className="text-[12px] text-[#B3ADAD] mb-3">Aggiungi nota +</p>
           </div>
+          {showActions && (
+            <>
           <div className="flex justify-between items-center">
             <div>
               <div className="flex justify-between items-center">
@@ -110,6 +113,8 @@ const PopUp = ({ onClose, product }) => {
             />
             Aggiungi all'ordine
           </button>
+        </>
+          )}
         </div>
       </div>
     </>
