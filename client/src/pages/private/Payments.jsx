@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import InfoBox from '../../components/shared/InfoBox';
 import { useToast } from '../../hooks/useToast';
@@ -16,58 +16,35 @@ import { useSelector } from 'react-redux';
  * - Gestisce la selezione della mancia (tip).
  */
 const Payments = () => {
-  const [selectedTip, setSelectedTip] = useState(null)
-  const tipAmount = selectedTip?.amount || 0;
-
-
-  /**
-   * Hook React Router per ottenere informazioni sulla posizione corrente.
-   */
-  const location = useLocation();
-
-  /**
-   * Hook React Router per navigare tra le pagine.
-   */
-  const navigate = useNavigate();
-
-  /**
-   * Hook Redux per inviare azioni allo store globale.
-   */
   const dispatch = useDispatch();
-
-  /**
-   * Custom hook per mostrare notifiche toast.
-   */
+  const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart);
+  const location = useLocation();
   const { toast } = useToast();
 
-  /**
-   * Funzione per completare il pagamento:
-   * - Mostra un toast di successo.
-   * - Svuota lo stato di `order` e `cart`.
-   * - Dopo 4 secondi, reindirizza alla pagina di conferma pagamento.
-   */
+  const [selectedTip, setSelectedTip] = useState(null);
+  const [subtotal, setSubtotal] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    const sum = (cart.items || []).reduce((acc, item) => acc + item.price * item.quantity, 0);
+    setSubtotal(sum);
+  }, [cart]);
+
+  useEffect(() => {
+    const tax = subtotal * 0.1;
+    const service = 2
+    const tip = selectedTip?.amount || 0;
+    setTotalAmount(subtotal + tax + service + tip);
+  }, [subtotal, selectedTip]);
+
+
   const handleCompletePayment = () => {
     navigate("/private/confirm-payment");
     dispatch(clearOrder());
     dispatch(clearCart());
     toast.success("Pagamento inviato!");
   };
-
-  /**
-   * Stato Redux contenente l’ordine attuale dell’utente.
-   * Contiene `items` (array di piatti ordinati) e `status` globale.
-   */
-  const cart = useSelector((state) => state.cart);
-
-  /**
-   * Stato locale per bloccare il totale una volta caricato il componente.
-   * Serve a evitare che il totale si azzeri subito dopo il pagamento, 
-   * mantenendo visibile il valore durante l’animazione o la transizione.
-   * 
-   * @type {[number, Function]}
-   */
-  
-  const [totalAmount] = useState(cart.totalPrice + tipAmount);
 
   const svgIcon = (
     <svg
@@ -172,7 +149,7 @@ const Payments = () => {
             </p>
           </div>
           <div className="mt-4 mx-5 flex flex-col items-center gap-5">
-            <button className="flex flex-col items-center bg-white rounded-3xl w-full max-w-[17.125rem] shadow-elevation-1"
+            <button className="flex flex-col items-center cursor-pointer bg-white rounded-3xl w-full max-w-[17.125rem] shadow-elevation-1"
               onClick={handleCompletePayment}>
               <svg xmlns="http://www.w3.org/2000/svg" width="71" height="70" viewBox="0 0 71 70" fill="none">
                 <g clipPath="url(#clip0_566_730)">
@@ -192,7 +169,7 @@ const Payments = () => {
               </svg>
             </button>
             <div className='flex flex-row justify-between items-center gap-3 w-full max-w-[17.125rem]'>
-              <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+              <button className="flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
                 onClick={handleCompletePayment}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                   <g clipPath="url(#clip0_566_1320)">
@@ -209,7 +186,7 @@ const Payments = () => {
                   </defs>
                 </svg>
               </button>
-              <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+              <button className="flex-1 min-w-0 aspect-square flex flex-col cursor-pointer items-center justify-center rounded-3xl shadow-elevation-1"
                 onClick={handleCompletePayment}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                   <g clipPath="url(#clip0_566_977)">
@@ -228,7 +205,7 @@ const Payments = () => {
                   </defs>
                 </svg>
               </button>
-              <button className="flex-1 min-w-0 aspect-square flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
+              <button className="flex-1 min-w-0 aspect-square cursor-pointer flex flex-col items-center justify-center rounded-3xl shadow-elevation-1"
                 onClick={handleCompletePayment}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50" viewBox="0 0 51 50" fill="none">
                   <g clipPath="url(#clip0_566_655)">
