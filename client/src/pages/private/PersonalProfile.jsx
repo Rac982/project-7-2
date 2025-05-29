@@ -1,9 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 
 // Icone SVG inline
 const icons = {
+  
   user: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +126,7 @@ const icons = {
 export default function PersonalProfile() {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
+  const navigate = useNavigate();
   return (
     <div className="relative w-[375px] mx-auto h-full">
       {/* Header */}
