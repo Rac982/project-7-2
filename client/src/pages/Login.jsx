@@ -148,7 +148,7 @@ const Login = () => {
 
                 </form>
                 <p className="mt-4 text-xs">
-                    Non hai ancora un account? <a href="#" className="text-blue-500 hover:semibold">Registrati</a>
+                    Non hai ancora un account? <a href="/signup" className="text-blue-500 hover:semibold">Registrati</a>
 
                 </p>
             

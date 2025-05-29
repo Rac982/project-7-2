@@ -1,12 +1,12 @@
 import BackButton from "../../components/shared/BackButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useRef, useState } from "react";
-import { useToast } from '../../hooks/useToast';
+import { useToast } from "../../hooks/useToast";
 import JSConfetti from "js-confetti";
 import { useApi } from "../../hooks/useApi";
+import CustomImage from "../../components/shared/CustomImage";
 
 export default function ConfirmPayment() {
-
   const [rating, setRating] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,14 +44,14 @@ export default function ConfirmPayment() {
     setRating(0);
   };
 
-  const [content, setContent] = useState("");// textarea
+  const [content, setContent] = useState(""); // textarea
   const restaurantOwnerId = "6809247099bda8ef6880c799"; // ID statico per test
   const tableNumber = Math.floor(Math.random() * 20) + 1; // numero tavolo random da 1 a 20 (test)
   const { post } = useApi();
 
   const handleSubmitOrder = async () => {
     try {
-      await post('/reviews', {
+      await post("/reviews", {
         user: restaurantOwnerId,
         content,
         table: tableNumber,
@@ -67,22 +67,34 @@ export default function ConfirmPayment() {
     }
   };
 
+  console.log(rating);
+
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
         {/* Bottone paga in app */}
 
         <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
-          <img className="cursor-pointer" src="/images/Component1.svg" alt="arrow" onClick={() => navigate(location.key == "default" ? "/private" : -1)} />
+          <img
+            className="cursor-pointer"
+            src="/images/Component1.svg"
+            alt="arrow"
+            onClick={() =>
+              navigate(location.key == "default" ? "/private" : -1)
+            }
+          />
           <h1 className="w-full font-semibold text-md">Paga in app</h1>
         </div>
 
         {/* Card */}
-        <div className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
-          style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}>
+        <div
+          className="flex flex-col items-center w-[375px] px-4 pb-24 rounded-t-3xl bg-white w-full h-10"
+          style={{ boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)" }}
+        >
           <div className="w-[375px] h-[665px] bg-white rounded-2xl shadow-2xl p-6 flex flex-col items-center mt-10">
-
-            <h2 className="text-2xl font-extrabold mb-1 text-center">Grazie!</h2>
+            <h2 className="text-2xl font-extrabold mb-1 text-center">
+              Grazie!
+            </h2>
             <p className="text-gray-400 mb-6 text-center text-[15px]">
               Il tuo pagamento è andato a buon fine.
             </p>
@@ -96,7 +108,7 @@ export default function ConfirmPayment() {
                     maxWidth: "173px",
                     maxHeight: "173px",
                     margin: "auto",
-                    userSelect: "none"
+                    userSelect: "none",
                   }}
                 />
               </div>
@@ -117,10 +129,17 @@ export default function ConfirmPayment() {
                     key={star}
                     aria-label={`${star} stelle`}
                     className="focus:outline-none"
-                    onClick={() => setRating(star)}
+                    onClick={() => {
+                      if (rating === star) {
+                        setRating(rating - 1);
+                      } else {
+                        setRating(star);
+                      }
+                    }}
                     type="button"
                   >
                     <svg
+                      xmlns="http://www.w3.org/2000/svg"
                       width="28"
                       height="28"
                       viewBox="0 0 48 48"
@@ -132,8 +151,7 @@ export default function ConfirmPayment() {
                     >
                       <polygon
                         points="24,6 30,19 44,19 32,28 36,42 24,34 12,42 16,28 4,19 18,19"
-                        fill={star <= rating ? "yellow" : "none"}
-                        opacity={star <= rating ? 0.7 : 1}
+                        fill={star <= rating ? "#3BC8E1" : "none"}
                       />
                     </svg>
                   </button>
@@ -160,18 +178,20 @@ export default function ConfirmPayment() {
             {/* Bottone invia feedback */}
             <div className="flex justify-center">
               <button
-                type='button'
+                type="button"
                 onClick={handleSubmitOrder}
                 disabled={!canSubmit || isCelebrating}
                 className={`
     bg-cyan-500 text-white flex items-center justify-center gap-2 rounded-full px-6 py-1.5 font-semibold
     w-[273px] h-[39px] mt-2 transition
-    ${canSubmit && !isCelebrating ? "hover:scale-105 active:scale-95 shadow-lg" : "opacity-50 cursor-not-allowed"}
+    ${
+      canSubmit && !isCelebrating
+        ? "hover:scale-105 active:scale-95 shadow-lg"
+        : "opacity-50 cursor-not-allowed"
+    }
     animate-bounce
 `}
-
                 style={{ width: 273, height: 39, borderRadius: 99 }}
-
               >
                 {isCelebrating ? "🎉" : "Invia feedback"}
               </button>

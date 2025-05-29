@@ -15,18 +15,7 @@ export default function CartEmpty() {
             }}
         >
             {/* BODY */}
-            <div className="relative flex-1 w-full flex flex-col items-center pt-8 px-4">
-
-                {/* freccia + Titolo */}
-                <div className="flex items-center w-full mb-8">
-                    <button className="mr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
-                            <circle cx="21.5" cy="21.5" r="21.5" fill="#F3F3F3" />
-                            <path d="M17.5898 22.0354L24.3353 28.7786C24.6313 29.0738 25.1108 29.0738 25.4075 28.7786C25.7035 28.4833 25.7035 28.0038 25.4075 27.7086L19.1971 21.5004L25.4068 15.2923C25.7028 14.997 25.7028 14.5175 25.4068 14.2215C25.1108 13.9263 24.6305 13.9263 24.3345 14.2215L17.5891 20.9646C17.2977 21.2568 17.2977 21.7439 17.5898 22.0354Z" fill="#332B2C" />
-                        </svg>
-                    </button>
-                    <h2 className="text-lg font-semibold text-[#231F20]">Riepilogo ordine</h2>
-                </div>
+            <div className="relative flex-1 w-full mt-[130px] flex flex-col items-center pt-8 px-4">
 
                 {/* Icona deserto (video animato) */}
                 <div className="flex justify-center items-center w-full mt-2 mb-2 z-10">
