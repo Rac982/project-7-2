@@ -78,9 +78,12 @@ const labelSlice = createSlice({
       if (currentIndex == -1) state.currents.push(payload);
       else state.currents.splice(currentIndex, 1);
     },
+    resetCurrentsLabel: (state) => {
+      state.currents = [];
+    },
   },
 });
 
-export const { setLabels, updateCurrentsLabel } = labelSlice.actions;
+export const { setLabels, updateCurrentsLabel, resetCurrentsLabel } = labelSlice.actions;
 
 export default labelSlice.reducer;

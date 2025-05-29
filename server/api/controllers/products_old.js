@@ -8,23 +8,11 @@ const { Product } = require("../../db");
  * @param {Response} res
  * @permission Business
  */
-const mongoose = require("mongoose");
-
 const getAllProducts = async (req, res) => {
-  const categoryId = req.params.category_id;
+  const category = req.params.category_id;
 
   try {
-    let query = {};
-
-    if (categoryId && categoryId !== 'all') {
-      // Controlla che sia un ObjectId valido prima di usarlo
-      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-        return res.status(400).json({ error: "ID categoria non valido" });
-      }
-      query.category = categoryId;
-    }
-
-    const products = await Product.find(query, null, {
+    const products = await Product.find({ category }, null, {
       lean: true,
       sort: { createdAt: -1 },
     })

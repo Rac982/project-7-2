@@ -1,4 +1,32 @@
-import React, { useEffect, useState } from "react";
+/**
+ * Componente `MenuBusiness` lato dashboard business (ristoratore).
+ * 
+ * Questo componente permette di:
+ * - Visualizzare tutti i prodotti del menù, filtrati per categoria o ordinati per nome/prezzo.
+ * - Cercare un piatto tramite barra di ricerca.
+ * - Aggiungere, modificare, duplicare o eliminare un piatto tramite modale.
+ * - Selezionare "Tutte le categorie" per mostrare ogni prodotto.
+ * - Integrare il filtro di categoria, la ricerca testuale e l’ordinamento via Redux.
+ *
+ * Hook principali:
+ * - `useEffect`: per il caricamento di categorie/prodotti iniziale e aggiornamenti dinamici.
+ * - `useSelector`: per leggere dati da Redux (categorie, prodotti, user, ricerca).
+ * - `useDispatch`: per inviare azioni di ordinamento, filtro e set di prodotti.
+ *
+ * Hook custom:
+ * - `useApi`: per effettuare chiamate HTTP con `get`, `post`, `put`, `del`.
+ *
+ * Stato locale:
+ * - `query`: stringa di ricerca.
+ * - `loading`: stato di caricamento.
+ * - `categories`: array di categorie disponibili.
+ * - `isModalOpen`, `modalType`, `selectedProduct`: gestiscono la modale prodotto.
+ *
+ * Funzionalità aggiuntive:
+ * - Duplicazione prodotto (con suffisso “(Copia)”).
+ * - Selezione dinamica della categoria con valore speciale "all" per mostrare tutto.
+ */
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import BusinessProductItem from "../../components/dashboard/BusinessProductItem";
@@ -33,27 +61,48 @@ function MenuBusiness() {
 
     const isSearching = filteredProducts.length > 0;
 
-    // 2. Eventi UI
+    /**
+     * Aggiorna il criterio di ordinamento selezionato per la lista di prodotti.
+     * @param {React.ChangeEvent<HTMLSelectElement>} e - Evento di cambio selezione.
+     */
     const handleChange = (e) => {
         dispatch(sortBusinessMenuProducts(e.target.value));
     };
 
+
+    /**
+ * Imposta la categoria selezionata e carica i relativi prodotti.
+ * @param {React.ChangeEvent<HTMLSelectElement>} e - Evento di cambio selezione.
+ */
     const handleChangeCategoryFilter = (e) => {
-        dispatch(setCategory(e.target.value));
+        const selected = e.target.value;
+        dispatch(setCategory(selected));
+        fetchProducts(selected || null);
     };
 
+    /**
+ * Apre la modale per la creazione di un nuovo prodotto.
+ */
     const openCreateModal = () => {
         setModalType("create");
         setSelectedProduct(null);
         setIsModalOpen(true);
     };
 
+    /**
+ * Apre la modale di modifica per un prodotto esistente.
+ * @param {Object} product - Prodotto da modificare.
+ */
     const openEditModal = (product) => {
         setModalType("edit");
         setSelectedProduct(product);
         setIsModalOpen(true);
     };
 
+    /**
+ * Elimina un prodotto dopo conferma e ricarica i prodotti della categoria.
+ * @param {Object} product - Prodotto da eliminare.
+ */
     const handleDeleteProduct = async (product) => {
         if (!window.confirm(`Sei sicuro di voler eliminare "${product.name}"?`)) return;
 
@@ -66,6 +115,10 @@ function MenuBusiness() {
         }
     };
 
+    /**
+ * Duplica un prodotto esistente e lo aggiunge alla lista.
+ * @param {Object} product - Prodotto da duplicare.
+ */
     const handleDuplicateProduct = async (product) => {
         console.log("Duplica:", product);
 
@@ -78,37 +131,28 @@ function MenuBusiness() {
             description: product.description,
             image: product.image,
         };
-
-        console.log("Invio:", duplicatedProduct);
-
         try {
             await post("/products", duplicatedProduct);
-
-            // Ricarica prodotti per categoria selezionata
-            const currentCat = categories.find((c) => c.name === product.category.name || c._id === product.category);
-            fetchProducts(currentCat?._id);
-
+            fetchProducts(category || null); // carica prodotti per la categoria attuale, o tutti
         } catch (error) {
             console.error("Errore duplicazione:", error);
-            console.log("Dettaglio errore:", error.response?.data);
         }
     };
 
-
-    // 3. Submit modale
+    /**
+ * Gestisce il submit della modale per creare o modificare un prodotto.
+ * @param {Object} productData - Dati del prodotto da salvare.
+ */
     const handleModalSubmit = async (productData) => {
         try {
             if (modalType === "create") {
                 await post("/products", productData);
+                fetchProducts(category || null); // carica prodotti per la categoria attuale, o tutti
             } else if (modalType === "edit" && selectedProduct?._id) {
                 await put(`/products/${selectedProduct._id}`, productData);
+                const cat = categories.find(c => c._id === productData.category);
+                if (cat?._id) fetchProducts(cat._id);
             }
-
-            // Ricarica correttamente i prodotti per la categoria aggiornata
-            const cat = categories.find(c => c._id === productData.category);
-            if (cat?._id) fetchProducts(cat._id);
-
-
         } catch (error) {
             console.error("Errore salvataggio prodotto:", error);
         } finally {
@@ -116,54 +160,40 @@ function MenuBusiness() {
         }
     };
 
-    // 4. API fetch prodotti
-    /* const fetchProducts = async () => {
+    /**
+     * Recupera i prodotti dal backend in base alla categoria.
+     * @param {string|null} categoryId - ID della categoria oppure null per tutti i prodotti.
+     */
+    const fetchProducts = useCallback(async (categoryId = null) => {
         try {
-            const products = await get(`/products`);
-            dispatch(setProducts(products));
+            const url = categoryId ? `/products/${categoryId}` : `/products`;
+            const fetchedProducts = await get(url);
+            console.log("Fetched products:", fetchedProducts); // 2. Verifica i dati ricevuti
+            dispatch(setProducts(fetchedProducts));
         } catch (error) {
             console.error("Errore nel caricamento dei prodotti:", error);
+            console.error("Axios Error Details:", error);
         } finally {
             setLoading(false);
         }
-    }; */
-    const fetchProducts = async (categoryId) => {
-        if (!categoryId) return;
-        try {
-            const products = await get(`/products/${categoryId}`);
-            dispatch(setProducts(products));
-        } catch (error) {
-            console.error("Errore nel caricamento dei prodotti:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [get, dispatch, setLoading]);
 
-    // 5. API fetch categorie
-    /*  const fetchCategories = async () => {
-         try {
-             if (!user?._id) {
-                 console.warn("ID utente non disponibile per categorie");
-                 return;
-             }
-             const categories = await get(`/categories/${user._id}`);
-             setCategories(categories);
-         } catch (error) {
-             console.error("Errore nel caricamento delle categorie:", error);
-         }
-     };
-  */
+    /**
+     * Recupera le categorie del ristoratore dal backend e carica i prodotti.
+     */
     const fetchCategories = async () => {
         try {
             if (!user?._id) return;
+
+            // Recupera tutte le categorie associate all'utente
             const categories = await get(`/categories/${user._id}`);
             setCategories(categories);
 
-            if (categories.length > 0) {
-                const firstCat = categories[0];
-                dispatch(setCategory(firstCat._id));
-                fetchProducts(firstCat._id);
-            }
+            // Imposta il filtro categoria su "all" per indicare "Tutte le categorie"
+            dispatch(setCategory("all"));
+
+            // Carica tutti i prodotti (nessun filtro per categoria)
+            fetchProducts(null);
         } catch (error) {
             console.error("Errore nel caricamento delle categorie:", error);
         }
@@ -180,6 +210,16 @@ function MenuBusiness() {
             dispatch(clearSearchResult());
         }
     }, [query]);
+
+    // Ricarica tutti i prodotti se selezionata "Tutte le categorie"
+    useEffect(() => {
+        if (category === "all") {
+            fetchProducts(null);
+        } else if (category) {
+            fetchProducts(category);
+        }
+    }, [category, fetchProducts]);
+
 
     // 8. Render
     return (
@@ -207,16 +247,16 @@ function MenuBusiness() {
 
                 <div className="w-full sm:w-1/3">
                     <SearchInput value={query} onChange={(e) => setQuery(e.target.value)}
-                        businessId={user._id}/>
+                        businessId={user._id} />
                 </div>
 
                 <div>
                     <select
-                        value={category}
+                        value={category || "all"}
                         onChange={handleChangeCategoryFilter}
                         className="text-xs border border-gray-300 rounded-lg px-4 py-2"
                     >
-                        <option value="">Tutte le categorie</option>
+                        <option value="all">Tutte le categorie</option>
                         {categories.map((cat) => (
                             <option key={cat._id} value={cat._id}>
                                 {cat.name}
@@ -252,12 +292,13 @@ function MenuBusiness() {
                     ))
                 ) : !loading ? (
                     (() => {
-                        const filteredByCategory = category
-                            ? products.filter((p) => {
-                                const prodCatId = typeof p.category === "object" ? p.category._id : p.category;
-                                return String(prodCatId) === String(category);
-                            })
-                            : products;
+                        const filteredByCategory =
+                            category && category !== "all"
+                                ? products.filter((p) => {
+                                    const prodCatId = typeof p.category === "object" ? p.category._id : p.category;
+                                    return String(prodCatId) === String(category);
+                                })
+                                : products;
 
                         return filteredByCategory.length > 0 ? (
                             filteredByCategory.map((product) => (

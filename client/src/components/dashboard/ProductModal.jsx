@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import CustomImage from "../shared/CustomImage";
+import FiltersPopUp from "../shared/FiltersPopUp";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { resetCurrentsLabel } from "../../store/slices/labelSlice";
 
 const ProductModal = ({
     isOpen,
@@ -14,11 +18,23 @@ const ProductModal = ({
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const [filterResetKey, setFilterResetKey] = useState(0);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+
 
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        if (!isOpen) return;
+        if (!isOpen) {
+            setErrorMessage("");
+            return;
+        }
+
+        const isMenuPage = location.pathname === "/dashboard/menu";
 
         if (modalType === "edit" && initialData) {
             setName(initialData.name || "");
@@ -39,9 +55,15 @@ const ProductModal = ({
             if (fileInputRef.current) {
                 fileInputRef.current.value = null;
             }
-        }
-    }, [isOpen, initialData, modalType]);
 
+            if (isMenuPage) {
+                dispatch(resetCurrentsLabel());
+            }
+        }
+
+        setFilterResetKey(prev => prev + 1);
+
+    }, [isOpen, initialData, modalType, location.pathname]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -56,6 +78,13 @@ const ProductModal = ({
     };
 
     const handleSubmit = () => {
+        if (!name || !price || !category || !description || !image) {
+            setErrorMessage("Compila tutti i campi obbligatori prima di continuare.");
+            return;
+        }
+
+        setErrorMessage("");
+
         onSubmit({
             name,
             price,
@@ -73,7 +102,7 @@ const ProductModal = ({
 
     return (
         <div className="absolute top-0 left-0 w-screen h-full bg-[#00000091] flex justify-center items-center z-50">
-            <div className="bg-white rounded-3xl p-10 w-full max-w-screen-md mx-auto relative">
+            <div className="bg-white rounded-3xl p-10 w-full max-w-[1000px] mx-auto relative">
                 {/* X per chiusura */}
                 <button
                     onClick={onClose}
@@ -88,7 +117,8 @@ const ProductModal = ({
                     {modalType === "create" ? "Aggiungi nuovo piatto" : "Modifica piatto"}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-[minmax(200px,_1fr)_auto_auto] gap-8 items-start">
+
                     {/* Colonna sinistra */}
                     <div className="space-y-5 flex-1">
                         <input
@@ -134,8 +164,8 @@ const ProductModal = ({
                         />
                     </div>
 
-                    {/* Colonna destra */}
-                    <div className="flex flex-col gap-6 flex-1">
+                    {/* Colonna centrale */}
+                    <div className="flex flex-col items-start gap-6 flex-1 self-start">
                         {/* Immagine categoria */}
                         <div className="max-w-[198px] w-full">
                             {categoryImage ? (
@@ -196,13 +226,23 @@ const ProductModal = ({
                             />
                         </div>
                     </div>
+                    {/* Colonna destra */}
+                    <div className="flex flex-col items-start justify-start gap-6 flex-1">
+                        <FiltersPopUp key={filterResetKey} />
+                    </div>
                 </div>
 
                 {/* Pulsante submit */}
-                <div className="mt-8 text-center flex justify-center">
+                <div className="mt-8 text-center flex flex-col justify-center">
+                    {errorMessage && (
+                        <div className="text-red-600 text-sm text-center mt-4">
+                            {errorMessage}
+                        </div>
+                    )}
+
                     <button
                         onClick={handleSubmit}
-                        className="flex justify-center items-center bg-primary text-white font-semibold transition-all w-[273px] h-[39px] rounded-full py-2 px-6 shadow-elevation-1 cursor-pointer text-sm"
+                        className="flex mt-4 justify-center self-center items-center bg-primary text-white font-semibold transition-all w-[273px] h-[39px] rounded-full py-2 px-6 shadow-elevation-1 cursor-pointer text-sm"
                     >
                         {modalType === "create" ? "Aggiungi" : "Salva"}
                     </button>
