@@ -30,7 +30,7 @@ const ProductItem = ({ onSelectProduct, product }) => {
           alt={product.name}
           className="w-[90px] h-[90px] rounded-2xl object-cover"
         />
-        <div className="pl-3 pr-5" onClick={onSelectProduct}>
+        <div className="pl-3 pr-5 min-w-[192px]" onClick={onSelectProduct}>
           <h3 className="font-bold text-[16px]">{product.name}</h3>
           <p className="text-[12px]">{product.description}</p>
         </div>
