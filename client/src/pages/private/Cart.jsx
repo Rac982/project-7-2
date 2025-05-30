@@ -108,7 +108,7 @@ const Cart = () => {
                 }}
               >
                 <img src="/images/Pluswhite.svg" alt="plus" className='w-5 h-5' />
-                <span className='pl-3'>Invia ordine</span>
+                <span className='pl-3 cursor-pointer'>Invia ordine</span>
               </button>
             </div>
           </div>

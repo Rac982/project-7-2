@@ -1,0 +1,59 @@
+server
+├── api
+│   ├── controllers
+│   │   ├── categories.js
+│   │   ├── me.js
+│   │   ├── products.js
+│   │   ├── products_old.js
+│   │   ├── reviews.js
+│   │   ├── search.js
+│   │   └── users.js
+│   ├── index.js
+│   └── routes
+│       ├── categories.js
+│       ├── me.js
+│       ├── products.js
+│       ├── products_old.js
+│       ├── reviews.js
+│       ├── search.js
+│       └── users.js
+├── assets
+│   ├── antipasti.png
+│   ├── bruschetta-al-tartufo-nero.jpg
+│   ├── bruschetta-pomodoro.webp
+│   ├── contorni.png
+│   ├── dolci.png
+│   ├── pizza.png
+│   ├── polentina-funghi-lardo.png
+│   ├── primi-piatti.png
+│   ├── secondi-di-carne.png
+│   ├── secondi-di-pesce.png
+│   ├── tagliere-misto.png
+│   └── tartare.webp
+├── auth
+│   ├── controllers
+│   │   └── auth.js
+│   ├── index.js
+│   └── routes
+│       └── auth.js
+├── db
+│   ├── index.js
+│   └── models
+│       ├── Address.js
+│       ├── BusinessProfile.js
+│       ├── Category.js
+│       ├── Label.js
+│       ├── Product.js
+│       ├── Review.js
+│       └── User.js
+├── index.js
+├── middleware
+│   └── auth.js
+├── package-lock.json
+├── package.json
+├── structure.txt
+└── utilities
+    ├── auth.js
+    ├── errors.js
+    ├── logs.js
+    └── options.js

@@ -18,8 +18,10 @@ const ProductModal = ({
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const [imageFile, setImageFile] = useState(null);
     const [filterResetKey, setFilterResetKey] = useState(0);
     const [errorMessage, setErrorMessage] = useState("");
+
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -68,8 +70,9 @@ const ProductModal = ({
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const fakeUrl = URL.createObjectURL(file);
-            setImage(fakeUrl);
+            const previewUrl = URL.createObjectURL(file);
+            setImage(previewUrl);      // per l’anteprima
+            setImageFile(file);        // salva il file vero da inviare
         }
     };
 
@@ -78,19 +81,29 @@ const ProductModal = ({
     };
 
     const handleSubmit = () => {
-        if (!name || !price || !category || !description || !image) {
+        if (!name || !price || !category || !description || (!image && !imageFile)) {
             setErrorMessage("Compila tutti i campi obbligatori prima di continuare.");
             return;
         }
 
         setErrorMessage("");
 
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("price", price);
+        formData.append("category", category);
+        formData.append("description", description);
+
+        if (imageFile) {
+            formData.append("image", imageFile); // importante: il nome deve essere "image"
+        }
+
         onSubmit({
             name,
             price,
             category,
             description,
-            image,
+            image: imageFile, // NON più image (che è solo preview)
         });
         onClose();
     };
@@ -171,8 +184,8 @@ const ProductModal = ({
                             {categoryImage ? (
                                 <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-elevation-1 group">
                                     <CustomImage
-                                        src={selectedCategory?.image}
-                                        alt={`Categoria ${category}`}
+                                        src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                                        alt="Piatto"
                                         className="w-full h-full object-cover"
                                     />
                                     <button
