@@ -44,24 +44,30 @@ const getAllProducts = async (req, res) => {
  * @permission Business
  */
 const createProduct = async (req, res) => {
-  const user = req.user;
-
-  const schema = Joi.object().keys({
-    category: Joi.string().required(),
-    name: Joi.string().required(),
-    description: Joi.string().required(),
-    price: Joi.number().required(),
-    image: Joi.string().required(),
-  });
-
   try {
-    const data = await schema.validateAsync(req.body);
+    const { name, price, description, category } = req.body;
 
-    const product = (await new Product({ user, ...data }).save()).toObject();
+    // Se è presente il file, salviamo il percorso pubblico
+    const imagePath = req.file ? `/assets/${req.file.filename}` : "";
+    //console.log("BODY:", req.body);
+    //console.log("USER:", req.user);
+   // console.log("FILE:", req.file);
 
-    return res.status(201).json(product);
-  } catch (err) {
-    outError(res, err);
+    const newProduct = new Product({
+      name,
+      price,
+      description,
+      category,
+      image: imagePath,
+      user: req.user._id,
+    });
+
+    await newProduct.save();
+
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error("Errore nella creazione del prodotto:", error);
+    res.status(500).json({ error: "Errore durante la creazione del prodotto" });
   }
 };
 
