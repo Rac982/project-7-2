@@ -48,14 +48,25 @@ const getAllProducts = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const { name, price, description, category, image } = req.body;
+    let imagePath = "";
 
-    // 1. Se c'è un file, usiamo il suo percorso
-    // 2. Altrimenti, se viene passato un path come stringa (es. da duplicazione), usiamolo
-    const imagePath = req.file
-      ? `/assets/${req.file.filename}`
-      : (typeof image === "string" && image.startsWith("/assets"))
-        ? image
-        : "";
+    if (req.file) {
+      // Immagine caricata tramite form
+      imagePath = `/assets/${req.file.filename}`;
+    } else if (image && image.startsWith("/assets/")) {
+      // Immagine duplicata: copiamo il file fisico
+      const originalPath = path.join(__dirname, "../../assets", path.basename(image));
+      const ext = path.extname(image);
+      const uniqueName = `copy-${Date.now()}${ext}`;
+      const newPath = path.join(__dirname, "../../assets", uniqueName);
+
+      if (fs.existsSync(originalPath)) {
+        fs.copyFileSync(originalPath, newPath);
+        imagePath = `/assets/${uniqueName}`;
+      } else {
+        console.warn("Immagine da duplicare non trovata:", originalPath);
+      }
+    }
 
     const newProduct = new Product({
       name,
@@ -74,7 +85,6 @@ const createProduct = async (req, res) => {
     res.status(500).json({ error: "Errore durante la creazione del prodotto" });
   }
 };
-
 /**
  * Update a product
  * @param {Request} req

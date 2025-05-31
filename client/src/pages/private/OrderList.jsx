@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const orders = [
     {
         id: 1,
-        amount: "35,80 €",
+        totalAmount: "35,80 €",
         date: "27 Apr 2025",
         status: "Paga in app",
         statusColor: "text-sky-500",
@@ -36,21 +36,21 @@ const orders = [
 
 export default function OrderList() {
     const navigate = useNavigate();
-     const cart = useSelector((state) => state.cart);
-     const [subtotal, setSubtotal] = useState(0);
-       const [totalAmount, setTotalAmount] = useState(0);
+    const cart = useSelector((state) => state.cart);
+    const [subtotal, setSubtotal] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
 
-       useEffect(() => {
-           const sum = (cart.items || []).reduce((acc, item) => acc + item.price * item.quantity, 0);
-           setSubtotal(sum);
-         }, [cart]);
-       
-         useEffect(() => {
-           const tax = subtotal * 0.1;
-           const service = 2
-           setTotalAmount(subtotal + tax + service);
-         }, [subtotal]);
-       
+    useEffect(() => {
+        const sum = (cart.items || []).reduce((acc, item) => acc + item.price * item.quantity, 0);
+        setSubtotal(sum);
+    }, [cart]);
+
+    useEffect(() => {
+        const tax = subtotal * 0.1;
+        const service = 2
+        setTotalAmount(subtotal + tax + service);
+    }, [subtotal]);
+
     return (
         <div className="relative w-[375px] mx-auto h-full">
             {/* Header */}
@@ -98,7 +98,12 @@ export default function OrderList() {
 
                         {/* Dettagli ordine */}
                         <div className="flex-1">
-                            <div className="font-semibold text-base">Importo totale {totalAmount.toFixed(2)}</div>
+                            <div className="font-semibold text-base">
+                                Importo totale{" "}
+                                {order.id === 1
+                                    ? `${totalAmount.toFixed(2)} €`
+                                    : order.amount}
+                            </div>
                             {order.status ? (
                                 <button
                                     className={`${order.statusColor} text-sm font-semibold mt-1 py-1 cursor-pointer border-none rounded-md`}
