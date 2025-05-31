@@ -3,4 +3,4 @@ export const config = {
     BUSINESS_ID: "6809247099bda8ef6880c799",
 }
 
-export const SERVER_IMAGE_URL = "http://localhost:3000";
+//export const SERVER_IMAGE_URL = "http://localhost:3000";

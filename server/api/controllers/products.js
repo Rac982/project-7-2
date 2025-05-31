@@ -1,6 +1,8 @@
 const Joi = require("joi");
 const { outError } = require("../../utilities/errors");
 const { Product } = require("../../db");
+const fs = require("fs");
+const path = require("path");
 
 /**
  * Get all prodycts
@@ -45,13 +47,15 @@ const getAllProducts = async (req, res) => {
  */
 const createProduct = async (req, res) => {
   try {
-    const { name, price, description, category } = req.body;
+    const { name, price, description, category, image } = req.body;
 
-    // Se è presente il file, salviamo il percorso pubblico
-    const imagePath = req.file ? `/assets/${req.file.filename}` : "";
-    //console.log("BODY:", req.body);
-    //console.log("USER:", req.user);
-   // console.log("FILE:", req.file);
+    // 1. Se c'è un file, usiamo il suo percorso
+    // 2. Altrimenti, se viene passato un path come stringa (es. da duplicazione), usiamolo
+    const imagePath = req.file
+      ? `/assets/${req.file.filename}`
+      : (typeof image === "string" && image.startsWith("/assets"))
+        ? image
+        : "";
 
     const newProduct = new Product({
       name,
@@ -86,11 +90,16 @@ const updateProductById = async (req, res) => {
     name: Joi.string().optional(),
     description: Joi.string().optional(),
     price: Joi.number().optional(),
-    image: Joi.string().optional(),
+    image: Joi.string().optional(), // facoltativa
   });
 
   try {
-    const data = await schema.validateAsync(req.body);
+    let data = await schema.validateAsync(req.body);
+
+    if (req.file) {
+      const imagePath = `/assets/${req.file.filename}`;
+      data.image = imagePath;
+    }
 
     await Product.updateOne({ user, _id }, { ...data });
 
@@ -111,10 +120,28 @@ const deleteProductById = async (req, res) => {
   const _id = req.params.product_id;
 
   try {
+    // 1. Trova il prodotto per accedere al campo immagine
+    const product = await Product.findOne({ user, _id });
+    if (!product) {
+      return res.status(404).json({ error: "Prodotto non trovato" });
+    }
+
+    // 2. Se ha un'immagine associata e salvata in /assets, rimuovila dal file system
+    if (product.image && product.image.startsWith("/assets")) {
+      const imagePath = path.join(__dirname, "../../assets", path.basename(product.image));
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.log("Immagine eliminata:", imagePath);
+      }
+    }
+
+    // 3. Elimina il prodotto dal DB
     await Product.deleteOne({ user, _id });
 
-    return res.status(200).json({ message: "Product deleted successfully" });
+    return res.status(200).json({ message: "Prodotto e immagine eliminati con successo" });
   } catch (err) {
+    console.error("Errore durante l'eliminazione:", err);
     outError(res, err);
   }
 };

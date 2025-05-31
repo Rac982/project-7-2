@@ -3,7 +3,7 @@ import CustomImage from "./CustomImage";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
 import { addToCart } from "../../store/slices/cartSlice";
-import { SERVER_IMAGE_URL } from "../../config";
+
 
 const ProductItem = ({ onSelectProduct, product }) => {
   const cartItems = useSelector((state) => state.cart.items);
@@ -26,9 +26,10 @@ const ProductItem = ({ onSelectProduct, product }) => {
         className=" bg-white max-w-[375px] w-full rounded  cursor-pointer flex space-between justify-center  py-1"
       >
         <CustomImage
-          src={`${SERVER_IMAGE_URL}/assets/${product.image}`}
+          onClick={onSelectProduct}
+          src={product.image}
           alt={product.name}
-          className="w-[80px] h-[80px] rounded-2xl object-cover"
+          className="w-[90px] h-[90px] rounded-2xl object-cover"
         />
         <div className="pl-3 pr-5 min-w-[192px]" onClick={onSelectProduct}>
           <h3 className="font-bold text-[16px]">{product.name}</h3>

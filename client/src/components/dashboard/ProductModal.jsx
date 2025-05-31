@@ -4,6 +4,7 @@ import FiltersPopUp from "../shared/FiltersPopUp";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { resetCurrentsLabel } from "../../store/slices/labelSlice";
+import CustomImagePreview from "../shared/dashboard/CustomImagePreview";
 
 const ProductModal = ({
     isOpen,
@@ -17,11 +18,10 @@ const ProductModal = ({
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState("");
-    const [imageFile, setImageFile] = useState(null);
+    const [image, setImage] = useState(null); // immagine da inviare
+    const [imagePreview, setImagePreview] = useState(null); // immagine da mostrare
     const [filterResetKey, setFilterResetKey] = useState(0);
     const [errorMessage, setErrorMessage] = useState("");
-
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -46,6 +46,15 @@ const ProductModal = ({
             );
             setDescription(initialData.description || "");
             setImage(initialData.image || "");
+
+            const SERVER_URL = "http://localhost:3000"; // oppure import.meta.env.VITE_SERVER_URL
+
+            const resolvedImage =
+                initialData.image?.startsWith("/assets")
+                    ? `${SERVER_URL}${initialData.image}`
+                    : initialData.image || null;
+
+            setImagePreview(resolvedImage);
         }
 
         if (modalType === "create") {
@@ -53,7 +62,8 @@ const ProductModal = ({
             setPrice("");
             setCategory("");
             setDescription("");
-            setImage("");
+            setImage(null);  
+            setImagePreview(null);  
             if (fileInputRef.current) {
                 fileInputRef.current.value = null;
             }
@@ -70,9 +80,9 @@ const ProductModal = ({
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const previewUrl = URL.createObjectURL(file);
-            setImage(previewUrl);      // per l’anteprima
-            setImageFile(file);        // salva il file vero da inviare
+            const fakeUrl = URL.createObjectURL(file);
+            setImage(file); // serve per inviare nel FormData
+            setImagePreview(fakeUrl); // serve solo per mostrare l'immagine
         }
     };
 
@@ -81,31 +91,23 @@ const ProductModal = ({
     };
 
     const handleSubmit = () => {
-        if (!name || !price || !category || !description || (!image && !imageFile)) {
+        if (!name || !price || !category || !description || !image) {
             setErrorMessage("Compila tutti i campi obbligatori prima di continuare.");
             return;
         }
 
         setErrorMessage("");
 
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("price", price);
-        formData.append("category", category);
-        formData.append("description", description);
-
-        if (imageFile) {
-            formData.append("image", imageFile); // importante: il nome deve essere "image"
-        }
-
         onSubmit({
             name,
             price,
             category,
             description,
-            image: imageFile, // NON più image (che è solo preview)
+            image,
         });
         onClose();
+        setImage(null);
+        setImagePreview(null);
     };
 
     if (!isOpen) return null;
@@ -184,8 +186,8 @@ const ProductModal = ({
                             {categoryImage ? (
                                 <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-elevation-1 group">
                                     <CustomImage
-                                        src={typeof image === "string" ? image : URL.createObjectURL(image)}
-                                        alt="Piatto"
+                                        src={selectedCategory?.image}
+                                        alt={`Categoria ${category}`}
                                         className="w-full h-full object-cover"
                                     />
                                     <button
@@ -202,14 +204,12 @@ const ProductModal = ({
                                 </div>
                             )}
                         </div>
-
                         {/* Immagine piatto */}
                         <div className="max-w-[198px] w-full">
-                            {image ? (
+                            {imagePreview && imagePreview.trim() !== "" ? (
                                 <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-elevation-1 group">
-                                    <CustomImage
-                                        src={image}
-                                        alt="Piatto"
+                                    <CustomImagePreview
+                                        src={imagePreview}
                                         className="w-full h-full object-cover"
                                     />
                                     <button

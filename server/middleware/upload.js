@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = "./assets";
+        const dir = path.join(__dirname, "../assets"); // <-- va su di una cartella
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }

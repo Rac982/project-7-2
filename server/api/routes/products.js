@@ -33,7 +33,8 @@ app.post("/", authUser(["business"]), upload.single("image"), createProduct);
  * @path /api/products/:product_id
  * @method PUT
  */
-app.put("/:product_id", authUser(["business"]), updateProductById);
+app.put("/:product_id", authUser(["business"]), upload.single("image"), updateProductById);
+
 
 /**
  * @path /api/products/:product_id
