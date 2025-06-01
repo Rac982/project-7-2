@@ -50,9 +50,10 @@ function MenuBusiness() {
     const user = useSelector((state) => state.auth.user);
 
     const [query, setQuery] = useState("");
-    const isSearching = query.trim() !== "";
+    
     const isSearchCompleted = query.trim() !== "" && filteredProducts.length === 0;
     const [loading, setLoading] = useState(true);
+
     const [categories, setCategories] = useState([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -232,6 +233,7 @@ function MenuBusiness() {
     useEffect(() => {
         if (query.trim() === "") {
             dispatch(clearSearchResult());
+            setSearchStarted(false);
         }
     }, [query]);
 
@@ -244,8 +246,15 @@ function MenuBusiness() {
         }
     }, [category, fetchProducts]);
 
+    // Stati per gestire l'avvio della ricerca e il caricamento
+    const [searchStarted, setSearchStarted] = useState(false);
+    const [searchLoading, setSearchLoading] = useState(false);
 
-    // 8. Render
+    // Verifica se non ci sono risultati dalla ricerca
+    const noSearchResults = searchStarted && !searchLoading && filteredProducts.length === 0;
+    const isSearching = searchStarted && filteredProducts.length > 0;
+
+    // Render
     return (
         <div className="max-w-[972px] w-full px-4 mb-20">
             <div className="flex flex-row w-full justify-between items-center gap-4 mt-12">
@@ -255,7 +264,11 @@ function MenuBusiness() {
                     className="flex items-center gap-3 bg-white text-primary hover:bg-primary hover:text-white font-semibold transition-all w-auto h-[39px] rounded-full py-2 px-6 shadow-elevation-1 cursor-pointer text-sm"
                 >
                     <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                        <path d="M9.72 14.01v-2.73H6.98a.78.78 0 110-1.56h2.74V6.98a.78.78 0 111.56 0v2.74h2.73a.78.78 0 110 1.56h-2.73v2.73a.78.78 0 11-1.56 0Zm7.85-10.58A9.996 9.996 0 0010.5.5C4.98.5.5 4.98.5 10.5S4.98 20.5 10.5 20.5 20.5 16.02 20.5 10.5c0-2.12-.66-4.09-1.93-5.67a.78.78 0 10-1.19 1 8.44 8.44 0 011.6 4.67c0 4.66-3.78 8.44-8.44 8.44S2.06 15.16 2.06 10.5 5.84 2.06 10.5 2.06c2.26 0 4.37.84 6.01 2.37a.78.78 0 001.06-1.11Z" fill="currentColor" />
+                        <path d="M9.72 14.01v-2.73H6.98a.78.78 0 110-1.56h2.74V6.98a.78.78 0 111.56 0v2.74h2.73a.78.78 0 110 1.56h-2.73v2.73a.78.78 0 11-1.56 0Z
+          m7.85-10.58A9.996 9.996 0 0010.5.5C4.98.5.5 4.98.5 10.5S4.98 20.5 10.5 20.5 20.5 16.02 20.5 10.5
+          c0-2.12-.66-4.09-1.93-5.67a.78.78 0 10-1.19 1 8.44 8.44 0 011.6 4.67c0 4.66-3.78 8.44-8.44 8.44
+          S2.06 15.16 2.06 10.5 5.84 2.06 10.5 2.06c2.26 0 4.37.84 6.01 2.37a.78.78 0 001.06-1.11Z"
+                            fill="currentColor" />
                     </svg>
                     Aggiungi un nuovo piatto
                 </button>
@@ -270,8 +283,16 @@ function MenuBusiness() {
                 />
 
                 <div className="w-full sm:w-1/3">
-                    <SearchInput value={query} onChange={(e) => setQuery(e.target.value)}
-                        businessId={user._id} />
+                    <SearchInput
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onSearchStart={() => {
+                            setSearchStarted(true);
+                            setSearchLoading(true);
+                        }}
+                        onSearchFinish={() => setSearchLoading(false)}
+                        businessId={user._id}
+                    />
                 </div>
 
                 <div>
@@ -304,7 +325,11 @@ function MenuBusiness() {
             </div>
 
             <div className="mt-12">
-                {isSearching ? (
+                {noSearchResults ? (
+                    <div className="text-center flex rounded-3xl bg-white w-full shadow-elevation-1 px-6 py-7 justify-center my-11 text-sm text-muted">
+                        Nessun piatto corrisponde alla ricerca.
+                    </div>
+                ) : isSearching ? (
                     filteredProducts.map((product) => (
                         <BusinessProductItem
                             key={product._id}
@@ -314,10 +339,6 @@ function MenuBusiness() {
                             onDelete={handleDeleteProduct}
                         />
                     ))
-                ) : isSearchCompleted ? (
-                    <div className="text-center flex rounded-3xl bg-white w-full shadow-elevation-1 px-6 py-7 justify-center my-11 text-sm text-muted">
-                        Nessun piatto corrisponde alla ricerca.
-                    </div>
                 ) : !loading ? (
                     (() => {
                         const filteredByCategory =

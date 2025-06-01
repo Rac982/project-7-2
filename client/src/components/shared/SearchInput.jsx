@@ -19,30 +19,36 @@ import { useToast } from '../../hooks/useToast';
  * @returns {JSX.Element} Campo di ricerca con pulsante di submit.
  */
 
-const SearchInput = ({ value, onChange, categories, businessId = config.BUSINESS_ID }) => {
+const SearchInput = ({ value, onChange, categories, businessId = config.BUSINESS_ID, onSearchStart, onSearchFinish }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const {get} = useApi();
+  const { get } = useApi();
 
-   /**
-   * Esegue la ricerca chiamando l'API e aggiornando lo stato Redux.
-   * Se non viene trovato nulla, mostra un toast d'errore.
-   */
+  /**
+  * Esegue la ricerca chiamando l'API e aggiornando lo stato Redux.
+  * Se non viene trovato nulla, mostra un toast d'errore.
+  */
 
+  /**
+  * Esegue la chiamata API e aggiorna Redux.
+  */
   const handleSearch = async () => {
     const query = value.trim().toLowerCase();
-     console.log("RICERCA AVVIATA");
-      
+    if (!query) return;
+
+    if (onSearchStart) onSearchStart(); //indica inizio caricamento
 
     try {
       const payload = await get(`/search?u=${businessId}&q=${query}`);
       const _payload = { products: [], categories: [], ...payload };
       dispatch(setSearchResult(_payload));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Nessun prodotto corrisponde alla ricerca.");
+    } finally {
+      if (onSearchFinish) onSearchFinish(); //indica fine caricamento
     }
-  }
+  };
 
   const isActive = value.trim().length > 0
 
