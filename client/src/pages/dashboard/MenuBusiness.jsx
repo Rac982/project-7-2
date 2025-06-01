@@ -149,12 +149,13 @@ function MenuBusiness() {
         try {
             const formData = new FormData();
 
+             formData.append("name", productData.name);
+
             // Se è un'immagine "Blob" (creata con URL.createObjectURL), non è valida per l'upload
             if (productData.image instanceof File) {
                 formData.append("image", productData.image);
             }
 
-            formData.append("name", productData.name);
             formData.append("price", productData.price);
             formData.append("category", productData.category);
             formData.append("description", productData.description);
