@@ -50,6 +50,8 @@ function MenuBusiness() {
     const user = useSelector((state) => state.auth.user);
 
     const [query, setQuery] = useState("");
+    const isSearching = query.trim() !== "";
+    const isSearchCompleted = query.trim() !== "" && filteredProducts.length === 0;
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
 
@@ -58,8 +60,6 @@ function MenuBusiness() {
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     const { get, post, put, del } = useApi();
-
-    const isSearching = filteredProducts.length > 0;
 
     /**
      * Aggiorna il criterio di ordinamento selezionato per la lista di prodotti.
@@ -149,7 +149,7 @@ function MenuBusiness() {
         try {
             const formData = new FormData();
 
-             formData.append("name", productData.name);
+            formData.append("name", productData.name);
 
             // Se è un'immagine "Blob" (creata con URL.createObjectURL), non è valida per l'upload
             if (productData.image instanceof File) {
@@ -314,6 +314,10 @@ function MenuBusiness() {
                             onDelete={handleDeleteProduct}
                         />
                     ))
+                ) : isSearchCompleted ? (
+                    <div className="text-center flex rounded-3xl bg-white w-full shadow-elevation-1 px-6 py-7 justify-center my-11 text-sm text-muted">
+                        Nessun piatto corrisponde alla ricerca.
+                    </div>
                 ) : !loading ? (
                     (() => {
                         const filteredByCategory =

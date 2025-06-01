@@ -6,13 +6,33 @@ import { useDispatch } from 'react-redux';
 import { setSearchResult } from '../../store/slices/searchSlice';
 import { useToast } from '../../hooks/useToast';
 
+/**
+ * Componente di input per effettuare ricerche tra i piatti del ristoratore.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {string} props.value - Valore attuale dell'input di ricerca.
+ * @param {function} props.onChange - Funzione chiamata al cambiamento del valore input.
+ * @param {Array} [props.categories] - (Facoltativo) Lista delle categorie.
+ * @param {string} [props.businessId=config.BUSINESS_ID] - ID del ristoratore (fallback su valore da config).
+ * 
+ * @returns {JSX.Element} Campo di ricerca con pulsante di submit.
+ */
+
 const SearchInput = ({ value, onChange, categories, businessId = config.BUSINESS_ID }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const {get} = useApi();
 
+   /**
+   * Esegue la ricerca chiamando l'API e aggiornando lo stato Redux.
+   * Se non viene trovato nulla, mostra un toast d'errore.
+   */
+
   const handleSearch = async () => {
     const query = value.trim().toLowerCase();
+     console.log("RICERCA AVVIATA");
+      
 
     try {
       const payload = await get(`/search?u=${businessId}&q=${query}`);
