@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Controller per la gestione dei prodotti:
+ * - Recupero dei prodotti (per categoria o tutti)
+ * - Creazione di un nuovo prodotto (upload o duplicazione immagine)
+ * - Modifica di un prodotto esistente
+ * - Eliminazione di un prodotto e relativa immagine
+ */
+
 const Joi = require("joi");
 const { outError } = require("../../utilities/errors");
 const { Product } = require("../../db");
@@ -11,6 +19,16 @@ const path = require("path");
  * @permission Business
  */
 const mongoose = require("mongoose");
+
+/**
+ * Recupera tutti i prodotti.
+ * Se viene fornito un category_id, filtra i prodotti per categoria.
+ *
+ * @param {import("express").Request} req - Richiesta HTTP
+ * @param {import("express").Response} res - Risposta HTTP
+ * @returns {Promise<void>}
+ * @permission Business
+ */
 
 const getAllProducts = async (req, res) => {
   const categoryId = req.params.category_id;
@@ -40,9 +58,13 @@ const getAllProducts = async (req, res) => {
 };
 
 /**
- * Create a new product
- * @param {Request} req
- * @param {Response} res
+ * Crea un nuovo prodotto.
+ * - Se è presente `req.file`, salva immagine tramite upload.
+ * - Se `req.body.image` è un path esistente (da duplicazione), copia l'immagine.
+ *
+ * @param {import("express").Request} req - Richiesta HTTP
+ * @param {import("express").Response} res - Risposta HTTP
+ * @returns {Promise<void>}
  * @permission Business
  */
 const createProduct = async (req, res) => {
@@ -86,9 +108,12 @@ const createProduct = async (req, res) => {
   }
 };
 /**
- * Update a product
- * @param {Request} req
- * @param {Response} res
+ * Aggiorna un prodotto esistente.
+ * Se viene fornita una nuova immagine tramite `req.file`, aggiorna anche il campo immagine.
+ *
+ * @param {import("express").Request} req - Richiesta HTTP
+ * @param {import("express").Response} res - Risposta HTTP
+ * @returns {Promise<void>}
  * @permission Business
  */
 const updateProductById = async (req, res) => {
@@ -120,9 +145,13 @@ const updateProductById = async (req, res) => {
 };
 
 /**
- * Delete a product
- * @param {Request} req
- * @param {Response} res
+ * Elimina un prodotto e la sua immagine associata (se presente).
+ * - Controlla che il prodotto appartenga all'utente
+ * - Rimuove immagine solo se salvata nella cartella `/assets`
+ *
+ * @param {import("express").Request} req - Richiesta HTTP
+ * @param {import("express").Response} res - Risposta HTTP
+ * @returns {Promise<void>}
  * @permission Business
  */
 const deleteProductById = async (req, res) => {
