@@ -27,12 +27,13 @@ const searchCateogriesAndProducts = async (req, res) => {
 
     const categoryIds = matchedCategories.map(cat => cat._id);
 
-    // Trova i prodotti che corrispondono per nome o che appartengono a una categoria trovata
+    // Trova i prodotti che corrispondono per nome, per descrizione o che appartengono a una categoria trovata
     const products = await Product.find(
       {
         user: u,
         $or: [
           { name: { $regex: q, $options: 'i' } },
+          { description: { $regex: q, $options: 'i' } },
           { category: { $in: categoryIds } }
         ]
       },
