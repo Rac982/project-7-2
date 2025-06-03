@@ -74,7 +74,8 @@ const createProduct = async (req, res) => {
 
     if (req.file) {
       // Immagine caricata tramite form
-      imagePath = `/assets/${req.file.filename}`;
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      imagePath = `${baseUrl}/assets/${req.file.filename}`;
     } else if (image && image.startsWith("/assets/")) {
       // Immagine duplicata: copiamo il file fisico
       const originalPath = path.join(__dirname, "../../assets", path.basename(image));
@@ -84,7 +85,8 @@ const createProduct = async (req, res) => {
 
       if (fs.existsSync(originalPath)) {
         fs.copyFileSync(originalPath, newPath);
-        imagePath = `/assets/${uniqueName}`;
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        imagePath = `${baseUrl}/assets/${uniqueName}`;
       } else {
         console.warn("Immagine da duplicare non trovata:", originalPath);
       }
@@ -132,7 +134,8 @@ const updateProductById = async (req, res) => {
     let data = await schema.validateAsync(req.body);
 
     if (req.file) {
-      const imagePath = `/assets/${req.file.filename}`;
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      const imagePath = `${baseUrl}/assets/${req.file.filename}`;
       data.image = imagePath;
     }
 
@@ -166,12 +169,16 @@ const deleteProductById = async (req, res) => {
     }
 
     // 2. Se ha un'immagine associata e salvata in /assets, rimuovila dal file system
-    if (product.image && product.image.startsWith("/assets")) {
-      const imagePath = path.join(__dirname, "../../assets", path.basename(product.image));
-
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-        console.log("Immagine eliminata:", imagePath);
+    if (product.image && product.image.includes("/assets/")) {
+      const relativePath = product.image.split("/assets/")[1]; // es: "image.jpg" o "folder/image.jpg"
+      if (relativePath) {
+        const imagePath = path.join(__dirname, "../../assets", relativePath);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+          console.log("Immagine eliminata:", imagePath);
+        } else {
+          console.warn("File immagine non trovato:", imagePath);
+        }
       }
     }
 
