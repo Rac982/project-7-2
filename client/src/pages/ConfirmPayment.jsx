@@ -64,26 +64,26 @@ export default function ConfirmPayment() {
             </div>
 
             {/* Card */}
-            <div className="w-[375px] h-[665px] bg-white rounded-2xl shadow-2xl p-6 flex flex-col items-center mt-10">
+            <div className="w-[375px] h-[665px] bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center mt-10">
                 <h2 className="text-2xl font-extrabold mb-1 text-center">Grazie!</h2>
                 <p className="text-gray-400 mb-6 text-center text-[15px]">
                     Il tuo pagamento è andato a buon fine.
                 </p>
-                <div className="mb-6 flex justify-center">
-                    <div className="w-32 h-32 rounded-full border-4 border-black flex items-center justify-center">
-                        {/* SVG di conferma */}
-                        <svg className="w-20 h-20" viewBox="0 0 48 48" fill="none">
-                            <path
-                                d="M16 25l7 7 9-13"
-                                stroke="#00BCD4"
-                                strokeWidth="2"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                transform="scale(2) translate(-11 -12)"
-                            />
-                        </svg>
+                <div className="mb-3 flex justify-center">
+                    <div className="w-32 h-32 rounded-full border-black flex items-center justify-center">
+                        <img
+                            src="https://cdn.discordapp.com/attachments/1333809468806266952/1376946808177168445/verified.gif?ex=68372d25&is=6835dba5&hm=4e28d2ae9c53b770b7c5c779b4bb9e8d41dc1a488f1ecca99694dbf256ada74a"
+                            alt="Verificato"
+                            style={{
+                                display: "block",
+                                maxWidth: "173px",
+                                maxHeight: "173px",
+                                margin: "auto",
+                                userSelect: "none"
+                            }}
+                        />
                     </div>
+
                 </div>
 
                 {/* Dettagli */}
