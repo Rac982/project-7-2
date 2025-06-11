@@ -50,7 +50,7 @@ function MenuBusiness() {
     const user = useSelector((state) => state.auth.user);
 
     const [query, setQuery] = useState("");
-    
+
     const isSearchCompleted = query.trim() !== "" && filteredProducts.length === 0;
     const [loading, setLoading] = useState(true);
 
@@ -59,6 +59,7 @@ function MenuBusiness() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState("create");
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [isCategoryLoading, setIsCategoryLoading] = useState(false);
 
     const { get, post, put, del } = useApi();
 
@@ -78,6 +79,7 @@ function MenuBusiness() {
     const handleChangeCategoryFilter = (e) => {
         const selected = e.target.value;
         dispatch(setCategory(selected));
+        setIsCategoryLoading(true);
         fetchProducts(selected || null);
     };
 
@@ -186,22 +188,20 @@ function MenuBusiness() {
      * @param {string|null} categoryId - ID della categoria oppure null per tutti i prodotti.
      */
     const fetchProducts = useCallback(async (categoryId = null) => {
-        console.log("FETCH chiamato con categoryId:", categoryId);
         try {
             let url = "/products";
             if (categoryId && categoryId !== "all") {
                 url = `/products/${categoryId}`;
             }
-
             const fetchedProducts = await get(url);
             dispatch(setProducts(fetchedProducts));
         } catch (error) {
             console.error("Errore nel caricamento dei prodotti:", error);
-            console.error("Axios Error Details:", error);
         } finally {
             setLoading(false);
+            setIsCategoryLoading(false); // qui
         }
-    }, [get, dispatch, setLoading]);
+    }, [get, dispatch]);
 
     /**
      * Recupera le categorie del ristoratore dal backend e carica i prodotti.
@@ -339,7 +339,7 @@ function MenuBusiness() {
                             onDelete={handleDeleteProduct}
                         />
                     ))
-                ) : !loading ? (
+                ) : !loading && !isCategoryLoading ? (
                     (() => {
                         const filteredByCategory =
                             category && category !== "all"
