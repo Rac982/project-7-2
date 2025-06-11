@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import CustomImage from "../shared/CustomImage";
+import CustomImageBusiness from "../shared/dashboard/CustomImageBusiness";
 
 const BusinessProductItem = ({ onSelectProduct, product, onEdit, onDuplicate, onDelete }) => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -22,7 +22,7 @@ const BusinessProductItem = ({ onSelectProduct, product, onEdit, onDuplicate, on
             onClick={onSelectProduct}
         >
             {/* Immagine */}
-            <CustomImage
+            <CustomImageBusiness
                 src={product.image}
                 alt={product.name}
                 className="w-[80px] h-[80px] rounded-2xl object-cover"

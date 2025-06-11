@@ -2,7 +2,7 @@ import Stars from "./Stars";
 
 const ReviewCard = ({ review }) => {
   return (
-    <div className="p-6 shadow-2xl bg-gray-50 rounded-xl grid-cols-1  ">
+    <div className="p-6 shadow-elevation-1 bg-gray-50 rounded-xl grid-cols-1  ">
       <h1 className="font-bold py-3">
         Tavolo {review?.table} - {review?.author?.first_name}
       </h1>

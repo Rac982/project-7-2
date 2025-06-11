@@ -76,7 +76,8 @@ const OrderCart = () => {
             {/* PAGA IN APP */}
             <div className="flex mb-4 px-2">
               <div className="flex justify-between mb-1 w-full item-center bg-[#DADBF1] rounded-3xl px-4 py-4">
-                <span className="tracking-wide text-xs text-gray-600 px-1 mt-2.5 text-nowrap">
+                <span className="tracking-wide text-xs cursor-pointer text-gray-600 px-1 mt-2.5 text-nowrap"
+                  onClick={() => navigate("/private/payments")}>
                   Paga in modo più intelligente
                 </span>
                 <button
@@ -122,7 +123,7 @@ const OrderCart = () => {
             >
               <button
                 onClick={() => navigate("/private/categories")}
-                className="bg-[#3BC8E1] text-white text-[15px] font-semibold flex items-center mb-6 justify-center rounded-full shadow-md"
+                className="bg-[#3BC8E1] text-white text-[15px] cursor-pointer font-semibold flex items-center mb-6 justify-center rounded-full shadow-md"
                 style={{
                   width: "273px",
                   height: "39px",

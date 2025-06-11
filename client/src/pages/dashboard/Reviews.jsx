@@ -125,7 +125,7 @@ const Reviews = () => {
                 Peggiori
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mr-3">
               <button
                 className="bg-[#1418a1] text-white rounded-full px-3 py-2 cursor-pointer disabled:cursor-not-allowed"
                 onClick={() => setPage((prev) => prev - 1)}

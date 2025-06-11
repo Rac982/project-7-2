@@ -24,13 +24,13 @@ const LoginBusiness = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault(); // Previene il refresh della pagina al submit
     console.log(form);
-    
+
     try {
       const data = await login({ ...form, role: "business" });
 
       dispatch(loginAction(data));
       navigate("/dashboard", { replace: true });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       toast.error("Utente non trovato")
     }
@@ -47,12 +47,11 @@ const LoginBusiness = () => {
       {/* Left Card */}
       <div className="min-w-[578px] h-full rounded-2xl overflow-hidden flex flex-col bg-transparent relative p-8 ">
         {/* Immagine card */}
-        <img
-          src={logoqr}
-          alt="QR Code"
-          className="w-[578px] object-cover rounded-2xl h-full"
-        />
-
+          <img
+            src={logoqr}
+            alt="QR Code"
+            className="w-[578px] object-cover rounded-2xl h-full"
+          />
         {/* Primo testo nell'immagine */}
         <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[412px] text-white font-inter">
           <h3 className="text-[24px] font-extrabold leading-[26px] align-middle mb-2">
@@ -64,7 +63,7 @@ const LoginBusiness = () => {
         </div>
 
         {/* Contenitore grigio della card */}
-        <div className="max-w-[514px] absolute bottom-8 left-8 bg-[#bfb7b3] flex flex-col px-12 py-4 rounded-b-2xl">
+        <div className="max-w-[514px] absolute bottom-8 left-8 bg-[#bfb7b3] flex flex-col px-12 py-10 rounded-b-2xl">
           <h3 className="text-white text-[26px] mb-1 font-inter font-semibold leading-[24px] align-middle">
             Non hai ancora un account?
           </h3>
@@ -83,12 +82,12 @@ const LoginBusiness = () => {
       <div className=" w-full max-h-full bg-white rounded-3xl p-16 flex flex-col justify-center items-center relative">
         {/* Logo parte destra */}
         <div className="flex justify-center items-center mb-6 w-[324px] h-[270px]">
-          <img src={logotable} alt="Logo Table Link" className="inline-block" />
+          <img src="../../../public/images/Logo-qr-sm.png" alt="Logo Table Link" className="inline-block" />
         </div>
 
         <div className="max-w-[273px] w-full flex flex-col items-center">
           {/* Benvenuto */}
-          <div className="w-full mb-6 text-center">
+          <div className="w-full mb-6 mt-[3%] text-center">
             <h2 className="text-xl font-semibold mb-1">Benvenuto!</h2>
             <p className="text-gray-400 text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -102,7 +101,7 @@ const LoginBusiness = () => {
                 Email
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <span className="absolute w-[18px] h-[18px] inset-y-0 left-0 flex items-center m-3 text-text">
                   {/* Icona Email */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +125,7 @@ const LoginBusiness = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  className="border-2 border-gray-300 rounded-lg shadow-lg p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
+                  className="border-2 border-gray-300 rounded-lg shadow-elevation-1 p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
                   required
                   onInput={handleInput}
                   value={form.email}
@@ -139,7 +138,7 @@ const LoginBusiness = () => {
                 Password
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <span className="absolute inset-y-0 w-[18px] h-[18px] left-0 flex items-center m-3 text-text">
                   {/* Icona Password */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +157,7 @@ const LoginBusiness = () => {
                   id="password"
                   type="password"
                   placeholder="Password"
-                  className="border-2 border-gray-300 rounded-lg shadow-lg p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
+                  className="border-2 border-gray-300 rounded-lg shadow-elevation-1 p-6 pl-10 pr-3 py-2 w-full bg-white focus:outline-none focus:ring-blue-400"
                   required
                   name="password"
                   onInput={handleInput}

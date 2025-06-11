@@ -1,9 +1,11 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useSelector } from "react-redux";
 
 const orders = [
     {
         id: 1,
-        amount: "35,80 €",
+        totalAmount: "35,80 €",
         date: "27 Apr 2025",
         status: "Paga in app",
         statusColor: "text-sky-500",
@@ -33,42 +35,45 @@ const orders = [
 ];
 
 export default function OrderList() {
+    const navigate = useNavigate();
+    const cart = useSelector((state) => state.cart);
+    const [subtotal, setSubtotal] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
+
+    useEffect(() => {
+        const sum = (cart.items || []).reduce((acc, item) => acc + item.price * item.quantity, 0);
+        setSubtotal(sum);
+    }, [cart]);
+
+    useEffect(() => {
+        const tax = subtotal * 0.1;
+        const service = 2
+        setTotalAmount(subtotal + tax + service);
+    }, [subtotal]);
+
     return (
-        <div className="relative w-[375px] mx-auto mt-4"> {/* Ridotto mt-10 a mt-4 */}
+        <div className="relative w-[375px] mx-auto h-full">
             {/* Header */}
-            <div className="flex items-center px-6 pb-4 pt-6 mb-1"> {/* Ridotto mb-4 a mb-1 */}
-                <button
-                    className="mr-3 bg-transparent border-none p-0 cursor-pointer"
-                    aria-label="Chiudi"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="43"
-                        height="43"
-                        viewBox="0 0 43 43"
-                        fill="none"
-                    >
-                        <circle cx="21.5" cy="21.5" r="21.5" fill="#F3F3F3" />
-                        <g clipPath="url(#clip0_1083_1813)">
-                            <path
-                                d="M22.6165 21.5002L28.7688 15.348C29.0771 15.0396 29.0771 14.5398 28.7688 14.2315C28.4605 13.9232 27.9606 13.9232 27.6523 14.2315L21.5 20.3838L15.3477 14.2315C15.0394 13.9232 14.5395 13.9232 14.2312 14.2315C13.9229 14.5398 13.9229 15.0397 14.2312 15.348L20.3835 21.5002L14.2312 27.6525C13.9229 27.9608 13.9229 28.4607 14.2312 28.769C14.5396 29.0773 15.0394 29.0773 15.3477 28.769L21.5 22.6167L27.6522 28.769C27.9605 29.0773 28.4604 29.0773 28.7687 28.769C29.077 28.4607 29.077 27.9608 28.7687 27.6525L22.6165 21.5002Z"
-                                fill="#332B2C"
-                            />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_1083_1813">
-                                <rect width="15" height="15" fill="white" transform="translate(14 14)" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                </button>
-                <span className="font-semibold text-[20px] text-[#231F20]">I miei ordini</span>
+            <div className="flex flex-col items-center justify-center bg-white mx-auto max-w-[23.4375rem] w-full font-sans">
+                <div className="flex pt-4 pl-4 pb-5 pr-3 items-center bg-white w-[23.4375rem] gap-5">
+                    <img
+                        className="cursor-pointer"
+                        src="/images/Component1.svg"
+                        alt="arrow"
+                        onClick={() =>
+                            navigate(location.key === "default" ? "/private" : -1)
+                        }
+                    />
+                    <h1 className="w-full font-semibold text-md">I miei ordini</h1>
+                </div>
             </div>
 
             {/* Contenitore unico per tutti gli ordini */}
             <div
-                className=" mx-auto  rounded-t-[24px] shadow-2xl overflow-y-auto
-                 px-4 flex flex-col gap-4 w-[375px] h-[665px] relative bg-w-hite"
+                className="flex flex-col gap-2 rounded-4xl p-2 bg-white w-[375px] px-6 py-7 mt-4"
+                style={{
+                    boxShadow: "0 -3px 12px -5px rgba(0, 0, 0, 0.18)",
+                }}
             >
                 {orders.map((order) => (
                     <div
@@ -93,11 +98,16 @@ export default function OrderList() {
 
                         {/* Dettagli ordine */}
                         <div className="flex-1">
-                            <div className="font-semibold text-base">Importo totale {order.amount}</div>
+                            <div className="font-semibold text-base">
+                                Importo totale{" "}
+                                {order.id === 1
+                                    ? `${totalAmount.toFixed(2)} €`
+                                    : order.amount}
+                            </div>
                             {order.status ? (
                                 <button
-                                    className={`${order.statusColor} text-sm font-medium mt-1 px-3 py-1 border border-current rounded-md hover:bg-sky-300 transition`}
-                                    onClick={() => alert(`Pagamento per ordine #${order.id}`)}
+                                    className={`${order.statusColor} text-sm font-semibold mt-1 py-1 cursor-pointer border-none rounded-md`}
+                                    onClick={() => navigate("/private/payments")}
                                 >
                                     {order.status}
                                 </button>

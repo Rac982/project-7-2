@@ -1,9 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 
 // Icone SVG inline
 const icons = {
+  
   user: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +126,7 @@ const icons = {
 export default function PersonalProfile() {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
+  const navigate = useNavigate();
   return (
     <div className="relative w-[375px] mx-auto h-full">
       {/* Header */}
@@ -147,7 +152,7 @@ export default function PersonalProfile() {
       >
         <form className="flex flex-col items-center gap-9">
           {/* Nome */}
-          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] px-3 shadow-md gap-9">
+          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] px-3 shadow-md gap-2">
             <span className="mr-2">{icons.user}</span>
             <input
               className="border-none outline-none bg-transparent text-sm flex-1"
@@ -156,7 +161,7 @@ export default function PersonalProfile() {
             />
           </div>
           {/* Cognome */}
-          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-9 px-3">
+          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-2 px-3">
             <span className="mr-2">{icons.user}</span>
             <input
               className="border-none outline-none bg-transparent text-sm flex-1"
@@ -165,7 +170,7 @@ export default function PersonalProfile() {
             />
           </div>
           {/* Email */}
-          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-9 px-3">
+          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-2 px-3">
             <span className="mr-2">{icons.mail}</span>
             <input
               className="border-none outline-none bg-transparent text-sm flex-1"
@@ -175,7 +180,7 @@ export default function PersonalProfile() {
             />
           </div>
           {/* Telefono */}
-          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-9 px-3">
+          <div className="flex items-center w-[303px] h-[42px] bg-white rounded-lg border border-[#E5E5E5] shadow-md gap-2 px-3">
             <span className="mr-2">{icons.phone}</span>
             <input
               className="border-none outline-none bg-transparent text-sm flex-1"
