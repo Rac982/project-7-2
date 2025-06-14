@@ -148,7 +148,10 @@ const Reviews = () => {
               <select
                 name="number"
                 value={limit}
-                onChange={(e) => setLimit(e.target.value)}
+                onChange={(e) => {
+                  setLimit(e.target.value);
+                  setPage(1);
+                }}
               >
                 <option value="6">6</option>
                 <option value="12">12</option>
