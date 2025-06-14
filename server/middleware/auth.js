@@ -1,6 +1,27 @@
+/**
+ * @file auth.js
+ * @description Middleware per l'autenticazione e l'autorizzazione degli utenti tramite JWT.
+ * Verifica la presenza e validità del token, controlla il ruolo dell'utente se richiesto,
+ * carica i dati dell'utente dal database e li assegna a `req.user`.
+ */
 const { verifyUserToken } = require("../utilities/auth");
 const { outError } = require("../utilities/errors");
 const { User } = require("../db");
+
+/**
+ * Middleware per autenticare un utente tramite token JWT e opzionalmente autorizzare in base al ruolo.
+ *
+ * @function authUser
+ * @param {Array<string>} [role=[]] - Array di ruoli autorizzati (es. ['user', 'business']). Se vuoto, accetta tutti.
+ * @returns {Function} Middleware Express che autentica e autorizza l'utente.
+ *
+ * @example
+ * // Solo utenti loggati
+ * router.get("/me", authUser(), handler);
+ *
+ * // Solo utenti con ruolo "business"
+ * router.post("/products", authUser(["business"]), handler);
+ */
 
 const authUser = (role = []) => async (req, res, next) => {
     const bearerToken = req.headers.authorization || req.headers["authorization"] || req.query.token;
